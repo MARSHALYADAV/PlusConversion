@@ -53,30 +53,21 @@ app.post('/api/convert', upload.single('image'), async (req, res) => {
 
         let outputBuffer;
         let currentQuality = quality;
-        const targetSizeBytes = req.body.targetSize ? parseInt(req.body.targetSize) : null;
         let iteration = 0;
         const maxIterations = 10;
         const minQuality = 10;
+        const targetSizeBytes = req.body.targetSize ? parseInt(req.body.targetSize) : null;
 
         // Helper to process pipeline with current settings
         const processImage = async (q) => {
             let options = { quality: q };
-            // For PNG, quality acts differently in sharp (compression level), but we can map it or just use default specific settings if needed.
-            // Sharp's png() quality option is actually fully supported in newer versions (palette quantization).
-            // Let's stick to standard quality property for all methods where applicable.
-
-            let currentPipeline = pipeline.clone(); // Clone to avoid mutating original pipeline state if that were an issue, though here we just chain.
-            // actually pipeline is a sharp instance, we can chain off it. But resizing is already applied to 'pipeline'.
-            // We need to re-apply format on the resized pipeline.
+            let currentPipeline = pipeline.clone();
 
             switch (format.toLowerCase()) {
                 case 'jpg':
                 case 'jpeg':
                     return currentPipeline.jpeg(options).toBuffer();
                 case 'png':
-                    // PNG quality in sharp (libvips) can be tricky. aggressive compression might be needed.
-                    // varying compressionLevel (0-9) or quality (0-100 for palette).
-                    // simplified: use quality if set, otherwise default.
                     return currentPipeline.png({ quality: q, compressionLevel: 9 }).toBuffer();
                 case 'webp':
                     return currentPipeline.webp(options).toBuffer();
@@ -91,10 +82,8 @@ app.post('/api/convert', upload.single('image'), async (req, res) => {
 
         // Iterative compression if targetSize is set
         if (targetSizeBytes && targetSizeBytes > 0) {
+            // 1. Try reducing quality
             while (outputBuffer.length > targetSizeBytes && currentQuality > minQuality && iteration < maxIterations) {
-                // Reduce quality.
-                // Binary search is better but step-down is simpler for now.
-                // Let's drop quality more aggressively if far off.
                 const sizeRatio = outputBuffer.length / targetSizeBytes;
                 let step = 10;
 
@@ -102,10 +91,56 @@ app.post('/api/convert', upload.single('image'), async (req, res) => {
                 if (sizeRatio > 5) step = 30;
 
                 currentQuality = Math.max(minQuality, currentQuality - step);
-                console.log(`Target: ${targetSizeBytes}, Current: ${outputBuffer.length}, New Quality: ${currentQuality}`);
 
                 outputBuffer = await processImage(currentQuality);
                 iteration++;
+            }
+
+            // 2. If still too large, try resizing
+            let currentWidth = width;
+            let currentHeight = height;
+
+            if (outputBuffer.length > targetSizeBytes) {
+                // Get dimensions if we don't have them yet
+                if (!currentWidth || !currentHeight) {
+                    const meta = await sharp(req.file.buffer).metadata();
+                    currentWidth = meta.width;
+                    currentHeight = meta.height;
+                }
+
+                while (outputBuffer.length > targetSizeBytes && (currentWidth > 50 || currentHeight > 50) && iteration < maxIterations + 5) {
+                    const scaleFactor = 0.8; // Reduce by 20%
+                    currentWidth = Math.round(currentWidth * scaleFactor);
+                    currentHeight = Math.round(currentHeight * scaleFactor);
+
+                    let resizeOptions = {
+                        width: currentWidth,
+                        height: currentHeight,
+                        fit: sharp.fit.fill
+                    };
+
+                    let resizePipeline = sharp(req.file.buffer).resize(resizeOptions);
+                    let options = { quality: currentQuality };
+
+                    switch (format.toLowerCase()) {
+                        case 'jpg':
+                        case 'jpeg':
+                            outputBuffer = await resizePipeline.jpeg(options).toBuffer();
+                            break;
+                        case 'png':
+                            outputBuffer = await resizePipeline.png({ quality: currentQuality, compressionLevel: 9 }).toBuffer();
+                            break;
+                        case 'webp':
+                            outputBuffer = await resizePipeline.webp(options).toBuffer();
+                            break;
+                        case 'tiff':
+                            outputBuffer = await resizePipeline.tiff(options).toBuffer();
+                            break;
+                        default:
+                            outputBuffer = await resizePipeline.toFormat(format, options).toBuffer();
+                    }
+                    iteration++;
+                }
             }
         }
 
