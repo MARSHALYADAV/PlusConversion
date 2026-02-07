@@ -4,6 +4,7 @@ const sharp = require('sharp');
 const cors = require('cors');
 const path = require('path');
 const archiver = require('archiver');
+const heicConvert = require('heic-convert');
 
 const app = express();
 const port = process.env.PORT || 3000;
@@ -25,21 +26,67 @@ const upload = multer({
 
 // API Endpoint for previews (mainly for HEIC)
 app.post('/api/preview', upload.single('image'), async (req, res) => {
+    console.log('Preview request received');
+    if (req.file) {
+        console.log(`File: ${req.file.originalname}, Size: ${req.file.size} bytes, Mime: ${req.file.mimetype}`);
+    }
+
     try {
         if (!req.file) {
             return res.status(400).json({ error: 'No image file uploaded' });
         }
 
-        const buffer = await sharp(req.file.buffer)
-            .resize({ width: 300, height: 300, fit: sharp.fit.inside }) // Thumbnail size
-            .jpeg({ quality: 70 })
-            .toBuffer();
+        let inputBuffer = req.file.buffer;
+        let buffer;
 
+        // HEIC Logic with robust check
+        const isHeic = req.file.mimetype === 'image/heic' || req.file.mimetype === 'image/heif' ||
+            req.file.originalname.toLowerCase().endsWith('.heic') || req.file.originalname.toLowerCase().endsWith('.heif');
+
+        if (isHeic) {
+            try {
+                // Try to decode a tiny pixel to verify Sharp support
+                await sharp(inputBuffer).resize(1, 1).toBuffer();
+                // If success, use Sharp normally
+                buffer = await sharp(inputBuffer)
+                    .resize({ width: 300, height: 300, fit: sharp.fit.inside })
+                    .jpeg({ quality: 70 })
+                    .toBuffer();
+            } catch (e) {
+                console.log(`Sharp failed to decode HEIC preview for ${req.file.originalname}, using heic-convert...`);
+                try {
+                    const outputBuffer = await heicConvert({
+                        buffer: inputBuffer,
+                        format: 'JPEG',
+                        quality: 0.7
+                    });
+
+                    // Resize the converted JPEG using Sharp
+                    buffer = await sharp(outputBuffer)
+                        .resize({ width: 300, height: 300, fit: sharp.fit.inside })
+                        .jpeg({ quality: 70 })
+                        .toBuffer();
+
+                    console.log('Preview generated with heic-convert + Sharp');
+                } catch (heicErr) {
+                    console.error('heic-convert preview failed:', heicErr);
+                    throw heicErr;
+                }
+            }
+        } else {
+            // Normal image
+            buffer = await sharp(inputBuffer)
+                .resize({ width: 300, height: 300, fit: sharp.fit.inside })
+                .jpeg({ quality: 70 })
+                .toBuffer();
+        }
+
+        console.log('Preview generated successfully');
         res.set('Content-Type', 'image/jpeg');
         res.send(buffer);
     } catch (error) {
         console.error('Preview error:', error);
-        res.status(500).json({ error: 'Preview generation failed' });
+        res.status(500).json({ error: 'Preview generation failed', details: error.message });
     }
 });
 
@@ -64,7 +111,31 @@ app.post('/api/convert', upload.array('images', 10), async (req, res) => {
 
         // Helper function to process a single file
         const processSingleFile = async (file) => {
-            let pipeline = sharp(file.buffer);
+            let bufferToProcess = file.buffer;
+
+            // HEIC Logic with robust check
+            const isHeic = file.mimetype === 'image/heic' || file.mimetype === 'image/heif' ||
+                file.originalname.toLowerCase().endsWith('.heic') || file.originalname.toLowerCase().endsWith('.heif');
+
+            if (isHeic) {
+                try {
+                    // Try to actually decode pixels (metadata check is insufficient)
+                    await sharp(bufferToProcess).resize(1, 1).toBuffer();
+                } catch (e) {
+                    console.log(`Sharp failed on HEIC input ${file.originalname}, converting with heic-convert...`);
+                    try {
+                        bufferToProcess = await heicConvert({
+                            buffer: file.buffer,
+                            format: 'PNG'
+                        });
+                    } catch (heicErr) {
+                        console.error('heic-convert failed:', heicErr);
+                        throw heicErr;
+                    }
+                }
+            }
+
+            let pipeline = sharp(bufferToProcess);
 
             // Metadata
             if (keepMetadata) {
@@ -112,21 +183,23 @@ app.post('/api/convert', upload.array('images', 10), async (req, res) => {
             let outputBuffer = await getFormatBuffer(pipeline, quality);
 
             // Target Size Logic (Iterative)
-            let iteration = 0;
-            let currentQuality = quality;
             const minQuality = 10;
-            const maxIterations = 10;
+            const maxQualityIterations = 10; // separate limit for quality
+            const maxResizeIterations = 20;  // separate limit and higher for resize
+
+            let currentQuality = quality;
 
             if (targetSizeBytes && targetSizeBytes > 0) {
                 // 1. Reduce Quality
-                while (outputBuffer.length > targetSizeBytes && currentQuality > minQuality && iteration < maxIterations) {
+                let qIteration = 0;
+                while (outputBuffer.length > targetSizeBytes && currentQuality > minQuality && qIteration < maxQualityIterations) {
                     const sizeRatio = outputBuffer.length / targetSizeBytes;
                     let step = 10;
                     if (sizeRatio > 2) step = 20;
 
                     currentQuality = Math.max(minQuality, currentQuality - step);
                     outputBuffer = await getFormatBuffer(pipeline, currentQuality);
-                    iteration++;
+                    qIteration++;
                 }
 
                 // 2. Fallback Resize
@@ -135,24 +208,39 @@ app.post('/api/convert', upload.array('images', 10), async (req, res) => {
 
                 if (outputBuffer.length > targetSizeBytes) {
                     if (!currentWidth || !currentHeight) {
-                        const meta = await sharp(file.buffer).metadata();
-                        currentWidth = meta.width;
-                        currentHeight = meta.height;
+                        try {
+                            const meta = await sharp(bufferToProcess).metadata();
+                            currentWidth = width || meta.width;
+                            currentHeight = height || meta.height;
+                        } catch (e) {
+                            currentWidth = 1000; currentHeight = 1000; // fallback arbitrary
+                        }
                     }
 
-                    while (outputBuffer.length > targetSizeBytes && (currentWidth > 50 || currentHeight > 50) && iteration < maxIterations + 5) {
-                        const scaleFactor = 0.85;
+                    let rIteration = 0;
+                    while (outputBuffer.length > targetSizeBytes && (currentWidth > 50 || currentHeight > 50) && rIteration < maxResizeIterations) {
+                        const sizeRatio = outputBuffer.length / targetSizeBytes;
+                        let scaleFactor = 0.85;
+                        if (sizeRatio > 2) scaleFactor = 0.70; // Aggressive scale down
+                        if (sizeRatio > 4) scaleFactor = 0.50; // Very aggressive
+
                         currentWidth = Math.round(currentWidth * scaleFactor);
                         currentHeight = Math.round(currentHeight * scaleFactor);
 
                         let resizeOptions = { width: currentWidth, height: currentHeight, fit: sharp.fit.fill };
 
-                        let resizePipeline = sharp(file.buffer).resize(resizeOptions);
+                        // Fix aspect ratio logic for fallback resize
+                        // If maintainAspect was true, we want to keep fitting inside the new smaller box
+                        if (maintainAspect) {
+                            resizeOptions.fit = sharp.fit.inside;
+                        }
+
+                        let resizePipeline = sharp(bufferToProcess).resize(resizeOptions);
                         if (keepMetadata) resizePipeline = resizePipeline.withMetadata();
                         if (outputHasNoAlpha || useTransparency) resizePipeline = resizePipeline.flatten({ background: backgroundColor });
 
                         outputBuffer = await getFormatBuffer(resizePipeline, currentQuality);
-                        iteration++;
+                        rIteration++;
                     }
                 }
             }

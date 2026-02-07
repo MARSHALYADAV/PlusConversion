@@ -211,8 +211,12 @@ document.addEventListener('DOMContentLoaded', () => {
                     })
                     .catch(e => {
                         console.error('Preview error', e);
-                        // Convert placeholder to error state if needed
-                        img.style.border = '2px solid red';
+                        // Visual error feedback
+                        img.style.opacity = '1';
+                        img.style.border = '2px solid #ef4444';
+                        img.title = 'Preview failed. File might be corrupted or unsupported.';
+                        // Optional: Replace src with an error icon
+                        // img.src = 'path/to/error-icon.svg'; 
                     });
 
             } else {
