@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PlusConversion - Free Image Converter</title>
+    <meta name="description" content="Simple, fast, and free online image converter. Convert JPG, PNG, WEBP, and more instantly. No login required.">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="icon" href="favicon.ico" type="image/x-icon"> 
+    <!-- FontAwesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+
+    <header class="header">
+        <div class="container">
+            <h1 class="logo"><i class="fa-solid fa-arrows-rotate"></i> PlusConversion</h1>
+            <p class="tagline">Simple. Fast. Free File Conversion.</p>
+        </div>
+    </header>
+
+    <main class="main-content">
+        <div class="container">
+            
+            <section id="upload-section" class="card upload-card">
+                <div class="drop-zone" id="drop-zone">
+                    <div class="dz-content">
+                        <i class="fa-solid fa-cloud-arrow-up dz-icon"></i>
+                        <h2>Drag & Drop your image here</h2>
+                        <p>or</p>
+                        <button class="btn btn-secondary" id="browse-btn">Browse Files</button>
+                        <input type="file" id="file-input" accept="image/png, image/jpeg, image/jpg, image/webp, image/tiff, image/bmp" hidden>
+                        <p class="formats-hint">Supports JPG, PNG, WEBP, BMP, TIFF</p>
+                    </div>
+                </div>
+            </section>
+
+            <section id="options-section" class="card options-card hidden">
+                <div class="preview-area">
+                    <img id="image-preview" src="" alt="Preview">
+                    <div class="file-info">
+                        <span id="file-name">filename.jpg</span>
+                        <span id="file-size">2 MB</span>
+                    </div>
+                    <button class="btn-icon remove-btn" id="remove-btn" title="Remove image"><i class="fa-solid fa-trash"></i></button>
+                </div>
+
+                <div class="settings-grid">
+                    <div class="setting-group">
+                        <label for="format-select">Convert to:</label>
+                        <select id="format-select">
+                            <option value="png">PNG</option>
+                            <option value="jpg">JPG</option>
+                            <option value="webp">WEBP</option>
+                            <option value="tiff">TIFF</option>
+                        </select>
+                    </div>
+
+                    <div class="setting-group">
+                        <label>Resize:</label>
+                        <div class="resize-options">
+                            <div class="input-wrapper">
+                                <label for="width-input">Width:</label>
+                                <input type="number" id="width-input" placeholder="Original">
+                            </div>
+                            <div class="input-wrapper">
+                                <label for="height-input">Height:</label>
+                                <input type="number" id="height-input" placeholder="Original">
+                            </div>
+                        </div>
+                         <div class="checkbox-wrapper">
+                            <input type="checkbox" id="maintain-aspect" checked>
+                            <label for="maintain-aspect">Maintain Aspect Ratio</label>
+                        </div>
+                    </div>
+
+                    <div class="setting-group quality-group">
+                        <label for="quality-range">Quality: <span id="quality-value">80</span>%</label>
+                        <input type="range" id="quality-range" min="10" max="100" value="80">
+                    </div>
+                </div>
+
+                <div class="action-area">
+                    <button class="btn btn-primary btn-lg" id="convert-btn">Convert & Download</button>
+                    <div class="progress-bar hidden" id="progress-bar">
+                        <div class="progress-fill"></div>
+                    </div>
+                    <p class="status-msg hidden" id="status-msg"></p>
+                </div>
+            </section>
+
+        </div>
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2024 PlusConversion. All rights reserved.</p>
+            <p class="footer-note">Files are processed securely and deleted immediately.</p>
+        </div>
+    </footer>
+
+    <script src="js/script.js"></script>
+</body>
+</html>
