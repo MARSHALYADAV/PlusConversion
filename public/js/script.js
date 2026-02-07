@@ -5,11 +5,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const browseBtn = document.getElementById('browse-btn');
     const uploadSection = document.getElementById('upload-section');
     const optionsSection = document.getElementById('options-section');
-
-    const imagePreview = document.getElementById('image-preview');
-    const fileName = document.getElementById('file-name');
-    const fileSize = document.getElementById('file-size');
-    const removeBtn = document.getElementById('remove-btn');
+    const fileListContainer = document.getElementById('file-list');
 
     const convertBtn = document.getElementById('convert-btn');
     const progressBar = document.getElementById('progress-bar');
@@ -22,16 +18,24 @@ document.addEventListener('DOMContentLoaded', () => {
     const widthInput = document.getElementById('width-input');
     const heightInput = document.getElementById('height-input');
     const maintainAspectCheckbox = document.getElementById('maintain-aspect');
+    const targetSizeInput = document.getElementById('target-size-input');
+    const sizeUnit = document.getElementById('size-unit');
+
+    // Advanced Options
+    const keepMetadataCheckbox = document.getElementById('keep-metadata');
+    const useTransparencyCheckbox = document.getElementById('use-transparency');
+    const bgColorWrapper = document.getElementById('bg-color-wrapper');
+    const bgColorInput = document.getElementById('bg-color');
 
     // State
-    let currentFile = null;
+    let selectedFiles = [];
 
     // Event Listeners for Upload
     browseBtn.addEventListener('click', () => fileInput.click());
 
     fileInput.addEventListener('change', (e) => {
         if (e.target.files.length > 0) {
-            handleFile(e.target.files[0]);
+            handleFiles(e.target.files);
         }
     });
 
@@ -48,11 +52,18 @@ document.addEventListener('DOMContentLoaded', () => {
         e.preventDefault();
         dropZone.classList.remove('dragover');
         if (e.dataTransfer.files.length > 0) {
-            handleFile(e.dataTransfer.files[0]);
+            handleFiles(e.dataTransfer.files);
         }
     });
 
-    removeBtn.addEventListener('click', resetUI);
+    // Toggle transparency options logic
+    useTransparencyCheckbox.addEventListener('change', () => {
+        if (useTransparencyCheckbox.checked) {
+            bgColorWrapper.style.display = 'block';
+        } else {
+            bgColorWrapper.style.display = 'none';
+        }
+    });
 
     // Settings Logic
     qualityRange.addEventListener('input', (e) => {
@@ -61,12 +72,15 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Conversion Logic
     convertBtn.addEventListener('click', async () => {
-        if (!currentFile) return;
+        if (selectedFiles.length === 0) return;
 
         setLoading(true);
 
         const formData = new FormData();
-        formData.append('image', currentFile);
+        selectedFiles.forEach(file => {
+            formData.append('images', file);
+        });
+
         formData.append('format', formatSelect.value);
         formData.append('quality', qualityRange.value);
         if (widthInput.value) formData.append('width', widthInput.value);
@@ -74,8 +88,6 @@ document.addEventListener('DOMContentLoaded', () => {
         formData.append('maintainAspect', maintainAspectCheckbox.checked);
 
         // Target Size Logic
-        const targetSizeInput = document.getElementById('target-size-input');
-        const sizeUnit = document.getElementById('size-unit');
         if (targetSizeInput.value) {
             const size = parseFloat(targetSizeInput.value);
             const multiplier = sizeUnit.value === 'MB' ? 1024 * 1024 : 1024;
@@ -83,14 +95,19 @@ document.addEventListener('DOMContentLoaded', () => {
             formData.append('targetSize', targetSizeBytes);
         }
 
+        // Advanced Options
+        formData.append('keepMetadata', keepMetadataCheckbox.checked);
+        formData.append('useTransparency', useTransparencyCheckbox.checked);
+        formData.append('backgroundColor', bgColorInput.value);
+
         try {
             // Simulated progress
             let progress = 0;
             const progressInterval = setInterval(() => {
-                progress += 10;
+                progress += 5;
                 if (progress > 90) clearInterval(progressInterval);
                 progressFill.style.width = `${progress}%`;
-            }, 200);
+            }, 300);
 
             const response = await fetch('/api/convert', {
                 method: 'POST',
@@ -106,12 +123,30 @@ document.addEventListener('DOMContentLoaded', () => {
             }
 
             const blob = await response.blob();
-            downloadFile(blob, `converted.${formatSelect.value}`);
+
+            // Determine filename based on content type
+            const contentType = response.headers.get('content-type');
+            let filename = `converted.${formatSelect.value}`;
+
+            if (contentType.includes('zip')) {
+                filename = 'converted_images.zip';
+            } else {
+                // Try to get from header or default
+                const disposition = response.headers.get('content-disposition');
+                if (disposition && disposition.indexOf('attachment') !== -1) {
+                    const filenameRegex = /filename[^;=\n]*=((['"]).*?\2|[^;\n]*)/;
+                    const matches = filenameRegex.exec(disposition);
+                    if (matches != null && matches[1]) {
+                        filename = matches[1].replace(/['"]/g, '');
+                    }
+                }
+            }
+
+            downloadFile(blob, filename);
 
             statusMsg.textContent = 'Conversion successful! Downloading...';
             setTimeout(() => {
                 statusMsg.textContent = '';
-                // Optional: resetUI(); // Keeping UI for re-conversion if desired
             }, 3000);
 
         } catch (error) {
@@ -124,44 +159,103 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     // Helper Functions
-    function handleFile(file) {
-        // Validate file type
-        const validTypes = ['image/jpeg', 'image/png', 'image/webp', 'image/tiff', 'image/bmp'];
-        // Note: checking mime type might be strict, let's also allow if not perfectly matched but is image
-        if (!file.type.startsWith('image/')) {
-            alert('Please upload a valid image file.');
+    function handleFiles(files) {
+        const validTypes = ['image/jpeg', 'image/png', 'image/webp', 'image/tiff', 'image/bmp', 'image/heic'];
+        const newFiles = Array.from(files).filter(file => file.type.startsWith('image/') || file.name.toLowerCase().endsWith('.heic'));
+
+        if (newFiles.length === 0) {
+            alert('Please upload valid image files.');
             return;
         }
 
-        currentFile = file;
+        selectedFiles = [...selectedFiles, ...newFiles];
+        renderFileList();
 
         // UI Update
         uploadSection.classList.add('hidden');
         optionsSection.classList.remove('hidden');
+    }
 
-        // File Info
-        fileName.textContent = file.name;
-        fileSize.textContent = formatBytes(file.size);
+    function renderFileList() {
+        fileListContainer.innerHTML = '';
+        selectedFiles.forEach((file, index) => {
+            const fileItem = document.createElement('div');
+            fileItem.className = 'file-item';
 
-        // Preview
-        const reader = new FileReader();
-        reader.onload = (e) => {
-            imagePreview.src = e.target.result;
-        };
-        reader.readAsDataURL(file);
+            const img = document.createElement('img');
+            img.className = 'file-thumb';
 
-        // Reset inputs
-        widthInput.value = '';
-        heightInput.value = '';
-        progressFill.style.width = '0%';
-        statusMsg.textContent = '';
+            // Handle HEIC preview
+            // HEIC files might have type 'image/heic' or just '' with name ending in .heic
+            const isHeic = file.type === 'image/heic' || file.name.toLowerCase().endsWith('.heic');
+
+            if (isHeic) {
+                // Placeholder
+                img.src = 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjOTA5MGI5IiBzdHJva2Utd2lkdGg9IjIiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCI+PHBhdGggZD0iTTEyIDJMMiA3bDEwIDUgMTAtNS0xMC01ek0yIDE3bDEwIDUgMTAtNU0yIDEybDEwIDUgMTAtNSIvPjwvc3ZnPg==';
+                img.style.opacity = '0.5';
+
+                // Fetch preview
+                const formData = new FormData();
+                formData.append('image', file);
+
+                fetch('/api/preview', { method: 'POST', body: formData })
+                    .then(res => {
+                        if (!res.ok) throw new Error('Preview failed');
+                        return res.blob();
+                    })
+                    .then(blob => {
+                        img.src = URL.createObjectURL(blob);
+                        img.onload = () => {
+                            img.style.opacity = '1';
+                        };
+                    })
+                    .catch(e => {
+                        console.error('Preview error', e);
+                        // Convert placeholder to error state if needed
+                        img.style.border = '2px solid red';
+                    });
+
+            } else {
+                const reader = new FileReader();
+                reader.onload = (e) => img.src = e.target.result;
+                reader.readAsDataURL(file);
+            }
+
+            const info = document.createElement('div');
+            info.className = 'file-info';
+            info.innerHTML = `
+                <span class="file-name" title="${file.name}">${file.name}</span>
+                <span class="file-meta">${formatBytes(file.size)}</span>
+            `;
+
+            const removeBtn = document.createElement('button');
+            removeBtn.className = 'remove-btn';
+            removeBtn.innerHTML = '<i class="fa-solid fa-xmark"></i>';
+            removeBtn.onclick = () => removeFile(index);
+
+            fileItem.appendChild(img);
+            fileItem.appendChild(info);
+            fileItem.appendChild(removeBtn);
+            fileListContainer.appendChild(fileItem);
+        });
+
+        if (selectedFiles.length === 0) {
+            resetUI();
+        }
+    }
+
+    function removeFile(index) {
+        selectedFiles.splice(index, 1);
+        renderFileList();
     }
 
     function resetUI() {
-        currentFile = null;
-        fileInput.value = ''; // Reset input to allow re-selecting same file
+        selectedFiles = [];
+        fileInput.value = '';
         uploadSection.classList.remove('hidden');
         optionsSection.classList.add('hidden');
+        statusMsg.textContent = '';
+        progressFill.style.width = '0%';
     }
 
     function setLoading(isLoading) {
@@ -170,9 +264,7 @@ document.addEventListener('DOMContentLoaded', () => {
             progressBar.classList.remove('hidden');
             convertBtn.textContent = 'Converting...';
         } else {
-            // Keep button text as converted or reset? Let's reset after delay or keep as is.
             convertBtn.textContent = 'Convert & Download';
-            // Don't hide progress immediately so user sees 100%
         }
     }
 
@@ -180,7 +272,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const url = window.URL.createObjectURL(blob);
         const a = document.createElement('a');
         a.href = url;
-        a.download = filename; // The server also sends Content-Disposition, but this enforces it in browser
+        a.download = filename;
         document.body.appendChild(a);
         a.click();
         window.URL.revokeObjectURL(url);

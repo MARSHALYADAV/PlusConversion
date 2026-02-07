@@ -3,6 +3,7 @@ const multer = require('multer');
 const sharp = require('sharp');
 const cors = require('cors');
 const path = require('path');
+const archiver = require('archiver');
 
 const app = express();
 const port = process.env.PORT || 3000;
@@ -18,15 +19,35 @@ const storage = multer.memoryStorage();
 const upload = multer({
     storage: storage,
     limits: {
-        fileSize: 50 * 1024 * 1024 // 50MB limit
+        fileSize: 50 * 1024 * 1024 // 50MB limit per file
+    }
+});
+
+// API Endpoint for previews (mainly for HEIC)
+app.post('/api/preview', upload.single('image'), async (req, res) => {
+    try {
+        if (!req.file) {
+            return res.status(400).json({ error: 'No image file uploaded' });
+        }
+
+        const buffer = await sharp(req.file.buffer)
+            .resize({ width: 300, height: 300, fit: sharp.fit.inside }) // Thumbnail size
+            .jpeg({ quality: 70 })
+            .toBuffer();
+
+        res.set('Content-Type', 'image/jpeg');
+        res.send(buffer);
+    } catch (error) {
+        console.error('Preview error:', error);
+        res.status(500).json({ error: 'Preview generation failed' });
     }
 });
 
 // API Endpoint for image conversion
-app.post('/api/convert', upload.single('image'), async (req, res) => {
+app.post('/api/convert', upload.array('images', 10), async (req, res) => {
     try {
-        if (!req.file) {
-            return res.status(400).json({ error: 'No image file uploaded' });
+        if (!req.files || req.files.length === 0) {
+            return res.status(400).json({ error: 'No image files uploaded' });
         }
 
         const format = req.body.format || 'png';
@@ -34,122 +55,147 @@ app.post('/api/convert', upload.single('image'), async (req, res) => {
         const width = req.body.width ? parseInt(req.body.width) : null;
         const height = req.body.height ? parseInt(req.body.height) : null;
         const maintainAspect = req.body.maintainAspect === 'true';
-
-        let pipeline = sharp(req.file.buffer);
-
-        // Resize logic
-        if (width || height) {
-            const resizeOptions = {
-                fit: maintainAspect ? sharp.fit.inside : sharp.fit.fill
-            };
-            if (width) resizeOptions.width = width;
-            if (height) resizeOptions.height = height;
-
-            pipeline = pipeline.resize(resizeOptions);
-        }
-
-        // Format conversion
-        // Supported formats: jpg, jpeg, png, webp, tiff
-
-        let outputBuffer;
-        let currentQuality = quality;
-        let iteration = 0;
-        const maxIterations = 10;
-        const minQuality = 10;
         const targetSizeBytes = req.body.targetSize ? parseInt(req.body.targetSize) : null;
 
-        // Helper to process pipeline with current settings
-        const processImage = async (q) => {
-            let options = { quality: q };
-            let currentPipeline = pipeline.clone();
+        // Advanced Options
+        const keepMetadata = req.body.keepMetadata === 'true';
+        const useTransparency = req.body.useTransparency === 'true';
+        const backgroundColor = req.body.backgroundColor || '#ffffff'; // Default white
 
-            switch (format.toLowerCase()) {
-                case 'jpg':
-                case 'jpeg':
-                    return currentPipeline.jpeg(options).toBuffer();
-                case 'png':
-                    return currentPipeline.png({ quality: q, compressionLevel: 9 }).toBuffer();
-                case 'webp':
-                    return currentPipeline.webp(options).toBuffer();
-                case 'tiff':
-                    return currentPipeline.tiff(options).toBuffer();
-                default:
-                    return currentPipeline.toFormat(format, options).toBuffer();
-            }
-        };
+        // Helper function to process a single file
+        const processSingleFile = async (file) => {
+            let pipeline = sharp(file.buffer);
 
-        outputBuffer = await processImage(currentQuality);
-
-        // Iterative compression if targetSize is set
-        if (targetSizeBytes && targetSizeBytes > 0) {
-            // 1. Try reducing quality
-            while (outputBuffer.length > targetSizeBytes && currentQuality > minQuality && iteration < maxIterations) {
-                const sizeRatio = outputBuffer.length / targetSizeBytes;
-                let step = 10;
-
-                if (sizeRatio > 2) step = 20;
-                if (sizeRatio > 5) step = 30;
-
-                currentQuality = Math.max(minQuality, currentQuality - step);
-
-                outputBuffer = await processImage(currentQuality);
-                iteration++;
+            // Metadata
+            if (keepMetadata) {
+                pipeline = pipeline.withMetadata();
             }
 
-            // 2. If still too large, try resizing
-            let currentWidth = width;
-            let currentHeight = height;
+            // Resize logic
+            if (width || height) {
+                const resizeOptions = {
+                    fit: maintainAspect ? sharp.fit.inside : sharp.fit.fill
+                };
+                if (width) resizeOptions.width = width;
+                if (height) resizeOptions.height = height;
+                pipeline = pipeline.resize(resizeOptions);
+            }
 
-            if (outputBuffer.length > targetSizeBytes) {
-                // Get dimensions if we don't have them yet
-                if (!currentWidth || !currentHeight) {
-                    const meta = await sharp(req.file.buffer).metadata();
-                    currentWidth = meta.width;
-                    currentHeight = meta.height;
+            // Transparency / Background
+            const noAlphaFormats = ['jpg', 'jpeg', 'bmp'];
+            const outputHasNoAlpha = noAlphaFormats.includes(format.toLowerCase());
+
+            if (outputHasNoAlpha || useTransparency) {
+                pipeline = pipeline.flatten({ background: backgroundColor });
+            }
+
+            // Helper for format/quality
+            const getFormatBuffer = async (currentPipeline, q) => {
+                let p = currentPipeline.clone();
+                switch (format.toLowerCase()) {
+                    case 'jpg':
+                    case 'jpeg':
+                        return p.jpeg({ quality: q }).toBuffer();
+                    case 'png':
+                        return p.png({ quality: q, compressionLevel: 9 }).toBuffer();
+                    case 'webp':
+                        return p.webp({ quality: q }).toBuffer();
+                    case 'tiff':
+                        return p.tiff({ quality: q }).toBuffer();
+                    case 'bmp':
+                        return p.toFormat('bmp').toBuffer();
+                    default:
+                        return p.toFormat(format, { quality: q }).toBuffer();
                 }
+            };
 
-                while (outputBuffer.length > targetSizeBytes && (currentWidth > 50 || currentHeight > 50) && iteration < maxIterations + 5) {
-                    const scaleFactor = 0.8; // Reduce by 20%
-                    currentWidth = Math.round(currentWidth * scaleFactor);
-                    currentHeight = Math.round(currentHeight * scaleFactor);
+            let outputBuffer = await getFormatBuffer(pipeline, quality);
 
-                    let resizeOptions = {
-                        width: currentWidth,
-                        height: currentHeight,
-                        fit: sharp.fit.fill
-                    };
+            // Target Size Logic (Iterative)
+            let iteration = 0;
+            let currentQuality = quality;
+            const minQuality = 10;
+            const maxIterations = 10;
 
-                    let resizePipeline = sharp(req.file.buffer).resize(resizeOptions);
-                    let options = { quality: currentQuality };
+            if (targetSizeBytes && targetSizeBytes > 0) {
+                // 1. Reduce Quality
+                while (outputBuffer.length > targetSizeBytes && currentQuality > minQuality && iteration < maxIterations) {
+                    const sizeRatio = outputBuffer.length / targetSizeBytes;
+                    let step = 10;
+                    if (sizeRatio > 2) step = 20;
 
-                    switch (format.toLowerCase()) {
-                        case 'jpg':
-                        case 'jpeg':
-                            outputBuffer = await resizePipeline.jpeg(options).toBuffer();
-                            break;
-                        case 'png':
-                            outputBuffer = await resizePipeline.png({ quality: currentQuality, compressionLevel: 9 }).toBuffer();
-                            break;
-                        case 'webp':
-                            outputBuffer = await resizePipeline.webp(options).toBuffer();
-                            break;
-                        case 'tiff':
-                            outputBuffer = await resizePipeline.tiff(options).toBuffer();
-                            break;
-                        default:
-                            outputBuffer = await resizePipeline.toFormat(format, options).toBuffer();
-                    }
+                    currentQuality = Math.max(minQuality, currentQuality - step);
+                    outputBuffer = await getFormatBuffer(pipeline, currentQuality);
                     iteration++;
                 }
+
+                // 2. Fallback Resize
+                let currentWidth = width;
+                let currentHeight = height;
+
+                if (outputBuffer.length > targetSizeBytes) {
+                    if (!currentWidth || !currentHeight) {
+                        const meta = await sharp(file.buffer).metadata();
+                        currentWidth = meta.width;
+                        currentHeight = meta.height;
+                    }
+
+                    while (outputBuffer.length > targetSizeBytes && (currentWidth > 50 || currentHeight > 50) && iteration < maxIterations + 5) {
+                        const scaleFactor = 0.85;
+                        currentWidth = Math.round(currentWidth * scaleFactor);
+                        currentHeight = Math.round(currentHeight * scaleFactor);
+
+                        let resizeOptions = { width: currentWidth, height: currentHeight, fit: sharp.fit.fill };
+
+                        let resizePipeline = sharp(file.buffer).resize(resizeOptions);
+                        if (keepMetadata) resizePipeline = resizePipeline.withMetadata();
+                        if (outputHasNoAlpha || useTransparency) resizePipeline = resizePipeline.flatten({ background: backgroundColor });
+
+                        outputBuffer = await getFormatBuffer(resizePipeline, currentQuality);
+                        iteration++;
+                    }
+                }
             }
+            return outputBuffer;
+        };
+
+        // --- Processing Request ---
+
+        if (req.files.length === 1) {
+            // Single file - Return directly
+            const buffer = await processSingleFile(req.files[0]);
+
+            const mimeType = `image/${format === 'jpg' ? 'jpeg' : format}`;
+            res.set('Content-Type', mimeType);
+            res.set('Content-Disposition', `attachment; filename="converted.${format}"`);
+            res.send(buffer);
+        } else {
+            // Multiple files - Return ZIP
+            const archive = archiver('zip', {
+                zlib: { level: 9 } // Sets the compression level.
+            });
+
+            res.set('Content-Type', 'application/zip');
+            res.set('Content-Disposition', 'attachment; filename="converted_images.zip"');
+
+            archive.pipe(res);
+
+            for (let i = 0; i < req.files.length; i++) {
+                const file = req.files[i];
+                try {
+                    const buffer = await processSingleFile(file);
+                    // Original name without extension
+                    const originalName = path.parse(file.originalname).name;
+                    const fileName = `${originalName}_converted.${format}`;
+
+                    archive.append(buffer, { name: fileName });
+                } catch (err) {
+                    console.error(`Error processing file ${file.originalname}:`, err);
+                }
+            }
+
+            await archive.finalize();
         }
-
-        // correct mime type
-        const mimeType = `image/${format === 'jpg' ? 'jpeg' : format}`;
-
-        res.set('Content-Type', mimeType);
-        res.set('Content-Disposition', `attachment; filename="converted.${format}"`);
-        res.send(outputBuffer);
 
     } catch (error) {
         console.error('Conversion error:', error);

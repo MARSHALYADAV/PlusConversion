@@ -36,21 +36,16 @@
                         <p>or</p>
                         <button class="btn btn-secondary" id="browse-btn">Browse Files</button>
                         <input type="file" id="file-input"
-                            accept="image/png, image/jpeg, image/jpg, image/webp, image/tiff, image/bmp" hidden>
-                        <p class="formats-hint">Supports JPG, PNG, WEBP, BMP, TIFF</p>
+                            accept="image/png, image/jpeg, image/jpg, image/webp, image/tiff, image/bmp, image/heic"
+                            multiple hidden>
+                        <p class="formats-hint">Supports JPG, PNG, WEBP, BMP, TIFF, HEIC</p>
                     </div>
                 </div>
             </section>
 
             <section id="options-section" class="card options-card hidden">
-                <div class="preview-area">
-                    <img id="image-preview" src="" alt="Preview">
-                    <div class="file-info">
-                        <span id="file-name">filename.jpg</span>
-                        <span id="file-size">2 MB</span>
-                    </div>
-                    <button class="btn-icon remove-btn" id="remove-btn" title="Remove image"><i
-                            class="fa-solid fa-trash"></i></button>
+                <div id="file-list" class="file-list">
+                    <!-- File items will be injected here -->
                 </div>
 
                 <div class="settings-grid">
@@ -100,6 +95,28 @@
                     <div class="setting-group quality-group">
                         <label for="quality-range">Quality: <span id="quality-value">80</span>%</label>
                         <input type="range" id="quality-range" min="10" max="100" value="80">
+                    </div>
+
+                    <!-- Advanced Options Toggle -->
+                    <div class="setting-group quality-group">
+                        <details class="advanced-details">
+                            <summary>Advanced Options</summary>
+                            <div class="advanced-options-grid">
+                                <div class="checkbox-wrapper">
+                                    <input type="checkbox" id="keep-metadata">
+                                    <label for="keep-metadata">Preserve Metadata (EXIF)</label>
+                                </div>
+                                <div class="checkbox-wrapper">
+                                    <input type="checkbox" id="use-transparency">
+                                    <label for="use-transparency">Fill Transparent Background</label>
+                                </div>
+                                <div class="input-wrapper" id="bg-color-wrapper"
+                                    style="display:none; margin-top: 0.5rem;">
+                                    <label for="bg-color" style="font-size: 0.9rem;">Color:</label>
+                                    <input type="color" id="bg-color" value="#ffffff">
+                                </div>
+                            </div>
+                        </details>
                     </div>
                 </div>
 
