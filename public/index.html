@@ -1,18 +1,21 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>PlusConversion - Free Image Converter</title>
-    <meta name="description" content="Simple, fast, and free online image converter. Convert JPG, PNG, WEBP, and more instantly. No login required.">
+    <meta name="description"
+        content="Simple, fast, and free online image converter. Convert JPG, PNG, WEBP, and more instantly. No login required.">
     <link rel="stylesheet" href="css/style.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="icon" href="favicon.ico" type="image/x-icon"> 
+    <link rel="icon" href="favicon.ico" type="image/x-icon">
     <!-- FontAwesome for Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
+
 <body>
 
     <header class="header">
@@ -24,7 +27,7 @@
 
     <main class="main-content">
         <div class="container">
-            
+
             <section id="upload-section" class="card upload-card">
                 <div class="drop-zone" id="drop-zone">
                     <div class="dz-content">
@@ -32,7 +35,8 @@
                         <h2>Drag & Drop your image here</h2>
                         <p>or</p>
                         <button class="btn btn-secondary" id="browse-btn">Browse Files</button>
-                        <input type="file" id="file-input" accept="image/png, image/jpeg, image/jpg, image/webp, image/tiff, image/bmp" hidden>
+                        <input type="file" id="file-input"
+                            accept="image/png, image/jpeg, image/jpg, image/webp, image/tiff, image/bmp" hidden>
                         <p class="formats-hint">Supports JPG, PNG, WEBP, BMP, TIFF</p>
                     </div>
                 </div>
@@ -45,7 +49,8 @@
                         <span id="file-name">filename.jpg</span>
                         <span id="file-size">2 MB</span>
                     </div>
-                    <button class="btn-icon remove-btn" id="remove-btn" title="Remove image"><i class="fa-solid fa-trash"></i></button>
+                    <button class="btn-icon remove-btn" id="remove-btn" title="Remove image"><i
+                            class="fa-solid fa-trash"></i></button>
                 </div>
 
                 <div class="settings-grid">
@@ -71,9 +76,24 @@
                                 <input type="number" id="height-input" placeholder="Original">
                             </div>
                         </div>
-                         <div class="checkbox-wrapper">
+                        <div class="checkbox-wrapper">
                             <input type="checkbox" id="maintain-aspect" checked>
                             <label for="maintain-aspect">Maintain Aspect Ratio</label>
+                        </div>
+                    </div>
+
+                    <div class="setting-group">
+                        <label>Max File Size (Optional):</label>
+                        <div class="resize-options">
+                            <div class="input-wrapper">
+                                <input type="number" id="target-size-input" placeholder="e.g. 50">
+                            </div>
+                            <div class="input-wrapper" style="flex: 0 0 80px;">
+                                <select id="size-unit">
+                                    <option value="KB">KB</option>
+                                    <option value="MB">MB</option>
+                                </select>
+                            </div>
                         </div>
                     </div>
 
@@ -104,4 +124,5 @@
 
     <script src="js/script.js"></script>
 </body>
+
 </html>

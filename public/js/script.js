@@ -73,6 +73,16 @@ document.addEventListener('DOMContentLoaded', () => {
         if (heightInput.value) formData.append('height', heightInput.value);
         formData.append('maintainAspect', maintainAspectCheckbox.checked);
 
+        // Target Size Logic
+        const targetSizeInput = document.getElementById('target-size-input');
+        const sizeUnit = document.getElementById('size-unit');
+        if (targetSizeInput.value) {
+            const size = parseFloat(targetSizeInput.value);
+            const multiplier = sizeUnit.value === 'MB' ? 1024 * 1024 : 1024;
+            const targetSizeBytes = Math.floor(size * multiplier);
+            formData.append('targetSize', targetSizeBytes);
+        }
+
         try {
             // Simulated progress
             let progress = 0;

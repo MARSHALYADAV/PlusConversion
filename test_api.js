@@ -30,6 +30,7 @@ async function runTest() {
         const bodyStart =
             `--${boundary}\r\nContent-Disposition: form-data; name="format"\r\n\r\njpg\r\n` +
             `--${boundary}\r\nContent-Disposition: form-data; name="width"\r\n\r\n50\r\n` +
+            `--${boundary}\r\nContent-Disposition: form-data; name="targetSize"\r\n\r\n1000\r\n` +
             `--${boundary}\r\nContent-Disposition: form-data; name="image"; filename="test.png"\r\nContent-Type: image/png\r\n\r\n`;
 
         const bodyEnd = `\r\n--${boundary}--`;
