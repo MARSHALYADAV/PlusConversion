@@ -3,6 +3,9 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
+    "build": "esbuild public/js/index.jsx --bundle --outfile=public/js/bundle.js --loader:.jsx=jsx --external:react --external:react-dom",
+    "start": "node src/server.js",
+    "dev": "npm run build && node src/server.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
@@ -15,6 +18,10 @@
     "express": "^5.2.1",
     "heic-convert": "^2.1.0",
     "multer": "^2.0.2",
+    "pdf-lib": "^1.17.1",
     "sharp": "^0.34.5"
+  },
+  "devDependencies": {
+    "esbuild": "^0.28.0"
   }
 }

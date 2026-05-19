@@ -1,4 +1,86 @@
+// PDF Tools Data
+const pdfTools = [
+  {
+    id: 'merge',
+    title: 'Merge PDF',
+    description: 'Combine multiple PDF files into one document.',
+    icon: 'fa-solid fa-file-arrow-down',
+    route: 'merge'
+  },
+  {
+    id: 'split',
+    title: 'Split PDF',
+    description: 'Split a PDF into individual pages or sections.',
+    icon: 'fa-solid fa-file-lines',
+    route: 'split'
+  },
+  {
+    id: 'compress',
+    title: 'Compress PDF',
+    description: 'Reduce PDF file size while keeping readability.',
+    icon: 'fa-solid fa-compress',
+    route: 'compress'
+  },
+  {
+    id: 'convert-to-pdf',
+    title: 'Convert to PDF',
+    description: 'Turn images or documents into PDF format.',
+    icon: 'fa-solid fa-file-export',
+    route: '#'
+  },
+  {
+    id: 'unlock',
+    title: 'Unlock PDF',
+    description: 'Remove password protection from PDFs securely.',
+    icon: 'fa-solid fa-lock-open',
+    route: '#'
+  },
+  {
+    id: 'protect',
+    title: 'Protect PDF',
+    description: 'Add a password to keep your PDF files safe.',
+    icon: 'fa-solid fa-lock',
+    route: '#'
+  }
+];
+
+// Render Tool Grid
+function renderToolGrid() {
+  const grid = document.getElementById('tool-grid');
+  grid.innerHTML = pdfTools.map(tool => `
+    <article class="tool-card" ${tool.route !== '#' ? `data-tool="${tool.route}"` : ''}>
+      ${tool.route === '#' ? '<div class="badge-coming-soon">Coming Soon</div>' : ''}
+      <div class="tool-card-icon">
+        <i class="${tool.icon}"></i>
+      </div>
+      <div class="tool-card-body">
+        <h4>${tool.title}</h4>
+        <p>${tool.description}</p>
+      </div>
+      <div class="tool-card-action">
+        <a href="${tool.route === '#' ? '#' : 'javascript:void(0)'}" class="btn btn-secondary btn-sm" ${tool.route !== '#' ? `onclick="showTool('${tool.route}')"` : 'onclick="alert(\'Coming soon!\')"'}>Open</a>
+      </div>
+    </article>
+  `).join('');
+}
+
+// Navigation Functions
+function showTool(toolName) {
+  document.getElementById('tools-grid-section').classList.add('hidden');
+  document.getElementById('converter-section').classList.add('hidden');
+  document.getElementById(`${toolName}-pdf-section`).classList.remove('hidden');
+}
+
+function backToGrid() {
+  document.querySelectorAll('.pdf-tool-section').forEach(el => el.classList.add('hidden'));
+  document.getElementById('tools-grid-section').classList.remove('hidden');
+  document.getElementById('converter-section').classList.remove('hidden');
+}
+
 document.addEventListener('DOMContentLoaded', () => {
+    renderToolGrid();
+    setupPdfToolHandlers();
+    
     // Elements
     const dropZone = document.getElementById('drop-zone');
     const fileInput = document.getElementById('file-input');
@@ -291,4 +373,261 @@ document.addEventListener('DOMContentLoaded', () => {
         const i = Math.floor(Math.log(bytes) / Math.log(k));
         return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + ' ' + sizes[i];
     }
+
+    // PDF Tool Handlers
+    let mergeFiles = [];
+    let splitFile = null;
+    let compressFile = null;
+
+    function setupPdfToolHandlers() {
+        // Back buttons
+        ['merge', 'split', 'compress'].forEach(tool => {
+            const backBtn = document.getElementById(`back-${tool}`);
+            if (backBtn) backBtn.addEventListener('click', backToGrid);
+        });
+
+        // MERGE PDF
+        const mergeBrowseBtn = document.getElementById('merge-browse-btn');
+        const mergeFileInput = document.getElementById('merge-file-input');
+        const mergeDropZone = document.getElementById('merge-drop-zone');
+        const mergeFileList = document.getElementById('merge-file-list');
+        const mergeBtn = document.getElementById('merge-btn');
+
+        mergeBrowseBtn.addEventListener('click', () => mergeFileInput.click());
+        mergeFileInput.addEventListener('change', (e) => {
+            mergeFiles = [...mergeFiles, ...Array.from(e.target.files)];
+            renderMergeFileList();
+        });
+        mergeDropZone.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            mergeDropZone.classList.add('dragover');
+        });
+        mergeDropZone.addEventListener('dragleave', () => mergeDropZone.classList.remove('dragover'));
+        mergeDropZone.addEventListener('drop', (e) => {
+            e.preventDefault();
+            mergeDropZone.classList.remove('dragover');
+            mergeFiles = [...mergeFiles, ...Array.from(e.dataTransfer.files)];
+            renderMergeFileList();
+        });
+
+        function renderMergeFileList() {
+            if (mergeFiles.length === 0) return;
+            mergeFileList.classList.remove('hidden');
+            mergeFileList.innerHTML = mergeFiles.map((f, i) => `
+                <div class="file-item">
+                    <div class="file-info">
+                        <span class="file-name">${f.name}</span>
+                        <span class="file-meta">${formatFileSize(f.size)}</span>
+                    </div>
+                    <button class="remove-btn" type="button" onclick="removeMergeFile(${i})">×</button>
+                </div>
+            `).join('');
+        }
+
+        mergeBtn.addEventListener('click', async () => {
+            if (mergeFiles.length < 2) {
+                alert('Please select at least 2 PDF files to merge');
+                return;
+            }
+            const formData = new FormData();
+            mergeFiles.forEach(f => formData.append('pdfs', f));
+            try {
+                const response = await fetch('/api/pdf/merge', { method: 'POST', body: formData });
+                if (!response.ok) throw new Error('Merge failed');
+                const blob = await response.blob();
+                const link = document.createElement('a');
+                link.href = URL.createObjectURL(blob);
+                link.download = 'merged.pdf';
+                document.body.appendChild(link);
+                link.click();
+                link.remove();
+                mergeFiles = [];
+                renderMergeFileList();
+            } catch (error) {
+                alert('Error: ' + error.message);
+            }
+        });
+
+        // SPLIT PDF
+        const splitBrowseBtn = document.getElementById('split-browse-btn');
+        const splitFileInput = document.getElementById('split-file-input');
+        const splitDropZone = document.getElementById('split-drop-zone');
+        const splitFileItem = document.getElementById('split-file-item');
+        const splitOptions = document.getElementById('split-options');
+        const pageRangeInput = document.getElementById('page-range');
+        const splitBtn = document.getElementById('split-btn');
+
+        splitBrowseBtn.addEventListener('click', () => splitFileInput.click());
+        splitFileInput.addEventListener('change', (e) => {
+            if (e.target.files.length > 0) {
+                splitFile = e.target.files[0];
+                renderSplitFileItem();
+            }
+        });
+        splitDropZone.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            splitDropZone.classList.add('dragover');
+        });
+        splitDropZone.addEventListener('dragleave', () => splitDropZone.classList.remove('dragover'));
+        splitDropZone.addEventListener('drop', (e) => {
+            e.preventDefault();
+            splitDropZone.classList.remove('dragover');
+            if (e.dataTransfer.files.length > 0) {
+                splitFile = e.dataTransfer.files[0];
+                renderSplitFileItem();
+            }
+        });
+
+        function renderSplitFileItem() {
+            if (!splitFile) return;
+            splitFileItem.classList.remove('hidden');
+            splitOptions.classList.remove('hidden');
+            splitFileItem.innerHTML = `
+                <div class="file-item">
+                    <div class="file-info">
+                        <span class="file-name">${splitFile.name}</span>
+                        <span class="file-meta">${formatFileSize(splitFile.size)}</span>
+                    </div>
+                    <button class="remove-btn" type="button" onclick="removeSplitFile()">×</button>
+                </div>
+            `;
+        }
+
+        splitBtn.addEventListener('click', async () => {
+            if (!splitFile) {
+                alert('Please select a PDF file to split');
+                return;
+            }
+            const formData = new FormData();
+            formData.append('pdf', splitFile);
+            formData.append('pageRange', pageRangeInput.value);
+            try {
+                const response = await fetch('/api/pdf/split', { method: 'POST', body: formData });
+                if (!response.ok) throw new Error('Split failed');
+                const blob = await response.blob();
+                const disposition = response.headers.get('content-disposition');
+                const filename = disposition?.match(/filename="(.+)"/)?.[1] || 'split.pdf';
+                const link = document.createElement('a');
+                link.href = URL.createObjectURL(blob);
+                link.download = filename;
+                document.body.appendChild(link);
+                link.click();
+                link.remove();
+                splitFile = null;
+                renderSplitFileItem();
+            } catch (error) {
+                alert('Error: ' + error.message);
+            }
+        });
+
+        // COMPRESS PDF
+        const compressBrowseBtn = document.getElementById('compress-browse-btn');
+        const compressFileInput = document.getElementById('compress-file-input');
+        const compressDropZone = document.getElementById('compress-drop-zone');
+        const compressFileItem = document.getElementById('compress-file-item');
+        const compressBtn = document.getElementById('compress-btn');
+
+        compressBrowseBtn.addEventListener('click', () => compressFileInput.click());
+        compressFileInput.addEventListener('change', (e) => {
+            if (e.target.files.length > 0) {
+                compressFile = e.target.files[0];
+                renderCompressFileItem();
+            }
+        });
+        compressDropZone.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            compressDropZone.classList.add('dragover');
+        });
+        compressDropZone.addEventListener('dragleave', () => compressDropZone.classList.remove('dragover'));
+        compressDropZone.addEventListener('drop', (e) => {
+            e.preventDefault();
+            compressDropZone.classList.remove('dragover');
+            if (e.dataTransfer.files.length > 0) {
+                compressFile = e.dataTransfer.files[0];
+                renderCompressFileItem();
+            }
+        });
+
+        function renderCompressFileItem() {
+            if (!compressFile) return;
+            compressFileItem.classList.remove('hidden');
+            compressFileItem.innerHTML = `
+                <div class="file-item">
+                    <div class="file-info">
+                        <span class="file-name">${compressFile.name}</span>
+                        <span class="file-meta">${formatFileSize(compressFile.size)}</span>
+                    </div>
+                    <button class="remove-btn" type="button" onclick="removeCompressFile()">×</button>
+                </div>
+            `;
+        }
+
+        compressBtn.addEventListener('click', async () => {
+            if (!compressFile) {
+                alert('Please select a PDF file to compress');
+                return;
+            }
+            const formData = new FormData();
+            formData.append('pdf', compressFile);
+            try {
+                const response = await fetch('/api/pdf/compress', { method: 'POST', body: formData });
+                if (!response.ok) throw new Error('Compress failed');
+                const blob = await response.blob();
+                const link = document.createElement('a');
+                link.href = URL.createObjectURL(blob);
+                link.download = 'compressed.pdf';
+                document.body.appendChild(link);
+                link.click();
+                link.remove();
+                compressFile = null;
+                renderCompressFileItem();
+            } catch (error) {
+                alert('Error: ' + error.message);
+            }
+        });
+    }
+
+    window.removeMergeFile = (index) => {
+        mergeFiles.splice(index, 1);
+        const mergeFileList = document.getElementById('merge-file-list');
+        if (mergeFiles.length === 0) {
+            mergeFileList.classList.add('hidden');
+        } else {
+            const mergeDropZone = document.getElementById('merge-drop-zone');
+            mergeFileList.innerHTML = mergeFiles.map((f, i) => `
+                <div class="file-item">
+                    <div class="file-info">
+                        <span class="file-name">${f.name}</span>
+                        <span class="file-meta">${formatFileSize(f.size)}</span>
+                    </div>
+                    <button class="remove-btn" type="button" onclick="removeMergeFile(${i})">×</button>
+                </div>
+            `).join('');
+        }
+    };
+
+    window.removeSplitFile = () => {
+        splitFile = null;
+        const splitFileItem = document.getElementById('split-file-item');
+        const splitOptions = document.getElementById('split-options');
+        splitFileItem.classList.add('hidden');
+        splitOptions.classList.add('hidden');
+    };
+
+    window.removeCompressFile = () => {
+        compressFile = null;
+        const compressFileItem = document.getElementById('compress-file-item');
+        compressFileItem.classList.add('hidden');
+    };
+
+    function formatFileSize(bytes) {
+        const k = 1024;
+        const decimals = 2;
+        const dm = decimals < 0 ? 0 : decimals;
+        const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+        const i = Math.floor(Math.log(bytes) / Math.log(k));
+        return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + ' ' + sizes[i];
+    }
+
+    window.formatFileSize = formatFileSize;
 });

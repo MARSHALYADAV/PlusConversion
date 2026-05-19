@@ -28,105 +28,202 @@
     <main class="main-content">
         <div class="container">
 
-            <section id="upload-section" class="card upload-card">
-                <div class="drop-zone" id="drop-zone">
-                    <div class="dz-content">
-                        <i class="fa-solid fa-cloud-arrow-up dz-icon"></i>
-                        <h2>Drag & Drop your image here</h2>
-                        <p>or</p>
-                        <button class="btn btn-secondary" id="browse-btn">Browse Files</button>
-                        <input type="file" id="file-input"
-                            accept="image/png, image/jpeg, image/jpg, image/webp, image/tiff, image/bmp, image/heic"
-                            multiple hidden>
-                        <p class="formats-hint">Supports JPG, PNG, WEBP, BMP, TIFF, HEIC</p>
-                    </div>
+            <!-- Hero Section -->
+            <section class="hero-card card">
+                <div class="hero-copy">
+                    <h2 class="section-title">Fast PDF tools & image conversion</h2>
+                    <p class="section-subtitle">
+                        Manage your files like a pro: merge, split, compress, and convert images with a modern, responsive interface.
+                    </p>
                 </div>
             </section>
 
-            <section id="options-section" class="card options-card hidden">
-                <div id="file-list" class="file-list">
-                    <!-- File items will be injected here -->
+            <!-- PDF Tools Grid -->
+            <section class="card tool-section" id="tools-grid-section">
+                <div class="section-heading">
+                    <h3>Popular PDF Tools</h3>
+                    <p>Quick access to the most common PDF actions—modeled after premium converters.</p>
                 </div>
+                <div class="tool-grid" id="tool-grid">
+                    <!-- Tools will be injected here -->
+                </div>
+            </section>
 
-                <div class="settings-grid">
-                    <div class="setting-group">
-                        <label for="format-select">Convert to:</label>
-                        <select id="format-select">
-                            <option value="png">PNG</option>
-                            <option value="jpg">JPG</option>
-                            <option value="webp">WEBP</option>
-                            <option value="tiff">TIFF</option>
-                        </select>
-                    </div>
-
-                    <div class="setting-group">
-                        <label>Resize:</label>
-                        <div class="resize-options">
-                            <div class="input-wrapper">
-                                <label for="width-input">Width:</label>
-                                <input type="number" id="width-input" placeholder="Original">
-                            </div>
-                            <div class="input-wrapper">
-                                <label for="height-input">Height:</label>
-                                <input type="number" id="height-input" placeholder="Original">
-                            </div>
-                        </div>
-                        <div class="checkbox-wrapper">
-                            <input type="checkbox" id="maintain-aspect" checked>
-                            <label for="maintain-aspect">Maintain Aspect Ratio</label>
-                        </div>
-                    </div>
-
-                    <div class="setting-group">
-                        <label>Max File Size (Optional):</label>
-                        <div class="resize-options">
-                            <div class="input-wrapper">
-                                <input type="number" id="target-size-input" placeholder="e.g. 50">
-                            </div>
-                            <div class="input-wrapper" style="flex: 0 0 80px;">
-                                <select id="size-unit">
-                                    <option value="KB">KB</option>
-                                    <option value="MB">MB</option>
-                                </select>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="setting-group quality-group">
-                        <label for="quality-range">Quality: <span id="quality-value">80</span>%</label>
-                        <input type="range" id="quality-range" min="10" max="100" value="80">
-                    </div>
-
-                    <!-- Advanced Options Toggle -->
-                    <div class="setting-group quality-group">
-                        <details class="advanced-details">
-                            <summary>Advanced Options</summary>
-                            <div class="advanced-options-grid">
-                                <div class="checkbox-wrapper">
-                                    <input type="checkbox" id="keep-metadata">
-                                    <label for="keep-metadata">Preserve Metadata (EXIF)</label>
-                                </div>
-                                <div class="checkbox-wrapper">
-                                    <input type="checkbox" id="use-transparency">
-                                    <label for="use-transparency">Fill Transparent Background</label>
-                                </div>
-                                <div class="input-wrapper" id="bg-color-wrapper"
-                                    style="display:none; margin-top: 0.5rem;">
-                                    <label for="bg-color" style="font-size: 0.9rem;">Color:</label>
-                                    <input type="color" id="bg-color" value="#ffffff">
-                                </div>
-                            </div>
-                        </details>
+            <!-- Merge PDF Tool -->
+            <section class="card pdf-tool-section hidden" id="merge-pdf-section">
+                <div class="tool-header">
+                    <button class="btn-back" id="back-merge">&larr; Back</button>
+                    <h3>Merge PDF</h3>
+                </div>
+                <p class="tool-description">Combine multiple PDF files into one document.</p>
+                <div class="drop-zone" id="merge-drop-zone">
+                    <div class="dz-content">
+                        <i class="fa-solid fa-file-pdf dz-icon"></i>
+                        <h2>Drag & Drop PDFs here</h2>
+                        <p>or</p>
+                        <button class="btn btn-secondary" id="merge-browse-btn">Browse Files</button>
+                        <input type="file" id="merge-file-input" accept=".pdf" multiple hidden>
+                        <p class="formats-hint">Supports PDF files</p>
                     </div>
                 </div>
+                <div id="merge-file-list" class="file-list hidden"></div>
+                <button class="btn btn-primary btn-lg" id="merge-btn">Merge & Download</button>
+            </section>
 
-                <div class="action-area">
-                    <button class="btn btn-primary btn-lg" id="convert-btn">Convert & Download</button>
-                    <div class="progress-bar hidden" id="progress-bar">
-                        <div class="progress-fill"></div>
-                    </div>
-                    <p class="status-msg hidden" id="status-msg"></p>
+            <!-- Split PDF Tool -->
+            <section class="card pdf-tool-section hidden" id="split-pdf-section">
+                <div class="tool-header">
+                    <button class="btn-back" id="back-split">&larr; Back</button>
+                    <h3>Split PDF</h3>
                 </div>
+                <p class="tool-description">Split a PDF into individual pages or extract specific pages.</p>
+                <div class="drop-zone" id="split-drop-zone">
+                    <div class="dz-content">
+                        <i class="fa-solid fa-file-pdf dz-icon"></i>
+                        <h2>Drag & Drop PDF here</h2>
+                        <p>or</p>
+                        <button class="btn btn-secondary" id="split-browse-btn">Browse Files</button>
+                        <input type="file" id="split-file-input" accept=".pdf" single hidden>
+                        <p class="formats-hint">Supports PDF files</p>
+                    </div>
+                </div>
+                <div id="split-file-item" class="file-list hidden"></div>
+                <div class="setting-group hidden" id="split-options">
+                    <label for="page-range">Page Range (Optional):</label>
+                    <input type="text" id="page-range" placeholder="e.g., 1,3,5 or leave empty for all pages">
+                    <p class="formats-hint">Enter page numbers separated by commas</p>
+                </div>
+                <button class="btn btn-primary btn-lg" id="split-btn">Split & Download</button>
+            </section>
+
+            <!-- Compress PDF Tool -->
+            <section class="card pdf-tool-section hidden" id="compress-pdf-section">
+                <div class="tool-header">
+                    <button class="btn-back" id="back-compress">&larr; Back</button>
+                    <h3>Compress PDF</h3>
+                </div>
+                <p class="tool-description">Reduce PDF file size.</p>
+                <div class="drop-zone" id="compress-drop-zone">
+                    <div class="dz-content">
+                        <i class="fa-solid fa-file-pdf dz-icon"></i>
+                        <h2>Drag & Drop PDF here</h2>
+                        <p>or</p>
+                        <button class="btn btn-secondary" id="compress-browse-btn">Browse Files</button>
+                        <input type="file" id="compress-file-input" accept=".pdf" single hidden>
+                        <p class="formats-hint">Supports PDF files</p>
+                    </div>
+                </div>
+                <div id="compress-file-item" class="file-list hidden"></div>
+                <button class="btn btn-primary btn-lg" id="compress-btn">Compress & Download</button>
+            </section>
+
+            <!-- Image Converter Section -->
+            <section class="card converter-section" id="converter-section">
+                <div class="section-heading">
+                    <h3>Image Conversion</h3>
+                    <p>Upload images, choose your options, and download converted files instantly.</p>
+                </div>
+
+                <section id="upload-section" class="upload-card">
+                    <div class="drop-zone" id="drop-zone">
+                        <div class="dz-content">
+                            <i class="fa-solid fa-cloud-arrow-up dz-icon"></i>
+                            <h2>Drag & Drop your image here</h2>
+                            <p>or</p>
+                            <button class="btn btn-secondary" id="browse-btn">Browse Files</button>
+                            <input type="file" id="file-input"
+                                accept="image/png, image/jpeg, image/jpg, image/webp, image/tiff, image/bmp, image/heic"
+                                multiple hidden>
+                            <p class="formats-hint">Supports JPG, PNG, WEBP, BMP, TIFF, HEIC</p>
+                        </div>
+                    </div>
+                </section>
+
+                <section id="options-section" class="hidden">
+                    <div id="file-list" class="file-list">
+                        <!-- File items will be injected here -->
+                    </div>
+
+                    <div class="settings-grid">
+                        <div class="setting-group">
+                            <label for="format-select">Convert to:</label>
+                            <select id="format-select">
+                                <option value="png">PNG</option>
+                                <option value="jpg">JPG</option>
+                                <option value="webp">WEBP</option>
+                                <option value="tiff">TIFF</option>
+                            </select>
+                        </div>
+
+                        <div class="setting-group">
+                            <label>Resize:</label>
+                            <div class="resize-options">
+                                <div class="input-wrapper">
+                                    <label for="width-input">Width:</label>
+                                    <input type="number" id="width-input" placeholder="Original">
+                                </div>
+                                <div class="input-wrapper">
+                                    <label for="height-input">Height:</label>
+                                    <input type="number" id="height-input" placeholder="Original">
+                                </div>
+                            </div>
+                            <div class="checkbox-wrapper">
+                                <input type="checkbox" id="maintain-aspect" checked>
+                                <label for="maintain-aspect">Maintain Aspect Ratio</label>
+                            </div>
+                        </div>
+
+                        <div class="setting-group">
+                            <label>Max File Size (Optional):</label>
+                            <div class="resize-options">
+                                <div class="input-wrapper">
+                                    <input type="number" id="target-size-input" placeholder="e.g. 50">
+                                </div>
+                                <div class="input-wrapper" style="flex: 0 0 80px;">
+                                    <select id="size-unit">
+                                        <option value="KB">KB</option>
+                                        <option value="MB">MB</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="setting-group quality-group">
+                            <label for="quality-range">Quality: <span id="quality-value">80</span>%</label>
+                            <input type="range" id="quality-range" min="10" max="100" value="80">
+                        </div>
+
+                        <!-- Advanced Options Toggle -->
+                        <div class="setting-group quality-group">
+                            <details class="advanced-details">
+                                <summary>Advanced Options</summary>
+                                <div class="advanced-options-grid">
+                                    <div class="checkbox-wrapper">
+                                        <input type="checkbox" id="keep-metadata">
+                                        <label for="keep-metadata">Preserve Metadata (EXIF)</label>
+                                    </div>
+                                    <div class="checkbox-wrapper">
+                                        <input type="checkbox" id="use-transparency">
+                                        <label for="use-transparency">Fill Transparent Background</label>
+                                    </div>
+                                    <div class="input-wrapper" id="bg-color-wrapper"
+                                        style="display:none; margin-top: 0.5rem;">
+                                        <label for="bg-color" style="font-size: 0.9rem;">Color:</label>
+                                        <input type="color" id="bg-color" value="#ffffff">
+                                    </div>
+                                </div>
+                            </details>
+                        </div>
+                    </div>
+
+                    <div class="action-area">
+                        <button class="btn btn-primary btn-lg" id="convert-btn">Convert & Download</button>
+                        <div class="progress-bar hidden" id="progress-bar">
+                            <div class="progress-fill"></div>
+                        </div>
+                        <p class="status-msg hidden" id="status-msg"></p>
+                    </div>
+                </section>
             </section>
 
         </div>
@@ -134,9 +231,9 @@
 
     <footer class="footer">
         <div class="container">
-            <p>&copy; 2024 PlusConversion. All rights reserved.</p>
+            <p>&copy; 2026 PlusConversion. All rights reserved.</p>
             <p class="footer-note">Files are processed securely and deleted immediately.</p>
-            <p class="footer-note">MADE WITH ❤️ BY MARSHAL .</p>
+            <p class="footer-note">MADE WITH ❤️ BY MARSHAL.</p>
         </div>
     </footer>
 
