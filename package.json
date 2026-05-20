@@ -1,11 +1,11 @@
 {
   "name": "fileconverter",
   "version": "1.0.0",
-  "main": "index.js",
+  "main": "backend/server.js",
   "scripts": {
-    "build": "esbuild public/js/index.jsx --bundle --outfile=public/js/bundle.js --loader:.jsx=jsx --external:react --external:react-dom",
-    "start": "node src/server.js",
-    "dev": "npm run build && node src/server.js",
+    "build": "esbuild frontend/public/js/index.jsx --bundle --outfile=frontend/public/js/bundle.js --loader:.jsx=jsx --external:react --external:react-dom",
+    "start": "node backend/server.js",
+    "dev": "npm run build && node backend/server.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
@@ -14,9 +14,14 @@
   "description": "",
   "dependencies": {
     "archiver": "^7.0.1",
+    "cloudinary": "^2.2.0",
     "cors": "^2.8.6",
+    "dotenv": "^16.4.5",
     "express": "^5.2.1",
+    "express-rate-limit": "^7.2.0",
     "heic-convert": "^2.1.0",
+    "helmet": "^7.1.0",
+    "mongoose": "^8.3.1",
     "multer": "^2.0.2",
     "pdf-lib": "^1.17.1",
     "sharp": "^0.34.5"

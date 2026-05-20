@@ -28,40 +28,40 @@
     mod
   ));
 
-  // public/js/index.jsx
+  // frontend/public/js/index.jsx
   var import_react_187 = __toESM(__require("https://esm.sh/react@18"));
   var import_client = __toESM(__require("https://esm.sh/react-dom@18/client"));
 
-  // public/js/components/App.jsx
+  // frontend/public/js/components/App.jsx
   var import_react_186 = __toESM(__require("https://esm.sh/react@18"));
 
-  // public/js/components/Header.jsx
+  // frontend/public/js/components/Header.jsx
   var import_react_18 = __toESM(__require("https://esm.sh/react@18"));
   function Header() {
     return /* @__PURE__ */ import_react_18.default.createElement("header", { className: "header" }, /* @__PURE__ */ import_react_18.default.createElement("div", { className: "container header-inner" }, /* @__PURE__ */ import_react_18.default.createElement("h1", { className: "logo" }, /* @__PURE__ */ import_react_18.default.createElement("i", { className: "fa-solid fa-arrows-rotate" }), " PlusConversion"), /* @__PURE__ */ import_react_18.default.createElement("p", { className: "tagline" }, "Simple. Fast. Free File Conversion.")));
   }
 
-  // public/js/components/Footer.jsx
+  // frontend/public/js/components/Footer.jsx
   var import_react_182 = __toESM(__require("https://esm.sh/react@18"));
   function Footer() {
     return /* @__PURE__ */ import_react_182.default.createElement("footer", { className: "footer" }, /* @__PURE__ */ import_react_182.default.createElement("div", { className: "container footer-inner" }, /* @__PURE__ */ import_react_182.default.createElement("p", null, "\xA9 2026 PlusConversion. All rights reserved."), /* @__PURE__ */ import_react_182.default.createElement("p", { className: "footer-note" }, "Files are processed securely and deleted immediately."), /* @__PURE__ */ import_react_182.default.createElement("p", { className: "footer-note" }, "MADE WITH \u2764\uFE0F BY MARSHAL.")));
   }
 
-  // public/js/components/ToolGrid.jsx
+  // frontend/public/js/components/ToolGrid.jsx
   var import_react_184 = __toESM(__require("https://esm.sh/react@18"));
 
-  // public/js/components/ToolCard.jsx
+  // frontend/public/js/components/ToolCard.jsx
   var import_react_183 = __toESM(__require("https://esm.sh/react@18"));
   function ToolCard({ tool }) {
     return /* @__PURE__ */ import_react_183.default.createElement("article", { className: "tool-card" }, /* @__PURE__ */ import_react_183.default.createElement("div", { className: "tool-card-icon" }, /* @__PURE__ */ import_react_183.default.createElement("i", { className: tool.icon })), /* @__PURE__ */ import_react_183.default.createElement("div", { className: "tool-card-body" }, /* @__PURE__ */ import_react_183.default.createElement("h4", null, tool.title), /* @__PURE__ */ import_react_183.default.createElement("p", null, tool.description)), /* @__PURE__ */ import_react_183.default.createElement("div", { className: "tool-card-action" }, /* @__PURE__ */ import_react_183.default.createElement("a", { href: tool.route, className: "btn btn-secondary btn-sm" }, "Open")));
   }
 
-  // public/js/components/ToolGrid.jsx
+  // frontend/public/js/components/ToolGrid.jsx
   function ToolGrid({ tools }) {
     return /* @__PURE__ */ import_react_184.default.createElement("div", { className: "tool-grid" }, tools.map((tool) => /* @__PURE__ */ import_react_184.default.createElement(ToolCard, { key: tool.id, tool })));
   }
 
-  // public/js/components/ImageConverter.jsx
+  // frontend/public/js/components/ImageConverter.jsx
   var import_react_185 = __toESM(__require("https://esm.sh/react@18"));
   var validImageTypes = ["image/jpeg", "image/png", "image/webp", "image/tiff", "image/bmp", "image/heic", "image/heif"];
   function formatBytes(bytes) {
@@ -176,7 +176,7 @@
     ), fileList.length > 0 && /* @__PURE__ */ import_react_185.default.createElement("div", { className: "file-list" }, fileList.map((item, index) => /* @__PURE__ */ import_react_185.default.createElement("div", { className: "file-item", key: item.id }, /* @__PURE__ */ import_react_185.default.createElement("img", { className: "file-thumb", src: getPreviewSrc(item.file), alt: item.file.name }), /* @__PURE__ */ import_react_185.default.createElement("div", { className: "file-info" }, /* @__PURE__ */ import_react_185.default.createElement("span", { className: "file-name" }, item.file.name), /* @__PURE__ */ import_react_185.default.createElement("span", { className: "file-meta" }, formatBytes(item.file.size))), /* @__PURE__ */ import_react_185.default.createElement("button", { className: "remove-btn", onClick: () => removeFile(index), type: "button", "aria-label": "Remove file" }, "\xD7")))), /* @__PURE__ */ import_react_185.default.createElement("div", { className: "settings-grid" }, /* @__PURE__ */ import_react_185.default.createElement("div", { className: "setting-group" }, /* @__PURE__ */ import_react_185.default.createElement("label", { htmlFor: "format-select" }, "Convert to:"), /* @__PURE__ */ import_react_185.default.createElement("select", { id: "format-select", value: format, onChange: (event) => setFormat(event.target.value) }, /* @__PURE__ */ import_react_185.default.createElement("option", { value: "png" }, "PNG"), /* @__PURE__ */ import_react_185.default.createElement("option", { value: "jpg" }, "JPG"), /* @__PURE__ */ import_react_185.default.createElement("option", { value: "webp" }, "WEBP"), /* @__PURE__ */ import_react_185.default.createElement("option", { value: "tiff" }, "TIFF"))), /* @__PURE__ */ import_react_185.default.createElement("div", { className: "setting-group" }, /* @__PURE__ */ import_react_185.default.createElement("label", null, "Resize:"), /* @__PURE__ */ import_react_185.default.createElement("div", { className: "resize-options" }, /* @__PURE__ */ import_react_185.default.createElement("div", { className: "input-wrapper" }, /* @__PURE__ */ import_react_185.default.createElement("label", { htmlFor: "width-input" }, "Width"), /* @__PURE__ */ import_react_185.default.createElement("input", { id: "width-input", type: "number", placeholder: "Original", value: width, onChange: (event) => setWidth(event.target.value) })), /* @__PURE__ */ import_react_185.default.createElement("div", { className: "input-wrapper" }, /* @__PURE__ */ import_react_185.default.createElement("label", { htmlFor: "height-input" }, "Height"), /* @__PURE__ */ import_react_185.default.createElement("input", { id: "height-input", type: "number", placeholder: "Original", value: height, onChange: (event) => setHeight(event.target.value) }))), /* @__PURE__ */ import_react_185.default.createElement("div", { className: "checkbox-wrapper" }, /* @__PURE__ */ import_react_185.default.createElement("input", { id: "maintain-aspect", type: "checkbox", checked: maintainAspect, onChange: () => setMaintainAspect(!maintainAspect) }), /* @__PURE__ */ import_react_185.default.createElement("label", { htmlFor: "maintain-aspect" }, "Maintain Aspect Ratio"))), /* @__PURE__ */ import_react_185.default.createElement("div", { className: "setting-group" }, /* @__PURE__ */ import_react_185.default.createElement("label", { htmlFor: "target-size-input" }, "Max File Size (Optional)"), /* @__PURE__ */ import_react_185.default.createElement("div", { className: "resize-options" }, /* @__PURE__ */ import_react_185.default.createElement("div", { className: "input-wrapper" }, /* @__PURE__ */ import_react_185.default.createElement("input", { id: "target-size-input", type: "number", placeholder: "e.g. 50", value: targetSize, onChange: (event) => setTargetSize(event.target.value) })), /* @__PURE__ */ import_react_185.default.createElement("div", { className: "input-wrapper", style: { flex: "0 0 90px" } }, /* @__PURE__ */ import_react_185.default.createElement("select", { value: sizeUnit, onChange: (event) => setSizeUnit(event.target.value) }, /* @__PURE__ */ import_react_185.default.createElement("option", { value: "KB" }, "KB"), /* @__PURE__ */ import_react_185.default.createElement("option", { value: "MB" }, "MB"))))), /* @__PURE__ */ import_react_185.default.createElement("div", { className: "setting-group quality-group" }, /* @__PURE__ */ import_react_185.default.createElement("label", { htmlFor: "quality-range" }, "Quality: ", /* @__PURE__ */ import_react_185.default.createElement("span", null, quality, "%")), /* @__PURE__ */ import_react_185.default.createElement("input", { id: "quality-range", type: "range", min: "10", max: "100", value: quality, onChange: (event) => setQuality(event.target.value) })), /* @__PURE__ */ import_react_185.default.createElement("div", { className: "setting-group quality-group" }, /* @__PURE__ */ import_react_185.default.createElement("details", { className: "advanced-details" }, /* @__PURE__ */ import_react_185.default.createElement("summary", null, "Advanced Options"), /* @__PURE__ */ import_react_185.default.createElement("div", { className: "advanced-options-grid" }, /* @__PURE__ */ import_react_185.default.createElement("div", { className: "checkbox-wrapper" }, /* @__PURE__ */ import_react_185.default.createElement("input", { id: "keep-metadata", type: "checkbox", checked: keepMetadata, onChange: () => setKeepMetadata(!keepMetadata) }), /* @__PURE__ */ import_react_185.default.createElement("label", { htmlFor: "keep-metadata" }, "Preserve Metadata (EXIF)")), /* @__PURE__ */ import_react_185.default.createElement("div", { className: "checkbox-wrapper" }, /* @__PURE__ */ import_react_185.default.createElement("input", { id: "use-transparency", type: "checkbox", checked: useTransparency, onChange: () => setUseTransparency(!useTransparency) }), /* @__PURE__ */ import_react_185.default.createElement("label", { htmlFor: "use-transparency" }, "Fill Transparent Background")), useTransparency && /* @__PURE__ */ import_react_185.default.createElement("div", { className: "input-wrapper", style: { marginTop: "0.5rem" } }, /* @__PURE__ */ import_react_185.default.createElement("label", { htmlFor: "bg-color", style: { fontSize: "0.9rem" } }, "Color:"), /* @__PURE__ */ import_react_185.default.createElement("input", { id: "bg-color", type: "color", value: backgroundColor, onChange: (event) => setBackgroundColor(event.target.value) })))))), /* @__PURE__ */ import_react_185.default.createElement("div", { className: "action-area" }, /* @__PURE__ */ import_react_185.default.createElement("button", { className: "btn btn-primary btn-lg", onClick: handleConvert, disabled: isLoading, type: "button" }, isLoading ? "Converting..." : "Convert & Download"), /* @__PURE__ */ import_react_185.default.createElement("div", { className: `progress-bar ${progress === 0 ? "hidden" : ""}` }, /* @__PURE__ */ import_react_185.default.createElement("div", { className: "progress-fill", style: { width: `${progress}%` } })), statusMessage && /* @__PURE__ */ import_react_185.default.createElement("p", { className: "status-msg" }, statusMessage)));
   }
 
-  // public/js/data/pdfTools.js
+  // frontend/public/js/data/pdfTools.js
   var pdfTools = [
     {
       id: "merge",
@@ -223,12 +223,12 @@
   ];
   var pdfTools_default = pdfTools;
 
-  // public/js/components/App.jsx
+  // frontend/public/js/components/App.jsx
   function App() {
     return /* @__PURE__ */ import_react_186.default.createElement("div", { className: "app-shell" }, /* @__PURE__ */ import_react_186.default.createElement(Header, null), /* @__PURE__ */ import_react_186.default.createElement("main", { className: "main-content" }, /* @__PURE__ */ import_react_186.default.createElement("div", { className: "container" }, /* @__PURE__ */ import_react_186.default.createElement("section", { className: "hero-card card" }, /* @__PURE__ */ import_react_186.default.createElement("div", { className: "hero-copy" }, /* @__PURE__ */ import_react_186.default.createElement("h2", { className: "section-title" }, "Fast PDF tools & image conversion"), /* @__PURE__ */ import_react_186.default.createElement("p", { className: "section-subtitle" }, "Manage your files like a pro: merge, split, compress, and convert images with a modern, responsive interface."))), /* @__PURE__ */ import_react_186.default.createElement("section", { className: "card tool-section" }, /* @__PURE__ */ import_react_186.default.createElement("div", { className: "section-heading" }, /* @__PURE__ */ import_react_186.default.createElement("h3", null, "Popular PDF Tools"), /* @__PURE__ */ import_react_186.default.createElement("p", null, "Quick access to the most common PDF actions\u2014modeled after premium converters.")), /* @__PURE__ */ import_react_186.default.createElement(ToolGrid, { tools: pdfTools_default })), /* @__PURE__ */ import_react_186.default.createElement("section", { className: "card converter-section" }, /* @__PURE__ */ import_react_186.default.createElement("div", { className: "section-heading" }, /* @__PURE__ */ import_react_186.default.createElement("h3", null, "Image Conversion"), /* @__PURE__ */ import_react_186.default.createElement("p", null, "Upload images, choose your options, and download converted files instantly.")), /* @__PURE__ */ import_react_186.default.createElement(ImageConverter, null)))), /* @__PURE__ */ import_react_186.default.createElement(Footer, null));
   }
 
-  // public/js/index.jsx
+  // frontend/public/js/index.jsx
   var rootElement = document.getElementById("root");
   var root = import_client.default.createRoot(rootElement);
   root.render(/* @__PURE__ */ import_react_187.default.createElement(App, null));
