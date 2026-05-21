@@ -45,6 +45,12 @@ export const iconMap = {
 
     'jpg-to-pdf': `<svg ${SVG_ATTRS}><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><rect x="8" y="12" width="8" height="6" rx="1"/><circle cx="10" cy="14" r="0.8"/><polyline points="8 18 11 15 13 17 15 14.5 16 16"/></svg>`,
 
+    'word-to-pdf': `<svg ${SVG_ATTRS}><path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"/><polyline points="14 2 14 8 20 8"/><path d="m8 11 1.5 5 1.5-5 1.5 5 1.5-5"/></svg>`,
+
+    'excel-to-pdf': `<svg ${SVG_ATTRS}><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="3" y1="15" x2="21" y2="15"/><line x1="9" y1="3" x2="9" y2="21"/><line x1="15" y1="3" x2="15" y2="21"/></svg>`,
+
+    'ppt-to-pdf': `<svg ${SVG_ATTRS}><path d="M2 3h20"/><path d="M21 3v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V3"/><path d="m12 16 5 5"/><path d="m12 16-5 5"/><path d="M10 7h4"/></svg>`,
+
     'image-convert': `<svg ${SVG_ATTRS}><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>`,
 
     'image-resize': `<svg ${SVG_ATTRS}><path d="M6 2v14a2 2 0 0 0 2 2h14"/><path d="M18 22V8a2 2 0 0 0-2-2H2"/></svg>`,

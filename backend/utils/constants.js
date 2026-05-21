@@ -20,7 +20,8 @@ module.exports = {
 
     ALLOWED_EXTENSIONS: {
         PDF: ['.pdf'],
-        IMAGES: ['.jpg', '.jpeg', '.png', '.webp', '.bmp', '.tiff', '.heic']
+        IMAGES: ['.jpg', '.jpeg', '.png', '.webp', '.bmp', '.tiff', '.heic'],
+        OFFICE: ['.docx', '.doc', '.xlsx', '.xls', '.pptx', '.ppt']
     },
 
     STATUS_CODES: {

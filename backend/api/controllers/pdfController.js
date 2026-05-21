@@ -262,6 +262,110 @@ const pdfController = {
         } catch (err) {
             next(err);
         }
+    },
+
+    /**
+     * Decrypt/Unlock a PDF file
+     */
+    unlock: async (req, res, next) => {
+        try {
+            if (!req.file) {
+                return response.error(res, 'No PDF file uploaded for unlocking', STATUS_CODES.BAD_REQUEST);
+            }
+
+            const { password } = req.body;
+            logger.info(`Controller: Unlocking PDF`);
+
+            try {
+                const decryptedBuffer = await PdfService.unlock(req.file.buffer, password || '');
+                const name = `unlocked_${req.file.originalname}`;
+                const storageResult = await StorageService.uploadTempFile(name, decryptedBuffer);
+
+                await logProcessedFile(storageResult, name);
+
+                return response.success(res, {
+                    downloadUrl: storageResult.url,
+                    filename: name,
+                    size: storageResult.size
+                });
+            } catch (err) {
+                if (err.message === 'PASSWORD_REQUIRED') {
+                    return response.error(res, 'Password is required to unlock this PDF', STATUS_CODES.BAD_REQUEST, { code: 'PASSWORD_REQUIRED' });
+                } else if (err.message === 'INVALID_PASSWORD') {
+                    return response.error(res, 'Incorrect password. Please try again', STATUS_CODES.BAD_REQUEST, { code: 'INVALID_PASSWORD' });
+                }
+                throw err;
+            }
+        } catch (err) {
+            next(err);
+        }
+    },
+
+    /**
+     * Edit PDF file using coordinate-based vector/text/image annotations
+     */
+    edit: async (req, res, next) => {
+        try {
+            if (!req.file) {
+                return response.error(res, 'No PDF file uploaded for editing', STATUS_CODES.BAD_REQUEST);
+            }
+
+            let annotations = [];
+            if (req.body.annotations) {
+                try {
+                    annotations = JSON.parse(req.body.annotations);
+                } catch (parseErr) {
+                    return response.error(res, 'Invalid annotations JSON matrix format', STATUS_CODES.BAD_REQUEST);
+                }
+            }
+
+            logger.info(`Controller: Editing PDF with ${annotations.length} annotations`);
+
+            const editedBuffer = await PdfService.edit(req.file.buffer, annotations);
+            const name = `edited_${req.file.originalname}`;
+            const storageResult = await StorageService.uploadTempFile(name, editedBuffer);
+
+            await logProcessedFile(storageResult, name);
+
+            return response.success(res, {
+                downloadUrl: storageResult.url,
+                filename: name,
+                size: storageResult.size
+            });
+        } catch (err) {
+            next(err);
+        }
+    },
+
+    /**
+     * Convert Office Documents (Word, Excel, PowerPoint) to PDF
+     */
+    convertOffice: async (req, res, next) => {
+        try {
+            if (!req.file) {
+                return response.error(res, 'No office document file uploaded', STATUS_CODES.BAD_REQUEST);
+            }
+
+            const ext = req.file.originalname.split('.').pop().toLowerCase();
+            logger.info(`Controller: Converting ${ext} to PDF`);
+
+            const pdfBuffer = await PdfService.convertOffice(req.file.buffer, ext);
+            
+            const baseName = req.file.originalname.substring(0, req.file.originalname.lastIndexOf('.')) || 'converted';
+            const name = `${baseName}.pdf`;
+            
+            const storageResult = await StorageService.uploadTempFile(name, pdfBuffer);
+
+            await logProcessedFile(storageResult, name);
+
+            return response.success(res, {
+                downloadUrl: storageResult.url,
+                filename: name,
+                size: storageResult.size
+            });
+        } catch (err) {
+            next(err);
+        }
     }
 };
 

@@ -86,4 +86,59 @@ router.post(
     pdfController.imagesToPdf
 );
 
+/**
+ * PDF Unlock Route
+ */
+router.post(
+    '/unlock',
+    heavyOperationLimiter,
+    validateUpload.uploadSinglePdf,
+    validateUpload.validatePdfUploads,
+    pdfController.unlock
+);
+
+/**
+ * PDF Edit Route
+ */
+router.post(
+    '/edit',
+    heavyOperationLimiter,
+    validateUpload.uploadSinglePdf,
+    validateUpload.validatePdfUploads,
+    pdfController.edit
+);
+
+/**
+ * Word to PDF Route
+ */
+router.post(
+    '/word-to-pdf',
+    heavyOperationLimiter,
+    validateUpload.uploadSingleDoc,
+    validateUpload.validateOfficeUploads,
+    pdfController.convertOffice
+);
+
+/**
+ * Excel to PDF Route
+ */
+router.post(
+    '/excel-to-pdf',
+    heavyOperationLimiter,
+    validateUpload.uploadSingleDoc,
+    validateUpload.validateOfficeUploads,
+    pdfController.convertOffice
+);
+
+/**
+ * PPT to PDF Route
+ */
+router.post(
+    '/ppt-to-pdf',
+    heavyOperationLimiter,
+    validateUpload.uploadSingleDoc,
+    validateUpload.validateOfficeUploads,
+    pdfController.convertOffice
+);
+
 module.exports = router;

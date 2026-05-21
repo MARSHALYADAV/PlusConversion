@@ -189,6 +189,31 @@ export async function imagesToPdf(imageFiles) {
     return parseResponse(res);
 }
 
+/**
+ * Unlock/decrypt a PDF file.
+ * @param {File} pdfFile
+ * @param {string} password
+ */
+export async function unlockPdf(pdfFile, password = '') {
+    const form = new FormData();
+    form.append('pdf', pdfFile);
+    form.append('password', password);
+    const res = await fetchWithTimeout('/api/pdf/unlock', { method: 'POST', body: form });
+    return parseResponse(res);
+}
+
+/**
+ * Convert Office document (Word, Excel, PPT) to PDF.
+ * @param {File} file
+ * @param {string} type - 'word' | 'excel' | 'ppt'
+ */
+export async function convertOfficeToPdf(file, type = 'word') {
+    const form = new FormData();
+    form.append('file', file);
+    const res = await fetchWithTimeout(`/api/pdf/${type}-to-pdf`, { method: 'POST', body: form });
+    return parseResponse(res);
+}
+
 // =============================================================================
 // UTILITIES
 // =============================================================================

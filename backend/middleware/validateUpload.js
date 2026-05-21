@@ -142,6 +142,7 @@ const validateUpload = {
     uploadMultipleImages: handleMulterErrors(upload.array('images', MAX_FILE_COUNT)),
     uploadSinglePdf: handleMulterErrors(upload.single('pdf')),
     uploadMultiplePdfs: handleMulterErrors(upload.array('pdfs', MAX_FILE_COUNT)),
+    uploadSingleDoc: handleMulterErrors(upload.single('file')),
 
     /**
      * Middleware validator for Image Upload arrays/elements
@@ -198,6 +199,29 @@ const validateUpload = {
             // Spoofing check & PDF Page checking
             sanitizeUploadedFiles(files);
             await validatePdfPageCounts(files);
+            next();
+        } catch (err) {
+            return response.error(res, err.message, STATUS_CODES.BAD_REQUEST);
+        }
+    },
+
+    /**
+     * Middleware validator for Office document uploads (Word, Excel, PowerPoint)
+     */
+    validateOfficeUploads: async (req, res, next) => {
+        try {
+            if (!req.file) {
+                return response.error(res, 'No Office document file uploaded', STATUS_CODES.BAD_REQUEST);
+            }
+
+            const file = req.file;
+            const ext = '.' + file.originalname.split('.').pop().toLowerCase();
+            if (!ALLOWED_EXTENSIONS.OFFICE.includes(ext)) {
+                return response.error(res, `Invalid file type: ${file.originalname}. Only Office documents (${ALLOWED_EXTENSIONS.OFFICE.join(', ')}) are allowed.`, STATUS_CODES.BAD_REQUEST);
+            }
+
+            // Perform binary/spoof checking where supported
+            sanitizeUploadedFiles([file]);
             next();
         } catch (err) {
             return response.error(res, err.message, STATUS_CODES.BAD_REQUEST);

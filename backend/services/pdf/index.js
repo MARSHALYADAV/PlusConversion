@@ -5,6 +5,9 @@ const watermarkPdf = require('../../workers/watermark');
 const addPageNumbers = require('../../workers/numbering');
 const compressPdf = require('../../workers/compress');
 const imagesToPdf = require('../../workers/jpg-pdf');
+const unlockPdf = require('../../workers/unlock');
+const editPdf = require('../../workers/edit');
+const convertOfficeToPdf = require('../../workers/office');
 
 class PdfService {
     /**
@@ -54,6 +57,27 @@ class PdfService {
      */
     static async imagesToPdf(imageFiles) {
         return await imagesToPdf(imageFiles);
+    }
+
+    /**
+     * Dispatch Unlock operation to the Unlock Worker
+     */
+    static async unlock(pdfBuffer, password) {
+        return await unlockPdf(pdfBuffer, password);
+    }
+
+    /**
+     * Dispatch Edit operation to the Edit Worker
+     */
+    static async edit(pdfBuffer, annotations) {
+        return await editPdf(pdfBuffer, annotations);
+    }
+
+    /**
+     * Dispatch Office document conversion to the Office conversion Worker
+     */
+    static async convertOffice(fileBuffer, ext) {
+        return await convertOfficeToPdf(fileBuffer, ext);
     }
 }
 

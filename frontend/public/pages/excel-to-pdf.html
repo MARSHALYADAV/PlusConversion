@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Excel to PDF — Convert XLSX Spreadsheets to PDF | PlusConversion</title>
+    <meta name="description" content="Convert Excel spreadsheets to PDF online for free. Support both XLS and XLSX formats. Automatically layouts tables to fit landscape sheets cleanly. No signup required.">
+    <meta property="og:title" content="Excel to PDF Free — PlusConversion">
+    <meta property="og:description" content="Convert Excel spreadsheets to high-quality PDF files instantly. Free, secure, and preserves custom table grid lines.">
+    <link rel="canonical" href="/pages/excel-to-pdf.html">
+    <link rel="stylesheet" href="../styles/style.css">
+    <link rel="icon" href="../favicon.ico" type="image/x-icon">
+</head>
+<body>
+<main class="main-content">
+<div class="container">
+    <a href="/" class="back-link"><i data-lucide="arrow-left"></i> All Tools</a>
+    <div class="card">
+        <div class="tool-page-header">
+            <div class="tool-page-icon" style="background: rgba(16, 185, 129, 0.1); color: rgb(16, 185, 129);"><i data-lucide="sheet" aria-hidden="true"></i></div>
+            <h1 class="tool-page-title">Excel to PDF</h1>
+            <p class="tool-page-subtitle">Convert your XLSX and XLS spreadsheets to neat PDF tables. Preserves formatting and cell borders.</p>
+        </div>
+
+        <div id="upload-section">
+            <div class="drop-zone" id="drop-zone" role="button" tabindex="0" aria-label="Drop Excel spreadsheet here">
+                <i data-lucide="sheet" class="dz-icon" aria-hidden="true" style="color: rgb(16, 185, 129);"></i>
+                <div class="dz-title">Drag &amp; Drop your Excel spreadsheet here</div>
+                <div class="dz-sub">or</div>
+                <button class="btn btn-secondary" id="browse-btn" type="button">Browse File</button>
+                <input type="file" id="file-input" accept=".xlsx,.xls" hidden aria-hidden="true">
+                <div class="dz-formats">Supports XLSX, XLS · Max 50 MB</div>
+            </div>
+
+            <div id="file-list" class="file-list hidden" aria-label="Selected file" aria-live="polite"></div>
+
+            <button class="btn btn-primary btn-full mt-3" id="submit-btn" disabled>
+                <i data-lucide="file-down" aria-hidden="true"></i> Convert to PDF
+            </button>
+        </div>
+
+        <div class="processing-overlay hidden" id="processing-section" aria-live="polite">
+            <div class="spinner" role="status" aria-label="Processing"></div>
+            <div class="processing-text" id="processing-text">Converting Spreadsheet…</div>
+            <div class="processing-sub">Formatting table grid lines and sheets layout…</div>
+            <div class="progress-container" style="width:100%;max-width:360px;">
+                <div class="progress-bar-track"><div class="progress-bar-fill" id="progress-fill"></div></div>
+            </div>
+        </div>
+
+        <div class="result-card hidden" id="result-section" aria-live="polite"></div>
+    </div>
+
+    <section class="card faq-section" aria-labelledby="faq-heading">
+        <h2 id="faq-heading">Frequently Asked Questions</h2>
+        <div class="faq-list">
+            <div class="faq-item">
+                <button class="faq-question" aria-expanded="false">Are sheet gridlines preserved in the converted PDF?<i data-lucide="chevron-down" class="faq-chevron"></i></button>
+                <div class="faq-answer">
+                    <p>Yes! PlusConversion renders cell border outlines and custom row colors so that your tables remain neat, professional, and extremely easy to read, just like they appear inside Excel.</p>
+                </div>
+            </div>
+            <div class="faq-item">
+                <button class="faq-question" aria-expanded="false">How does the layout handle wide tables?<i data-lucide="chevron-down" class="faq-chevron"></i></button>
+                <div class="faq-answer">
+                    <p>Wide spreadsheets are automatically converted into **A4 Landscape** pages. This widescreen layout guarantees that your tabular rows and columns fit comfortably on the page without awkward wrap-arounds or truncations.</p>
+                </div>
+            </div>
+            <div class="faq-item">
+                <button class="faq-question" aria-expanded="false">Are multiple sheets in a workbook converted?<i data-lucide="chevron-down" class="faq-chevron"></i></button>
+                <div class="faq-answer">
+                    <p>Yes, all active sheets in your workbook containing data are processed page-by-page and merged into a single multi-page PDF document.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+</main>
+<footer class="footer"><div class="container"><div class="footer-inner">
+    <div class="footer-brand"><i data-lucide="sheet"></i> PlusConversion</div>
+    <p class="footer-copy">&copy; 2026 PlusConversion · Made with ❤️ by Marshal &amp; Arjun</p>
+</div></div></footer>
+<script type="module" src="../js/pages/excel-to-pdf.js"></script>
+</body>
+</html>

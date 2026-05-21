@@ -1,17 +1,14 @@
 import { applyPageIcons } from '../utils/pageIcons.js';
-/**
- * COMPRESS PDF PAGE SCRIPT
- */
 import { initNavbar }   from '../components/navbar.js';
 import Toast            from '../components/toast.js';
 import DropZone         from '../components/dropzone.js';
 import ProgressUI       from '../components/progressUI.js';
 import ResultCard       from '../components/resultCard.js';
 import FileList         from '../components/fileList.js';
-import { compressPdf }  from '../modules/apiClient.js';
+import { convertOfficeToPdf } from '../modules/apiClient.js';
 
 document.addEventListener('DOMContentLoaded', () => {
-    initNavbar('compress-pdf');
+    initNavbar('excel-to-pdf');
     applyPageIcons();
 
     const ui = new ProgressUI({
@@ -42,36 +39,25 @@ document.addEventListener('DOMContentLoaded', () => {
         containerEl: document.getElementById('drop-zone'),
         inputEl:     document.getElementById('file-input'),
         browseBtn:   document.getElementById('browse-btn'),
-        accept:      ['.pdf'],
+        accept:      ['.xlsx', '.xls'],
         multiple:    false,
-        maxSizeMb:   200,
+        maxSizeMb:   50,
         onFiles: (files) => fileList.set(files)
     });
 
-    // Compression mode card selection
-    let selectedMode = 'recommended';
-    document.querySelectorAll('.compression-mode-card').forEach(card => {
-        card.addEventListener('click', () => {
-            document.querySelectorAll('.compression-mode-card').forEach(c => c.classList.remove('selected'));
-            card.classList.add('selected');
-            selectedMode = card.dataset.mode;
-        });
-    });
-
     document.getElementById('submit-btn')?.addEventListener('click', async () => {
-        if (!selectedFile) { Toast.show('Please select a PDF file first.', 'warning'); return; }
+        if (!selectedFile) { Toast.show('Please select an Excel sheet first.', 'warning'); return; }
 
-        const modeLabels = { low: 'Light', recommended: 'Recommended', extreme: 'Extreme' };
-        ui.showProcessing(`Compressing PDF (${modeLabels[selectedMode] || selectedMode} mode)…`);
+        ui.showProcessing('Converting Excel sheet to PDF…');
 
         try {
-            const data = await compressPdf(selectedFile, selectedMode);
-            rc.show({ ...data, originalSize: selectedFile.size, compressionMode: selectedMode });
+            const data = await convertOfficeToPdf(selectedFile, 'excel');
+            rc.show(data);
             ui.showResult();
-            Toast.show('PDF compressed successfully!', 'success');
+            Toast.show('Spreadsheet converted successfully!', 'success');
         } catch (err) {
             ui.reset();
-            Toast.show(err.message || 'Compression failed. Please try again.', 'error');
+            Toast.show(err.message || 'Conversion failed. Please try again.', 'error');
         }
     });
 

@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Word to PDF — Convert DOCX to PDF Online Free | PlusConversion</title>
+    <meta name="description" content="Convert your Word documents to PDF online for free. Support both DOC and DOCX formats. High-fidelity conversion, instant download, and 100% secure.">
+    <meta property="og:title" content="Word to PDF Free — PlusConversion">
+    <meta property="og:description" content="Convert Word documents to high-quality PDF files instantly. Free, secure, and no registration required.">
+    <link rel="canonical" href="/pages/word-to-pdf.html">
+    <link rel="stylesheet" href="../styles/style.css">
+    <link rel="icon" href="../favicon.ico" type="image/x-icon">
+</head>
+<body>
+<main class="main-content">
+<div class="container">
+    <a href="/" class="back-link"><i data-lucide="arrow-left"></i> All Tools</a>
+    <div class="card">
+        <div class="tool-page-header">
+            <div class="tool-page-icon" style="background: rgba(37, 99, 235, 0.1); color: rgb(37, 99, 235);"><i data-lucide="file-text" aria-hidden="true"></i></div>
+            <h1 class="tool-page-title">Word to PDF</h1>
+            <p class="tool-page-subtitle">Convert your DOCX and DOC files to high-quality PDF documents in seconds.</p>
+        </div>
+
+        <div id="upload-section">
+            <div class="drop-zone" id="drop-zone" role="button" tabindex="0" aria-label="Drop Word document here">
+                <i data-lucide="file-text" class="dz-icon" aria-hidden="true" style="color: rgb(37, 99, 235);"></i>
+                <div class="dz-title">Drag &amp; Drop your Word document here</div>
+                <div class="dz-sub">or</div>
+                <button class="btn btn-secondary" id="browse-btn" type="button">Browse File</button>
+                <input type="file" id="file-input" accept=".docx,.doc" hidden aria-hidden="true">
+                <div class="dz-formats">Supports DOCX, DOC · Max 50 MB</div>
+            </div>
+
+            <div id="file-list" class="file-list hidden" aria-label="Selected file" aria-live="polite"></div>
+
+            <button class="btn btn-primary btn-full mt-3" id="submit-btn" disabled>
+                <i data-lucide="file-down" aria-hidden="true"></i> Convert to PDF
+            </button>
+        </div>
+
+        <div class="processing-overlay hidden" id="processing-section" aria-live="polite">
+            <div class="spinner" role="status" aria-label="Processing"></div>
+            <div class="processing-text" id="processing-text">Converting Word Document…</div>
+            <div class="processing-sub">Compiling paragraphs and layout structure…</div>
+            <div class="progress-container" style="width:100%;max-width:360px;">
+                <div class="progress-bar-track"><div class="progress-bar-fill" id="progress-fill"></div></div>
+            </div>
+        </div>
+
+        <div class="result-card hidden" id="result-section" aria-live="polite"></div>
+    </div>
+
+    <section class="card faq-section" aria-labelledby="faq-heading">
+        <h2 id="faq-heading">Frequently Asked Questions</h2>
+        <div class="faq-list">
+            <div class="faq-item">
+                <button class="faq-question" aria-expanded="false">Will my document's formatting remain intact?<i data-lucide="chevron-down" class="faq-chevron"></i></button>
+                <div class="faq-answer">
+                    <p>Yes! PlusConversion uses a professional dual-pipeline compilation engine. If standard system layouts are present, it renders them perfectly. For serverless container limits, a high-fidelity paragraphs/tables JS compiler is run to guarantee that your fonts, spaces, and layout align cleanly in the output PDF.</p>
+                </div>
+            </div>
+            <div class="faq-item">
+                <button class="faq-question" aria-expanded="false">Are my files kept secure and private?<i data-lucide="chevron-down" class="faq-chevron"></i></button>
+                <div class="faq-answer">
+                    <p>Yes. Security is our absolute priority. All office document conversions run completely in-memory inside secure micro-containers. Raw documents are never stored permanently and are automatically purged from the server within 15 minutes of completion.</p>
+                </div>
+            </div>
+            <div class="faq-item">
+                <button class="faq-question" aria-expanded="false">Can I convert large Word files?<i data-lucide="chevron-down" class="faq-chevron"></i></button>
+                <div class="faq-answer">
+                    <p>PlusConversion supports converting single Word documents up to 50 MB in size, which easily covers very large manuscripts, reports, and image-heavy documents.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+</main>
+<footer class="footer"><div class="container"><div class="footer-inner">
+    <div class="footer-brand"><i data-lucide="file-text"></i> PlusConversion</div>
+    <p class="footer-copy">&copy; 2026 PlusConversion · Made with ❤️ by Marshal &amp; Arjun</p>
+</div></div></footer>
+<script type="module" src="../js/pages/word-to-pdf.js"></script>
+</body>
+</html>
