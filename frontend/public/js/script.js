@@ -7,42 +7,42 @@ const pdfTools = [
     id: 'merge',
     title: 'Merge PDF',
     description: 'Combine multiple PDF files into one document.',
-    icon: 'fa-solid fa-file-arrow-down',
+    icon: 'merge',
     route: 'merge'
   },
   {
     id: 'split',
     title: 'Split PDF',
     description: 'Split a PDF into individual pages or sections.',
-    icon: 'fa-solid fa-file-lines',
+    icon: 'scissors',
     route: 'split'
   },
   {
     id: 'compress',
     title: 'Compress PDF',
     description: 'Reduce PDF file size while keeping readability.',
-    icon: 'fa-solid fa-compress',
+    icon: 'minimize-2',
     route: 'compress'
   },
   {
     id: 'convert-to-pdf',
     title: 'Convert to PDF',
     description: 'Turn images or documents into PDF format.',
-    icon: 'fa-solid fa-file-export',
+    icon: 'file-output',
     route: '#'
   },
   {
     id: 'unlock',
     title: 'Unlock PDF',
     description: 'Remove password protection from PDFs securely.',
-    icon: 'fa-solid fa-lock-open',
+    icon: 'unlock',
     route: '#'
   },
   {
     id: 'protect',
     title: 'Protect PDF',
     description: 'Add a password to keep your PDF files safe.',
-    icon: 'fa-solid fa-lock',
+    icon: 'lock',
     route: '#'
   }
 ];
@@ -55,7 +55,7 @@ function renderToolGrid() {
     <article class="tool-card" ${tool.route !== '#' ? `data-tool="${tool.route}"` : ''}>
       ${tool.route === '#' ? '<div class="badge-coming-soon">Coming Soon</div>' : ''}
       <div class="tool-card-icon">
-        <i class="${tool.icon}"></i>
+        <i data-lucide="${tool.icon}"></i>
       </div>
       <div class="tool-card-body">
         <h4>${tool.title}</h4>
@@ -66,6 +66,10 @@ function renderToolGrid() {
       </div>
     </article>
   `).join('');
+
+  if (typeof lucide !== 'undefined') {
+    lucide.createIcons();
+  }
 }
 
 // Navigation Functions

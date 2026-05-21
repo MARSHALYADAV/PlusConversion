@@ -34,20 +34,70 @@ export default class DropZone {
      * @param {number}     [opts.maxSizeMb]   - Max file size in MB (default 100)
      * @param {Function}   opts.onFiles       - Callback(File[]) on valid drop/select
      */
-    constructor({ containerEl, inputEl, browseBtn, accept = [], multiple = false, maxSizeMb = 100, onFiles }) {
-        this.containerEl = containerEl;
-        this.inputEl = inputEl;
-        this.accept = accept.map(a => a.toLowerCase());
-        this.multiple = multiple;
-        this.maxSizeBytes = maxSizeMb * 1024 * 1024;
-        this.onFiles = onFiles;
-
-        if (!containerEl || !inputEl || !onFiles) {
-            console.error('DropZone: containerEl, inputEl, and onFiles are required');
-            return;
+    constructor(optsOrId, legacyOpts) {
+        if (typeof optsOrId === 'string') {
+            const containerEl = document.getElementById(optsOrId);
+            const opts = legacyOpts || {};
+            const accept = opts.accept ? (Array.isArray(opts.accept) ? opts.accept : [opts.accept]) : [];
+            const multiple = opts.multiple || false;
+            
+            // Create dynamic inner elements
+            const title = opts.title || 'Drag & Drop your files here';
+            const subtitle = opts.subtitle || 'or click to browse';
+            
+            if (containerEl) {
+                containerEl.innerHTML = `
+                    <div class="drop-zone" id="dz-${optsOrId}" role="button" tabindex="0" aria-label="Drop files here">
+                        <i data-lucide="file-text" class="dz-icon" aria-hidden="true"></i>
+                        <div class="dz-title">${title}</div>
+                        <div class="dz-sub">${subtitle}</div>
+                        <button class="btn btn-secondary" id="dz-${optsOrId}-browse" type="button">Browse File</button>
+                        <input type="file" id="dz-${optsOrId}-input" accept="${accept.join(',')}" ${multiple ? 'multiple' : ''} hidden aria-hidden="true">
+                        <div class="dz-formats">Max file size: 100 MB</div>
+                    </div>
+                `;
+                
+                this.parentEl = containerEl;
+                this.containerEl = containerEl.querySelector(`#dz-${optsOrId}`);
+                this.inputEl = containerEl.querySelector(`#dz-${optsOrId}-input`);
+                const browseBtn = containerEl.querySelector(`#dz-${optsOrId}-browse`);
+                
+                this.accept = accept.map(a => a.toLowerCase());
+                this.multiple = multiple;
+                this.maxSizeBytes = 100 * 1024 * 1024; // 100MB default
+                this.onFiles = opts.onFilesSelected || (() => {});
+                
+                this._bind(browseBtn);
+                
+                if (typeof lucide !== 'undefined') {
+                    lucide.createIcons();
+                }
+            }
+        } else {
+            // Modern signature
+            const { containerEl, inputEl, browseBtn, accept = [], multiple = false, maxSizeMb = 100, onFiles } = optsOrId || {};
+            this.containerEl = containerEl;
+            this.parentEl = containerEl;
+            this.inputEl = inputEl;
+            this.accept = accept.map(a => a.toLowerCase());
+            this.multiple = multiple;
+            this.maxSizeBytes = maxSizeMb * 1024 * 1024;
+            this.onFiles = onFiles;
+            
+            if (containerEl && inputEl && onFiles) {
+                this._bind(browseBtn);
+            }
         }
+    }
 
-        this._bind(browseBtn);
+    show() {
+        if (this.parentEl) this.parentEl.classList.remove('hidden');
+        if (this.containerEl) this.containerEl.classList.remove('hidden');
+    }
+
+    hide() {
+        if (this.parentEl) this.parentEl.classList.add('hidden');
+        if (this.containerEl) this.containerEl.classList.add('hidden');
     }
 
     _bind(browseBtn) {

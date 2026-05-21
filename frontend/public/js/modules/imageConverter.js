@@ -134,7 +134,7 @@ export function setupImageConverter() {
 
             const removeBtn = document.createElement('button');
             removeBtn.className = 'remove-btn';
-            removeBtn.innerHTML = '<i class="fa-solid fa-xmark"></i>';
+            removeBtn.innerHTML = '<i data-lucide="x"></i>';
             removeBtn.onclick = () => removeFile(index);
 
             fileItem.appendChild(img);
@@ -142,6 +142,10 @@ export function setupImageConverter() {
             fileItem.appendChild(removeBtn);
             fileListContainer.appendChild(fileItem);
         });
+
+        if (typeof lucide !== 'undefined') {
+            lucide.createIcons();
+        }
 
         if (selectedFiles.length === 0) {
             resetUI();

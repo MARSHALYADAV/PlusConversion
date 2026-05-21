@@ -93,8 +93,8 @@ export function initUploadZone({
             const isHeic = file.type === 'image/heic' || file.name.toLowerCase().endsWith('.heic');
             const isImage = file.type.startsWith('image/') || isHeic;
             const thumbHtml = isImage 
-                ? `<div class="file-thumb-placeholder"><i class="fa-regular fa-image"></i></div>` 
-                : `<div class="file-thumb-placeholder"><i class="fa-regular fa-file-pdf"></i></div>`;
+                ? `<div class="file-thumb-placeholder"><i data-lucide="image"></i></div>` 
+                : `<div class="file-thumb-placeholder"><i data-lucide="file-text"></i></div>`;
                 
             return `
                 <div class="file-item animate-fade-in" data-index="${i}">
@@ -107,6 +107,10 @@ export function initUploadZone({
                 </div>
             `;
         }).join('');
+        
+        if (typeof lucide !== 'undefined') {
+            lucide.createIcons();
+        }
         
         // Attach click listeners
         fileListEl.querySelectorAll('.remove-btn').forEach((btn, idx) => {

@@ -126,7 +126,7 @@ export default function ImageConverter() {
         onDrop={handleDrop}
       >
         <div className="dz-content">
-          <i className="fa-solid fa-cloud-arrow-up dz-icon"></i>
+          <i className="dz-icon" data-lucide="cloud-upload"></i>
           <h2>Drag & Drop your image here</h2>
           <p>or</p>
           <label htmlFor="file-input" className="btn btn-secondary">Browse Files</label>

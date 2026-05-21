@@ -40,13 +40,36 @@ export function triggerDownload(url, filename) {
 
 export default class ResultCard {
     /**
-     * @param {object} opts
-     * @param {HTMLElement} opts.containerEl  - The .result-card element
-     * @param {Function}  [opts.onReset]      - Called when "Convert Another" is clicked
+     * @param {object|string} optsOrId - Options object (modern) or string ID of container (legacy)
+     * @param {HTMLElement} [optsOrId.containerEl]  - The .result-card element
+     * @param {Function}  [optsOrId.onReset]      - Called when "Convert Another" is clicked
      */
-    constructor({ containerEl, onReset }) {
-        this.containerEl = containerEl;
-        this.onReset = onReset;
+    constructor(optsOrId) {
+        if (typeof optsOrId === 'string') {
+            this.containerEl = document.getElementById(optsOrId);
+            this.isLegacy = true;
+            this._restartCallbacks = [];
+            this.onReset = () => {
+                this._restartCallbacks.forEach(cb => cb());
+            };
+        } else {
+            const { containerEl, onReset } = optsOrId || {};
+            this.containerEl = containerEl;
+            this.onReset = onReset;
+            this.isLegacy = false;
+        }
+    }
+
+    /**
+     * Legacy handler to register "Convert Another" click callback.
+     * @param {Function} callback
+     */
+    onRestart(callback) {
+        if (this.isLegacy) {
+            this._restartCallbacks.push(callback);
+        } else {
+            this.onReset = callback;
+        }
     }
 
     /**

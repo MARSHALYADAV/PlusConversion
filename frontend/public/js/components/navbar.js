@@ -28,7 +28,18 @@ const NAV_LINKS = [
  * Inject the navbar into the page and set up mobile menu toggle.
  * @param {string} [activeId] - Tool ID to mark as active (e.g. 'merge-pdf')
  */
-export function initNavbar(activeId = '') {
+export function initNavbar(activeId) {
+    let currentActiveId = activeId;
+    if (!currentActiveId || currentActiveId === 'navbar-container') {
+        const path = window.location.pathname;
+        const matchingLink = NAV_LINKS.find(link => path.includes(link.id) || path.endsWith(link.href.split('/').pop()));
+        if (matchingLink) {
+            currentActiveId = matchingLink.id;
+        } else {
+            currentActiveId = '';
+        }
+    }
+
     // Ensure the CSS scroll-shadow works correctly
     window.addEventListener('scroll', () => {
         const nav = document.querySelector('.navbar');
@@ -39,8 +50,8 @@ export function initNavbar(activeId = '') {
     const desktopLinks = NAV_LINKS.slice(0, 6).map(link => `
         <li>
             <a href="${link.href}"
-               class="${link.id === activeId ? 'active' : ''}"
-               ${link.id === activeId ? 'aria-current="page"' : ''}>
+               class="${link.id === currentActiveId ? 'active' : ''}"
+               ${link.id === currentActiveId ? 'aria-current="page"' : ''}>
                 <i data-lucide="${link.icon}"></i>
                 ${link.label}
             </a>
@@ -49,8 +60,8 @@ export function initNavbar(activeId = '') {
 
     const mobileLinks = NAV_LINKS.map(link => `
         <a href="${link.href}"
-           class="${link.id === activeId ? 'active' : ''}"
-           ${link.id === activeId ? 'aria-current="page"' : ''}>
+           class="${link.id === currentActiveId ? 'active' : ''}"
+           ${link.id === currentActiveId ? 'aria-current="page"' : ''}>
             <i data-lucide="${link.icon}"></i>
             ${link.label}
         </a>
@@ -96,8 +107,13 @@ export function initNavbar(activeId = '') {
         </div>
     `;
 
-    // Insert before <body>'s first child
-    document.body.insertAdjacentHTML('afterbegin', navHTML);
+    // Insert into container if exists, otherwise prepend to body
+    const container = document.getElementById('navbar-container');
+    if (container) {
+        container.innerHTML = navHTML;
+    } else {
+        document.body.insertAdjacentHTML('afterbegin', navHTML);
+    }
 
     // Wire hamburger toggle
     const hamburger = document.getElementById('nav-hamburger');
@@ -134,3 +150,9 @@ export function initNavbar(activeId = '') {
         lucide.createIcons();
     }
 }
+
+export default {
+    init: (activeId) => initNavbar(activeId),
+    initNavbar
+};
+

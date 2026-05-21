@@ -125,7 +125,8 @@ export function setupImageConverter() {
         convertBtn.disabled = isLoading;
         if (isLoading) {
             if (progressBar) progressBar.classList.remove('hidden');
-            convertBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Converting...';
+            convertBtn.innerHTML = '<i data-lucide="loader-2" class="spin"></i> Converting...';
+            if (typeof lucide !== 'undefined') { lucide.createIcons(); }
         } else {
             convertBtn.textContent = 'Convert & Download';
         }

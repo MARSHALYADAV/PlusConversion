@@ -26,23 +26,91 @@
 
 export default class ProgressUI {
     /**
-     * @param {object} opts
-     * @param {HTMLElement} opts.uploadSection     - The section shown during idle/upload state
-     * @param {HTMLElement} opts.processingSection - Spinner + progress bar section
-     * @param {HTMLElement} opts.resultSection     - Download result section
-     * @param {HTMLElement} [opts.progressFill]    - The .progress-bar-fill element
-     * @param {HTMLElement} [opts.progressLabel]   - Label showing percentage text
-     * @param {HTMLElement} [opts.processingText]  - Dynamic processing status text
+     * @param {object|string} optsOrId - The options object (modern) or string ID of progress container (legacy)
+     * @param {HTMLElement} [optsOrId.uploadSection]     - The section shown during idle/upload state
+     * @param {HTMLElement} [optsOrId.processingSection] - Spinner + progress bar section
+     * @param {HTMLElement} [optsOrId.resultSection]     - Download result section
+     * @param {HTMLElement} [optsOrId.progressFill]    - The .progress-bar-fill element
+     * @param {HTMLElement} [optsOrId.progressLabel]   - Label showing percentage text
+     * @param {HTMLElement} [optsOrId.processingText]  - Dynamic processing status text
      */
-    constructor({ uploadSection, processingSection, resultSection, progressFill, progressLabel, processingText }) {
-        this.uploadSection     = uploadSection;
-        this.processingSection = processingSection;
-        this.resultSection     = resultSection;
-        this.progressFill      = progressFill;
-        this.progressLabel     = progressLabel;
-        this.processingText    = processingText;
+    constructor(optsOrId) {
+        if (typeof optsOrId === 'string') {
+            const containerEl = document.getElementById(optsOrId);
+            if (containerEl) {
+                containerEl.innerHTML = `
+                    <div class="processing-overlay hidden" id="${optsOrId}-inner" aria-live="polite" aria-atomic="true">
+                        <div class="spinner" role="status" aria-label="Processing"></div>
+                        <div class="processing-text" id="${optsOrId}-text">Processing…</div>
+                        <div class="processing-sub">This may take a few seconds for large files.</div>
+                        <div class="progress-container" style="width:100%;max-width:360px;">
+                            <div class="progress-bar-track"><div class="progress-bar-fill" id="${optsOrId}-fill"></div></div>
+                        </div>
+                    </div>
+                `;
+                this.uploadSection     = null;
+                this.processingSection = containerEl.querySelector(`#${optsOrId}-inner`);
+                this.resultSection     = null;
+                this.progressFill      = containerEl.querySelector(`#${optsOrId}-fill`);
+                this.progressLabel     = null;
+                this.processingText    = containerEl.querySelector(`#${optsOrId}-text`);
+                this.parentEl          = containerEl;
+            }
+            this._currentProgress = 0;
+            this.isLegacy = true;
+        } else {
+            // Modern signature
+            const { uploadSection, processingSection, resultSection, progressFill, progressLabel, processingText } = optsOrId || {};
+            this.uploadSection     = uploadSection;
+            this.processingSection = processingSection;
+            this.resultSection     = resultSection;
+            this.progressFill      = progressFill;
+            this.progressLabel     = progressLabel;
+            this.processingText    = processingText;
+            this._currentProgress = 0;
+            this.isLegacy = false;
+        }
+    }
 
-        this._currentProgress = 0;
+    /**
+     * Legacy helper to show progress UI with a specific message.
+     * @param {string} message
+     */
+    show(message = 'Processing…') {
+        if (this.isLegacy) {
+            if (this.parentEl) this.parentEl.classList.remove('hidden');
+        }
+        this.showProcessing(message);
+    }
+
+    /**
+     * Legacy helper to update progress status message and percentage.
+     * @param {string} message
+     * @param {number} percent
+     */
+    update(message, percent) {
+        if (this.processingText && message) {
+            this.processingText.textContent = message;
+        }
+        if (percent !== undefined) {
+            this.setProgress(percent);
+        }
+    }
+
+    /**
+     * Legacy helper to hide the progress UI.
+     */
+    hide() {
+        clearInterval(this._simTimer);
+        if (this.isLegacy) {
+            if (this.parentEl) this.parentEl.classList.add('hidden');
+            if (this.processingSection) {
+                this.processingSection.classList.add('hidden');
+                this.processingSection.classList.remove('visible');
+            }
+        } else {
+            this.reset();
+        }
     }
 
     /**

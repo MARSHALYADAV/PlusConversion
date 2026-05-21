@@ -38,7 +38,7 @@
   // frontend/public/js/components/Header.jsx
   var import_react_18 = __toESM(__require("https://esm.sh/react@18"));
   function Header() {
-    return /* @__PURE__ */ import_react_18.default.createElement("header", { className: "header" }, /* @__PURE__ */ import_react_18.default.createElement("div", { className: "container header-inner" }, /* @__PURE__ */ import_react_18.default.createElement("h1", { className: "logo" }, /* @__PURE__ */ import_react_18.default.createElement("i", { className: "fa-solid fa-arrows-rotate" }), " PlusConversion"), /* @__PURE__ */ import_react_18.default.createElement("p", { className: "tagline" }, "Simple. Fast. Free File Conversion.")));
+    return /* @__PURE__ */ import_react_18.default.createElement("header", { className: "header" }, /* @__PURE__ */ import_react_18.default.createElement("div", { className: "container header-inner" }, /* @__PURE__ */ import_react_18.default.createElement("h1", { className: "logo" }, /* @__PURE__ */ import_react_18.default.createElement("i", { "data-lucide": "refresh-cw" }), " PlusConversion"), /* @__PURE__ */ import_react_18.default.createElement("p", { className: "tagline" }, "Simple. Fast. Free File Conversion.")));
   }
 
   // frontend/public/js/components/Footer.jsx
@@ -172,7 +172,7 @@
         onDragOver: (event) => event.preventDefault(),
         onDrop: handleDrop
       },
-      /* @__PURE__ */ import_react_185.default.createElement("div", { className: "dz-content" }, /* @__PURE__ */ import_react_185.default.createElement("i", { className: "fa-solid fa-cloud-arrow-up dz-icon" }), /* @__PURE__ */ import_react_185.default.createElement("h2", null, "Drag & Drop your image here"), /* @__PURE__ */ import_react_185.default.createElement("p", null, "or"), /* @__PURE__ */ import_react_185.default.createElement("label", { htmlFor: "file-input", className: "btn btn-secondary" }, "Browse Files"), /* @__PURE__ */ import_react_185.default.createElement("input", { id: "file-input", type: "file", accept: "image/png, image/jpeg, image/jpg, image/webp, image/tiff, image/bmp, image/heic", multiple: true, hidden: true, onChange: handleFileInput }), /* @__PURE__ */ import_react_185.default.createElement("p", { className: "formats-hint" }, "Supports JPG, PNG, WEBP, BMP, TIFF, HEIC"))
+      /* @__PURE__ */ import_react_185.default.createElement("div", { className: "dz-content" }, /* @__PURE__ */ import_react_185.default.createElement("i", { className: "dz-icon", "data-lucide": "cloud-upload" }), /* @__PURE__ */ import_react_185.default.createElement("h2", null, "Drag & Drop your image here"), /* @__PURE__ */ import_react_185.default.createElement("p", null, "or"), /* @__PURE__ */ import_react_185.default.createElement("label", { htmlFor: "file-input", className: "btn btn-secondary" }, "Browse Files"), /* @__PURE__ */ import_react_185.default.createElement("input", { id: "file-input", type: "file", accept: "image/png, image/jpeg, image/jpg, image/webp, image/tiff, image/bmp, image/heic", multiple: true, hidden: true, onChange: handleFileInput }), /* @__PURE__ */ import_react_185.default.createElement("p", { className: "formats-hint" }, "Supports JPG, PNG, WEBP, BMP, TIFF, HEIC"))
     ), fileList.length > 0 && /* @__PURE__ */ import_react_185.default.createElement("div", { className: "file-list" }, fileList.map((item, index) => /* @__PURE__ */ import_react_185.default.createElement("div", { className: "file-item", key: item.id }, /* @__PURE__ */ import_react_185.default.createElement("img", { className: "file-thumb", src: getPreviewSrc(item.file), alt: item.file.name }), /* @__PURE__ */ import_react_185.default.createElement("div", { className: "file-info" }, /* @__PURE__ */ import_react_185.default.createElement("span", { className: "file-name" }, item.file.name), /* @__PURE__ */ import_react_185.default.createElement("span", { className: "file-meta" }, formatBytes(item.file.size))), /* @__PURE__ */ import_react_185.default.createElement("button", { className: "remove-btn", onClick: () => removeFile(index), type: "button", "aria-label": "Remove file" }, "\xD7")))), /* @__PURE__ */ import_react_185.default.createElement("div", { className: "settings-grid" }, /* @__PURE__ */ import_react_185.default.createElement("div", { className: "setting-group" }, /* @__PURE__ */ import_react_185.default.createElement("label", { htmlFor: "format-select" }, "Convert to:"), /* @__PURE__ */ import_react_185.default.createElement("select", { id: "format-select", value: format, onChange: (event) => setFormat(event.target.value) }, /* @__PURE__ */ import_react_185.default.createElement("option", { value: "png" }, "PNG"), /* @__PURE__ */ import_react_185.default.createElement("option", { value: "jpg" }, "JPG"), /* @__PURE__ */ import_react_185.default.createElement("option", { value: "webp" }, "WEBP"), /* @__PURE__ */ import_react_185.default.createElement("option", { value: "tiff" }, "TIFF"))), /* @__PURE__ */ import_react_185.default.createElement("div", { className: "setting-group" }, /* @__PURE__ */ import_react_185.default.createElement("label", null, "Resize:"), /* @__PURE__ */ import_react_185.default.createElement("div", { className: "resize-options" }, /* @__PURE__ */ import_react_185.default.createElement("div", { className: "input-wrapper" }, /* @__PURE__ */ import_react_185.default.createElement("label", { htmlFor: "width-input" }, "Width"), /* @__PURE__ */ import_react_185.default.createElement("input", { id: "width-input", type: "number", placeholder: "Original", value: width, onChange: (event) => setWidth(event.target.value) })), /* @__PURE__ */ import_react_185.default.createElement("div", { className: "input-wrapper" }, /* @__PURE__ */ import_react_185.default.createElement("label", { htmlFor: "height-input" }, "Height"), /* @__PURE__ */ import_react_185.default.createElement("input", { id: "height-input", type: "number", placeholder: "Original", value: height, onChange: (event) => setHeight(event.target.value) }))), /* @__PURE__ */ import_react_185.default.createElement("div", { className: "checkbox-wrapper" }, /* @__PURE__ */ import_react_185.default.createElement("input", { id: "maintain-aspect", type: "checkbox", checked: maintainAspect, onChange: () => setMaintainAspect(!maintainAspect) }), /* @__PURE__ */ import_react_185.default.createElement("label", { htmlFor: "maintain-aspect" }, "Maintain Aspect Ratio"))), /* @__PURE__ */ import_react_185.default.createElement("div", { className: "setting-group" }, /* @__PURE__ */ import_react_185.default.createElement("label", { htmlFor: "target-size-input" }, "Max File Size (Optional)"), /* @__PURE__ */ import_react_185.default.createElement("div", { className: "resize-options" }, /* @__PURE__ */ import_react_185.default.createElement("div", { className: "input-wrapper" }, /* @__PURE__ */ import_react_185.default.createElement("input", { id: "target-size-input", type: "number", placeholder: "e.g. 50", value: targetSize, onChange: (event) => setTargetSize(event.target.value) })), /* @__PURE__ */ import_react_185.default.createElement("div", { className: "input-wrapper", style: { flex: "0 0 90px" } }, /* @__PURE__ */ import_react_185.default.createElement("select", { value: sizeUnit, onChange: (event) => setSizeUnit(event.target.value) }, /* @__PURE__ */ import_react_185.default.createElement("option", { value: "KB" }, "KB"), /* @__PURE__ */ import_react_185.default.createElement("option", { value: "MB" }, "MB"))))), /* @__PURE__ */ import_react_185.default.createElement("div", { className: "setting-group quality-group" }, /* @__PURE__ */ import_react_185.default.createElement("label", { htmlFor: "quality-range" }, "Quality: ", /* @__PURE__ */ import_react_185.default.createElement("span", null, quality, "%")), /* @__PURE__ */ import_react_185.default.createElement("input", { id: "quality-range", type: "range", min: "10", max: "100", value: quality, onChange: (event) => setQuality(event.target.value) })), /* @__PURE__ */ import_react_185.default.createElement("div", { className: "setting-group quality-group" }, /* @__PURE__ */ import_react_185.default.createElement("details", { className: "advanced-details" }, /* @__PURE__ */ import_react_185.default.createElement("summary", null, "Advanced Options"), /* @__PURE__ */ import_react_185.default.createElement("div", { className: "advanced-options-grid" }, /* @__PURE__ */ import_react_185.default.createElement("div", { className: "checkbox-wrapper" }, /* @__PURE__ */ import_react_185.default.createElement("input", { id: "keep-metadata", type: "checkbox", checked: keepMetadata, onChange: () => setKeepMetadata(!keepMetadata) }), /* @__PURE__ */ import_react_185.default.createElement("label", { htmlFor: "keep-metadata" }, "Preserve Metadata (EXIF)")), /* @__PURE__ */ import_react_185.default.createElement("div", { className: "checkbox-wrapper" }, /* @__PURE__ */ import_react_185.default.createElement("input", { id: "use-transparency", type: "checkbox", checked: useTransparency, onChange: () => setUseTransparency(!useTransparency) }), /* @__PURE__ */ import_react_185.default.createElement("label", { htmlFor: "use-transparency" }, "Fill Transparent Background")), useTransparency && /* @__PURE__ */ import_react_185.default.createElement("div", { className: "input-wrapper", style: { marginTop: "0.5rem" } }, /* @__PURE__ */ import_react_185.default.createElement("label", { htmlFor: "bg-color", style: { fontSize: "0.9rem" } }, "Color:"), /* @__PURE__ */ import_react_185.default.createElement("input", { id: "bg-color", type: "color", value: backgroundColor, onChange: (event) => setBackgroundColor(event.target.value) })))))), /* @__PURE__ */ import_react_185.default.createElement("div", { className: "action-area" }, /* @__PURE__ */ import_react_185.default.createElement("button", { className: "btn btn-primary btn-lg", onClick: handleConvert, disabled: isLoading, type: "button" }, isLoading ? "Converting..." : "Convert & Download"), /* @__PURE__ */ import_react_185.default.createElement("div", { className: `progress-bar ${progress === 0 ? "hidden" : ""}` }, /* @__PURE__ */ import_react_185.default.createElement("div", { className: "progress-fill", style: { width: `${progress}%` } })), statusMessage && /* @__PURE__ */ import_react_185.default.createElement("p", { className: "status-msg" }, statusMessage)));
   }
 
@@ -182,42 +182,42 @@
       id: "merge",
       title: "Merge PDF",
       description: "Combine multiple PDF files into one document.",
-      icon: "fa-solid fa-file-arrow-down",
+      icon: "merge",
       route: "#"
     },
     {
       id: "split",
       title: "Split PDF",
       description: "Split a PDF into individual pages or sections.",
-      icon: "fa-solid fa-file-lines",
+      icon: "scissors",
       route: "#"
     },
     {
       id: "compress",
       title: "Compress PDF",
       description: "Reduce PDF file size while keeping readability.",
-      icon: "fa-solid fa-compress",
+      icon: "minimize-2",
       route: "#"
     },
     {
       id: "convert-to-pdf",
       title: "Convert to PDF",
       description: "Turn images or documents into PDF format.",
-      icon: "fa-solid fa-file-export",
+      icon: "file-output",
       route: "#"
     },
     {
       id: "unlock",
       title: "Unlock PDF",
       description: "Remove password protection from PDFs securely.",
-      icon: "fa-solid fa-lock-open",
+      icon: "unlock",
       route: "#"
     },
     {
       id: "protect",
       title: "Protect PDF",
       description: "Add a password to keep your PDF files safe.",
-      icon: "fa-solid fa-lock",
+      icon: "lock",
       route: "#"
     }
   ];

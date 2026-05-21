@@ -10,7 +10,7 @@ const Header = () => {
       React.createElement(
         "h1",
         { className: "logo" },
-        React.createElement("i", { className: "fa-solid fa-arrows-rotate" }),
+        React.createElement("i", { "data-lucide": "refresh-cw" }),
         " PlusConversion"
       ),
       React.createElement(

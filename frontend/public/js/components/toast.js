@@ -17,10 +17,10 @@
  */
 
 const ICONS = {
-    error:   'fa-solid fa-circle-xmark',
-    success: 'fa-solid fa-circle-check',
-    info:    'fa-solid fa-circle-info',
-    warning: 'fa-solid fa-triangle-exclamation'
+    error:   'x-circle',
+    success: 'check-circle',
+    info:    'info',
+    warning: 'alert-triangle'
 };
 
 const TITLES = {
@@ -60,13 +60,13 @@ function show(message, type = 'info', duration = 4000) {
     toast.className = `toast toast-${type}`;
     toast.setAttribute('role', 'alert');
     toast.innerHTML = `
-        <div class="toast-icon"><i class="${icon}"></i></div>
+        <div class="toast-icon"><i data-lucide="${icon}"></i></div>
         <div class="toast-body">
             <div class="toast-title">${title}</div>
             <div class="toast-message">${message}</div>
         </div>
         <button class="toast-close" aria-label="Dismiss notification">
-            <i class="fa-solid fa-xmark"></i>
+            <i data-lucide="x"></i>
         </button>
     `;
 
@@ -74,6 +74,10 @@ function show(message, type = 'info', duration = 4000) {
     toast.querySelector('.toast-close').addEventListener('click', () => dismiss(toast));
 
     c.appendChild(toast);
+
+    if (typeof lucide !== 'undefined') {
+        lucide.createIcons();
+    }
 
     // Auto-dismiss
     const timer = setTimeout(() => dismiss(toast), duration);
