@@ -1,3 +1,4 @@
+import { applyPageIcons } from '../utils/pageIcons.js';
 /**
  * MERGE PDF PAGE SCRIPT
  */
@@ -11,6 +12,7 @@ import { mergePdfs }    from '../modules/apiClient.js';
 
 document.addEventListener('DOMContentLoaded', () => {
     initNavbar('merge-pdf');
+    applyPageIcons();
 
     const ui = new ProgressUI({
         uploadSection:     document.getElementById('upload-section'),

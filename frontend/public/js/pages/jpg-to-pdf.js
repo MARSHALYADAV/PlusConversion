@@ -1,3 +1,4 @@
+import { applyPageIcons } from '../utils/pageIcons.js';
 /**
  * JPG TO PDF PAGE SCRIPT
  */
@@ -11,6 +12,7 @@ import { imagesToPdf }   from '../modules/apiClient.js';
 
 document.addEventListener('DOMContentLoaded', () => {
     initNavbar('jpg-to-pdf');
+    applyPageIcons();
 
     const ui = new ProgressUI({
         uploadSection:     document.getElementById('upload-section'),

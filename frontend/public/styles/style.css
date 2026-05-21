@@ -486,8 +486,9 @@ button { font-family: inherit; }
 .tool-card-icon-container {
     width: 52px;
     height: 52px;
+    flex-shrink: 0;
     border-radius: var(--radius-lg);
-    background: rgba(13, 148, 136, 0.06);
+    background: var(--primary-light);
     color: var(--primary);
     display: grid;
     place-items: center;
@@ -497,10 +498,15 @@ button { font-family: inherit; }
         transform var(--duration-base) var(--ease-spring);
 }
 
-.tool-icon {
+/* Target both legacy <i> class and direct inline SVGs */
+.tool-icon,
+.tool-card-icon-container svg {
     width: 24px;
     height: 24px;
-    stroke-width: 2px;
+    stroke: currentColor;
+    fill: none;
+    flex-shrink: 0;
+    display: block;
     transition: transform var(--duration-base) var(--ease-spring);
 }
 
@@ -539,14 +545,19 @@ button { font-family: inherit; }
     transition: color var(--duration-fast);
 }
 
-.link-arrow {
+.link-arrow,
+.tool-card-link svg {
     width: 16px;
     height: 16px;
-    stroke-width: 2.5px;
+    stroke: currentColor;
+    fill: none;
+    flex-shrink: 0;
+    display: block;
     transition: transform var(--duration-fast) var(--ease-smooth);
 }
 
-.tool-card:hover .link-arrow {
+.tool-card:hover .link-arrow,
+.tool-card:hover .tool-card-link svg {
     transform: translateX(4px);
 }
 

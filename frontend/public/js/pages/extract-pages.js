@@ -1,3 +1,4 @@
+import { applyPageIcons } from '../utils/pageIcons.js';
 import Navbar from '../components/navbar.js';
 import DropZone from '../components/dropzone.js';
 import ProgressUI from '../components/progressUI.js';

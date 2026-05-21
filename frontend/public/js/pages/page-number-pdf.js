@@ -1,3 +1,4 @@
+import { applyPageIcons } from '../utils/pageIcons.js';
 /**
  * PAGE NUMBER PDF PAGE SCRIPT
  */
@@ -11,6 +12,7 @@ import { addPageNumbers }  from '../modules/apiClient.js';
 
 document.addEventListener('DOMContentLoaded', () => {
     initNavbar('page-number-pdf');
+    applyPageIcons();
 
     const ui = new ProgressUI({
         uploadSection:     document.getElementById('upload-section'),

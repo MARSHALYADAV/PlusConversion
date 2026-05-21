@@ -1,3 +1,4 @@
+import { applyPageIcons } from '../utils/pageIcons.js';
 /**
  * ROTATE PDF PAGE SCRIPT
  */
@@ -11,6 +12,7 @@ import { rotatePdf }    from '../modules/apiClient.js';
 
 document.addEventListener('DOMContentLoaded', () => {
     initNavbar('rotate-pdf');
+    applyPageIcons();
 
     const ui = new ProgressUI({
         uploadSection:     document.getElementById('upload-section'),

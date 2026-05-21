@@ -1,3 +1,4 @@
+import { applyPageIcons } from '../utils/pageIcons.js';
 /**
  * WATERMARK PDF PAGE SCRIPT
  */
@@ -11,6 +12,7 @@ import { watermarkPdf }  from '../modules/apiClient.js';
 
 document.addEventListener('DOMContentLoaded', () => {
     initNavbar('watermark-pdf');
+    applyPageIcons();
 
     const ui = new ProgressUI({
         uploadSection:     document.getElementById('upload-section'),

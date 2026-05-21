@@ -19,14 +19,16 @@
 
 import { formatBytes } from '../modules/apiClient.js';
 
-const ICON_MAP = {
-    pdf:  'file-text',
-    jpg:  'file-image',
-    jpeg: 'file-image',
-    png:  'file-image',
-    webp: 'file-image',
-    gif:  'file-image',
+// Inline SVG path data for file type icons
+const SVG_S = `xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"`;
+const FILE_ICONS = {
+    pdf:  `<svg ${SVG_S}><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>`,
+    img:  `<svg ${SVG_S}><path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"/><polyline points="14 2 14 8 20 8"/><circle cx="10" cy="13" r="2"/><path d="m20 17-1.09-1.09a2 2 0 0 0-2.82 0L10 22"/></svg>`,
+    file: `<svg ${SVG_S}><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>`,
 };
+const CHEVRON_UP   = `<svg ${SVG_S}><polyline points="18 15 12 9 6 15"/></svg>`;
+const CHEVRON_DOWN = `<svg ${SVG_S}><polyline points="6 9 12 15 18 9"/></svg>`;
+const X_SVG        = `<svg ${SVG_S}><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>`;
 
 function fileIcon(name) {
     const ext = (name || '').split('.').pop().toLowerCase();
@@ -88,10 +90,17 @@ export default class FileList {
         }
 
         c.classList.remove('hidden');
-        c.innerHTML = this._files.map((f, i) => `
+        c.innerHTML = this._files.map((f, i) => {
+            const ext = f.name.split('.').pop().toLowerCase();
+            const fileIconSvg = ['pdf'].includes(ext)
+                ? FILE_ICONS.pdf
+                : ['jpg','jpeg','png','webp','gif','heic','avif'].includes(ext)
+                    ? FILE_ICONS.img
+                    : FILE_ICONS.file;
+            return `
             <div class="file-item" data-index="${i}">
                 <div class="file-item-icon">
-                    <i data-lucide="${fileIcon(f.name)}"></i>
+                    ${fileIconSvg}
                 </div>
                 <div class="file-item-info">
                     <div class="file-item-name" title="${f.name}">${f.name}</div>
@@ -99,21 +108,17 @@ export default class FileList {
                 </div>
                 ${this.allowReorder ? `
                     <button class="btn btn-ghost btn-sm reorder-up" data-index="${i}" title="Move up" aria-label="Move ${f.name} up" ${i === 0 ? 'disabled' : ''}>
-                        <i data-lucide="chevron-up"></i>
+                        ${CHEVRON_UP}
                     </button>
                     <button class="btn btn-ghost btn-sm reorder-down" data-index="${i}" title="Move down" aria-label="Move ${f.name} down" ${i === this._files.length - 1 ? 'disabled' : ''}>
-                        <i data-lucide="chevron-down"></i>
+                        ${CHEVRON_DOWN}
                     </button>
                 ` : ''}
                 <button class="file-item-remove" data-index="${i}" aria-label="Remove ${f.name}">
-                    <i data-lucide="x"></i>
+                    ${X_SVG}
                 </button>
             </div>
-        `).join('');
-
-        if (typeof lucide !== 'undefined') {
-            lucide.createIcons();
-        }
+        `;}).join('');
 
         // Bind remove buttons
         c.querySelectorAll('.file-item-remove').forEach(btn => {

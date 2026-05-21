@@ -33,8 +33,7 @@ export function setupPdfTools() {
             }
 
             mergeBtn.disabled = true;
-            mergeBtn.innerHTML = '<i data-lucide="loader-2" class="spin"></i> Merging...';
-            if (typeof lucide !== 'undefined') { lucide.createIcons(); }
+            mergeBtn.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="spin" aria-hidden="true"><path d="M21 12a9 9 0 1 1-6.219-8.56"/></svg> Merging...';
 
             try {
                 const resData = await mergePdfs(files);
@@ -86,8 +85,7 @@ export function setupPdfTools() {
             }
 
             splitBtn.disabled = true;
-            splitBtn.innerHTML = '<i data-lucide="loader-2" class="spin"></i> Splitting...';
-            if (typeof lucide !== 'undefined') { lucide.createIcons(); }
+            splitBtn.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="spin" aria-hidden="true"><path d="M21 12a9 9 0 1 1-6.219-8.56"/></svg> Splitting...';
 
             try {
                 const resData = await splitPdf(files[0], pageRangeInput.value);
@@ -133,8 +131,7 @@ export function setupPdfTools() {
             }
 
             compressBtn.disabled = true;
-            compressBtn.innerHTML = '<i data-lucide="loader-2" class="spin"></i> Compressing...';
-            if (typeof lucide !== 'undefined') { lucide.createIcons(); }
+            compressBtn.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="spin" aria-hidden="true"><path d="M21 12a9 9 0 1 1-6.219-8.56"/></svg> Compressing...';
 
             try {
                 const resData = await compressPdf(files[0]);
