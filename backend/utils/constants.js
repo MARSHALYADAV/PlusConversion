@@ -26,7 +26,8 @@ module.exports = {
     STATUS_CODES: {
         OK: 200,
         BAD_REQUEST: 400,
-        UNAUTHORIZED: 411, // Standard limits or rate limit indicator
+        TOO_MANY_REQUESTS: 429, // Rate limit exceeded
+        UNAUTHORIZED: 401, // Authentication required
         FORBIDDEN: 403,
         NOT_FOUND: 404,
         INTERNAL_SERVER_ERROR: 500

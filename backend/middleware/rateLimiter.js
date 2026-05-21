@@ -15,7 +15,7 @@ const generalLimiter = rateLimit({
         return response.error(
             res, 
             'Too many requests from this IP. Please try again after 15 minutes.', 
-            STATUS_CODES.UNAUTHORIZED
+            STATUS_CODES.TOO_MANY_REQUESTS
         );
     }
 });
@@ -31,7 +31,7 @@ const heavyOperationLimiter = rateLimit({
         return response.error(
             res, 
             'Heavy processing rate limit exceeded. Please limit uploads to 15 jobs per 15 minutes.', 
-            STATUS_CODES.UNAUTHORIZED
+            STATUS_CODES.TOO_MANY_REQUESTS
         );
     }
 });

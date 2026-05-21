@@ -3,12 +3,16 @@ const config = require('./config');
 const connectDB = require('./config/db');
 const CleanupService = require('./services/cleanup');
 const logger = require('./utils/logger');
+const fileUtils = require('./utils/file');
 
 async function bootstrap() {
-    // 1. Establish database connection
+    // 1. Ensure temp uploads directory exists (critical on ephemeral filesystems like Render)
+    await fileUtils.ensureTempDir();
+
+    // 2. Establish database connection
     await connectDB();
 
-    // 2. Start temporary file automatic purge worker (runs every 60 seconds)
+    // 3. Start temporary file automatic purge worker (runs every 60 seconds)
     CleanupService.start();
 
     // 3. Start listener

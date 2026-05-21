@@ -13,6 +13,10 @@ const { STATUS_CODES } = require('./utils/constants');
 
 const app = express();
 
+// Required for Render (and any reverse-proxy host): enables correct client IP
+// detection for rate limiting. Without this, express-rate-limit v7 throws
+// ERR_ERL_PERMISSIVE_TRUST_PROXY and crashes the app on first request.
+app.set('trust proxy', 1);
 // Apply Security Middleware
 app.use(helmetMiddleware);
 app.use(corsMiddleware);
@@ -81,8 +85,8 @@ app.get('/temp/:storageId', async (req, res, next) => {
     }
 });
 
-// Serve frontend home route for spa routing fallback
-app.get(/.*/, (req, res) => {
+// Serve frontend home route for SPA routing fallback (Express 5 compatible)
+app.get('/{*splat}', (req, res) => {
     res.sendFile(path.join(__dirname, '../frontend/public/index.html'));
 });
 

@@ -23,10 +23,23 @@ const helmetMiddleware = helmet({
 });
 
 /**
- * Configure CORS to allow localized and production host requests securely.
+ * Configure CORS. Note: credentials:true with origin:'*' is forbidden by
+ * the CORS spec and causes browsers to reject all preflight responses.
+ * Using origin:true reflects the request origin, allowing credentials safely.
  */
+const allowedOrigins = process.env.ALLOWED_ORIGINS
+    ? process.env.ALLOWED_ORIGINS.split(',')
+    : null;
+
 const corsMiddleware = cors({
-    origin: '*', // For an anonymous open conversion utility, allow all origins or restrict as needed
+    origin: allowedOrigins
+        ? (origin, callback) => {
+            // Allow requests with no origin (mobile apps, curl, server-to-server)
+            if (!origin) return callback(null, true);
+            if (allowedOrigins.includes(origin)) return callback(null, true);
+            return callback(new Error(`CORS: Origin ${origin} not permitted`), false);
+          }
+        : true, // Reflect origin (safe for open APIs without sensitive cookies)
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
     allowedHeaders: ['Content-Type', 'Authorization'],
     credentials: true
