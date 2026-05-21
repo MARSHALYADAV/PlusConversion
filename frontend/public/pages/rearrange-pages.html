@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rearrange PDF Pages - PlusConversion</title>
+    <meta name="description" content="Sort, reorder, and rearrange pages in your PDF document easily. Free online tool.">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="../styles/style.css">
+    <!-- PDF.js library -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+    <!-- pdf-lib library -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf-lib/1.17.1/pdf-lib.min.js"></script>
+    <!-- SortableJS library -->
+    <script src="https://cdn.jsdelivr.net/npm/sortablejs@latest/Sortable.min.js"></script>
+</head>
+<body>
+
+    <div id="navbar-container"></div>
+
+    <main class="tool-main">
+        <div class="tool-header">
+            <h1 class="tool-title">Rearrange PDF Pages</h1>
+            <p class="tool-subtitle">Drag and drop page thumbnails to reorder them, then download your sorted PDF securely.</p>
+        </div>
+
+        <div class="tool-workspace">
+            <div id="dropzone-container"></div>
+            <div id="page-sorter-container" class="page-sorter-container"></div>
+            <div id="progress-container"></div>
+            <div id="result-container"></div>
+        </div>
+    </main>
+
+    <div id="toast-container"></div>
+
+    <script type="module" src="../js/pages/rearrange-pages.js"></script>
+</body>
+</html>
