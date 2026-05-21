@@ -20,17 +20,17 @@
 import { formatBytes } from '../modules/apiClient.js';
 
 const ICON_MAP = {
-    pdf:  'fa-solid fa-file-pdf',
-    jpg:  'fa-solid fa-file-image',
-    jpeg: 'fa-solid fa-file-image',
-    png:  'fa-solid fa-file-image',
-    webp: 'fa-solid fa-file-image',
-    gif:  'fa-solid fa-file-image',
+    pdf:  'file-text',
+    jpg:  'file-image',
+    jpeg: 'file-image',
+    png:  'file-image',
+    webp: 'file-image',
+    gif:  'file-image',
 };
 
 function fileIcon(name) {
     const ext = (name || '').split('.').pop().toLowerCase();
-    return ICON_MAP[ext] || 'fa-solid fa-file';
+    return ICON_MAP[ext] || 'file';
 }
 
 export default class FileList {
@@ -91,7 +91,7 @@ export default class FileList {
         c.innerHTML = this._files.map((f, i) => `
             <div class="file-item" data-index="${i}">
                 <div class="file-item-icon">
-                    <i class="${fileIcon(f.name)}"></i>
+                    <i data-lucide="${fileIcon(f.name)}"></i>
                 </div>
                 <div class="file-item-info">
                     <div class="file-item-name" title="${f.name}">${f.name}</div>
@@ -99,17 +99,21 @@ export default class FileList {
                 </div>
                 ${this.allowReorder ? `
                     <button class="btn btn-ghost btn-sm reorder-up" data-index="${i}" title="Move up" aria-label="Move ${f.name} up" ${i === 0 ? 'disabled' : ''}>
-                        <i class="fa-solid fa-chevron-up"></i>
+                        <i data-lucide="chevron-up"></i>
                     </button>
                     <button class="btn btn-ghost btn-sm reorder-down" data-index="${i}" title="Move down" aria-label="Move ${f.name} down" ${i === this._files.length - 1 ? 'disabled' : ''}>
-                        <i class="fa-solid fa-chevron-down"></i>
+                        <i data-lucide="chevron-down"></i>
                     </button>
                 ` : ''}
                 <button class="file-item-remove" data-index="${i}" aria-label="Remove ${f.name}">
-                    <i class="fa-solid fa-xmark"></i>
+                    <i data-lucide="x"></i>
                 </button>
             </div>
         `).join('');
+
+        if (typeof lucide !== 'undefined') {
+            lucide.createIcons();
+        }
 
         // Bind remove buttons
         c.querySelectorAll('.file-item-remove').forEach(btn => {

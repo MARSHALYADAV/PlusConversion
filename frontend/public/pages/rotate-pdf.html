@@ -10,22 +10,23 @@
     <link rel="canonical" href="/pages/rotate-pdf.html">
     <link rel="stylesheet" href="../styles/style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous">
+    <script src="https://unpkg.com/lucide@latest"></script>
     <link rel="icon" href="../favicon.ico" type="image/x-icon">
 </head>
 <body>
 <main class="main-content">
 <div class="container">
-    <a href="/" class="back-link"><i class="fa-solid fa-arrow-left"></i> All Tools</a>
+    <a href="/" class="back-link"><i data-lucide="arrow-left"></i> All Tools</a>
     <div class="card">
         <div class="tool-page-header">
-            <div class="tool-page-icon"><i class="fa-solid fa-rotate" aria-hidden="true"></i></div>
+            <div class="tool-page-icon"><i data-lucide="rotate-cw" aria-hidden="true"></i></div>
             <h1 class="tool-page-title">Rotate PDF</h1>
             <p class="tool-page-subtitle">Rotate every page in your PDF clockwise or counter-clockwise. Choose your angle below.</p>
         </div>
 
         <div id="upload-section">
             <div class="drop-zone" id="drop-zone" role="button" tabindex="0" aria-label="Drop PDF here">
-                <i class="fa-solid fa-file-pdf dz-icon" aria-hidden="true"></i>
+                <i data-lucide="file-text" class="dz-icon" aria-hidden="true"></i>
                 <div class="dz-title">Drag &amp; Drop your PDF here</div>
                 <div class="dz-sub">or</div>
                 <button class="btn btn-secondary" id="browse-btn" type="button">Browse File</button>
@@ -41,24 +42,24 @@
                 <div class="rotation-selector" role="radiogroup" aria-label="Rotation angle">
                     <label class="rotation-option selected" data-angle="90">
                         <input type="radio" name="rotate-angle" value="90" checked aria-label="90 degrees clockwise">
-                        <i class="fa-solid fa-rotate-right rotation-option-icon" aria-hidden="true"></i>
+                        <i data-lucide="rotate-cw" class="rotation-option-icon" aria-hidden="true"></i>
                         <div class="rotation-option-label">90° Clockwise</div>
                     </label>
                     <label class="rotation-option" data-angle="180">
                         <input type="radio" name="rotate-angle" value="180" aria-label="180 degrees">
-                        <i class="fa-solid fa-rotate rotation-option-icon" aria-hidden="true"></i>
+                        <i data-lucide="refresh-cw" class="rotation-option-icon" aria-hidden="true"></i>
                         <div class="rotation-option-label">180°</div>
                     </label>
                     <label class="rotation-option" data-angle="270">
                         <input type="radio" name="rotate-angle" value="270" aria-label="270 degrees counterclockwise">
-                        <i class="fa-solid fa-rotate-left rotation-option-icon" aria-hidden="true"></i>
+                        <i data-lucide="rotate-ccw" class="rotation-option-icon" aria-hidden="true"></i>
                         <div class="rotation-option-label">90° Counter-CW</div>
                     </label>
                 </div>
             </div>
 
             <button class="btn btn-primary btn-full mt-3" id="submit-btn" disabled>
-                <i class="fa-solid fa-rotate" aria-hidden="true"></i> Rotate &amp; Download
+                <i data-lucide="rotate-cw" aria-hidden="true"></i> Rotate &amp; Download
             </button>
         </div>
 
@@ -78,11 +79,11 @@
         <h2 id="faq-heading">Frequently Asked Questions</h2>
         <div class="faq-list">
             <div class="faq-item">
-                <button class="faq-question" aria-expanded="false">Does rotation apply to all pages?<i class="fa-solid fa-chevron-down faq-chevron"></i></button>
+                <button class="faq-question" aria-expanded="false">Does rotation apply to all pages?<i data-lucide="chevron-down" class="faq-chevron"></i></button>
                 <div class="faq-answer"><p>Yes — the selected rotation is applied to every page in the document. Per-page rotation is not currently supported.</p></div>
             </div>
             <div class="faq-item">
-                <button class="faq-question" aria-expanded="false">What does 270° do?<i class="fa-solid fa-chevron-down faq-chevron"></i></button>
+                <button class="faq-question" aria-expanded="false">What does 270° do?<i data-lucide="chevron-down" class="faq-chevron"></i></button>
                 <div class="faq-answer"><p>270° clockwise is equivalent to 90° counter-clockwise. Use this to fix landscape pages that appear sideways.</p></div>
             </div>
         </div>
@@ -90,7 +91,7 @@
 </div>
 </main>
 <footer class="footer"><div class="container"><div class="footer-inner">
-    <div class="footer-brand"><i class="fa-solid fa-arrows-rotate"></i> PlusConversion</div>
+    <div class="footer-brand"><i data-lucide="refresh-cw"></i> PlusConversion</div>
     <p class="footer-copy">&copy; 2026 PlusConversion · Made with ❤️ by Marshal &amp; Arjun</p>
 </div></div></footer>
 <script type="module" src="../js/pages/rotate-pdf.js"></script>

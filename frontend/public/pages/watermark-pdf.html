@@ -10,6 +10,7 @@
     <link rel="canonical" href="/pages/watermark-pdf.html">
     <link rel="stylesheet" href="../styles/style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous">
+    <script src="https://unpkg.com/lucide@latest"></script>
     <link rel="icon" href="../favicon.ico" type="image/x-icon">
     <style>
         /* Watermark live preview */
@@ -48,17 +49,17 @@
 <body>
 <main class="main-content">
 <div class="container">
-    <a href="/" class="back-link"><i class="fa-solid fa-arrow-left"></i> All Tools</a>
+    <a href="/" class="back-link"><i data-lucide="arrow-left"></i> All Tools</a>
     <div class="card">
         <div class="tool-page-header">
-            <div class="tool-page-icon"><i class="fa-solid fa-stamp" aria-hidden="true"></i></div>
+            <div class="tool-page-icon"><i data-lucide="stamp" aria-hidden="true"></i></div>
             <h1 class="tool-page-title">Watermark PDF</h1>
             <p class="tool-page-subtitle">Add a diagonal text watermark to every page. Customise colour, size, and opacity.</p>
         </div>
 
         <div id="upload-section">
             <div class="drop-zone" id="drop-zone" role="button" tabindex="0" aria-label="Drop PDF here">
-                <i class="fa-solid fa-file-pdf dz-icon" aria-hidden="true"></i>
+                <i data-lucide="file-text" class="dz-icon" aria-hidden="true"></i>
                 <div class="dz-title">Drag &amp; Drop your PDF here</div>
                 <div class="dz-sub">or</div>
                 <button class="btn btn-secondary" id="browse-btn" type="button">Browse File</button>
@@ -96,7 +97,7 @@
             </div>
 
             <button class="btn btn-primary btn-full" id="submit-btn" disabled>
-                <i class="fa-solid fa-stamp" aria-hidden="true"></i> Add Watermark &amp; Download
+                <i data-lucide="stamp" aria-hidden="true"></i> Add Watermark &amp; Download
             </button>
         </div>
 
@@ -116,15 +117,15 @@
         <h2 id="faq-heading">Frequently Asked Questions</h2>
         <div class="faq-list">
             <div class="faq-item">
-                <button class="faq-question" aria-expanded="false">Is the watermark permanent?<i class="fa-solid fa-chevron-down faq-chevron"></i></button>
+                <button class="faq-question" aria-expanded="false">Is the watermark permanent?<i data-lucide="chevron-down" class="faq-chevron"></i></button>
                 <div class="faq-answer"><p>Yes. The watermark is embedded directly into the PDF content. It cannot be removed without specialist PDF editing software.</p></div>
             </div>
             <div class="faq-item">
-                <button class="faq-question" aria-expanded="false">Can I add an image watermark?<i class="fa-solid fa-chevron-down faq-chevron"></i></button>
+                <button class="faq-question" aria-expanded="false">Can I add an image watermark?<i data-lucide="chevron-down" class="faq-chevron"></i></button>
                 <div class="faq-answer"><p>Currently, only text watermarks are supported. Image/logo watermarks are on our roadmap for a future update.</p></div>
             </div>
             <div class="faq-item">
-                <button class="faq-question" aria-expanded="false">What opacity should I use?<i class="fa-solid fa-chevron-down faq-chevron"></i></button>
+                <button class="faq-question" aria-expanded="false">What opacity should I use?<i data-lucide="chevron-down" class="faq-chevron"></i></button>
                 <div class="faq-answer"><p>30–50% opacity is recommended for most use cases — visible enough to be noticed but not so dark that it obscures the document content.</p></div>
             </div>
         </div>
@@ -132,7 +133,7 @@
 </div>
 </main>
 <footer class="footer"><div class="container"><div class="footer-inner">
-    <div class="footer-brand"><i class="fa-solid fa-arrows-rotate"></i> PlusConversion</div>
+    <div class="footer-brand"><i data-lucide="refresh-cw"></i> PlusConversion</div>
     <p class="footer-copy">&copy; 2026 PlusConversion · Made with ❤️ by Marshal &amp; Arjun</p>
 </div></div></footer>
 <script type="module">

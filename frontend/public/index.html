@@ -11,6 +11,7 @@
     <link rel="canonical" href="/">
     <link rel="stylesheet" href="styles/style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous">
+    <script src="https://unpkg.com/lucide@latest"></script>
     <link rel="icon" href="favicon.ico" type="image/x-icon">
 </head>
 <body>
@@ -116,54 +117,47 @@
                 Made with ❤️ by Marshal &amp; Arjun.
             </p>
         </div>
-    </div>
-</footer>
-
 <script type="module">
 import { initNavbar } from './js/components/navbar.js';
+import { renderToolCard } from './js/components/toolCard.js';
 
 // Tool definitions for homepage grid
 const PDF_TOOLS = [
-    { id: 'merge-pdf',      href: '/pages/merge-pdf.html',       icon: 'fa-solid fa-file-arrow-down', title: 'Merge PDF',      desc: 'Combine multiple PDF files into a single document.' },
-    { id: 'split-pdf',      href: '/pages/split-pdf.html',       icon: 'fa-solid fa-scissors',        title: 'Split PDF',      desc: 'Extract pages or split a PDF into separate files.' },
-    { id: 'compress-pdf',   href: '/pages/compress-pdf.html',    icon: 'fa-solid fa-compress',        title: 'Compress PDF',   desc: 'Reduce PDF size while preserving readability.' },
-    { id: 'organize-pdf',   href: '/pages/organize-pdf.html',    icon: 'fa-solid fa-folder-tree',     title: 'Organize PDF',   desc: 'Rearrange, delete, and rotate pages in your PDF visually.' },
-    { id: 'rearrange-pdf',  href: '/pages/rearrange-pages.html', icon: 'fa-solid fa-arrow-down-up-across-line', title: 'Rearrange Pages', desc: 'Sort pages of a PDF by dragging and dropping them.' },
-    { id: 'remove-pdf',     href: '/pages/remove-pages.html',    icon: 'fa-solid fa-file-circle-minus', title: 'Remove Pages', desc: 'Select and delete specific pages from a PDF document.' },
-    { id: 'extract-pdf',    href: '/pages/extract-pages.html',   icon: 'fa-solid fa-file-export',     title: 'Extract Pages',  desc: 'Extract specific pages from your PDF to a new file.' },
-    { id: 'rotate-pdf',     href: '/pages/rotate-pdf.html',      icon: 'fa-solid fa-rotate',          title: 'Rotate PDF',     desc: 'Rotate all pages by 90°, 180°, or 270°.' },
-    { id: 'watermark-pdf',  href: '/pages/watermark-pdf.html',   icon: 'fa-solid fa-stamp',           title: 'Watermark PDF',  desc: 'Add a custom text watermark to every page.' },
-    { id: 'page-number-pdf',href: '/pages/page-number-pdf.html', icon: 'fa-solid fa-list-ol',         title: 'Page Numbers',   desc: 'Add page numbers to the header or footer.' },
-    { id: 'crop-pdf',       href: '/pages/crop-pdf.html',        icon: 'fa-solid fa-crop-simple',     title: 'Crop PDF',       desc: 'Crop your PDF pages by adjusting margins or defining a specific crop area.' },
-    { id: 'pdf-to-jpg',     href: '/pages/pdf-to-jpg.html',      icon: 'fa-solid fa-file-image',      title: 'PDF to JPG',     desc: 'Extract pages as high-quality images.' },
-    { id: 'jpg-to-pdf',     href: '/pages/jpg-to-pdf.html',      icon: 'fa-solid fa-image',           title: 'JPG to PDF',     desc: 'Compile multiple images into one PDF document.' },
+    { id: 'merge-pdf',      href: '/pages/merge-pdf.html',       title: 'Merge PDF',      desc: 'Combine multiple PDF files into a single document.' },
+    { id: 'split-pdf',      href: '/pages/split-pdf.html',       title: 'Split PDF',      desc: 'Extract pages or split a PDF into separate files.' },
+    { id: 'compress-pdf',   href: '/pages/compress-pdf.html',    title: 'Compress PDF',   desc: 'Reduce PDF size while preserving readability.' },
+    { id: 'organize-pdf',   href: '/pages/organize-pdf.html',    title: 'Organize PDF',   desc: 'Rearrange, delete, and rotate pages in your PDF visually.' },
+    { id: 'rearrange-pdf',  href: '/pages/rearrange-pages.html', title: 'Rearrange Pages', desc: 'Sort pages of a PDF by dragging and dropping them.' },
+    { id: 'remove-pdf',     href: '/pages/remove-pages.html',    title: 'Remove Pages', desc: 'Select and delete specific pages from a PDF document.' },
+    { id: 'extract-pdf',    href: '/pages/extract-pages.html',   title: 'Extract Pages',  desc: 'Extract specific pages from your PDF to a new file.' },
+    { id: 'rotate-pdf',     href: '/pages/rotate-pdf.html',      title: 'Rotate PDF',     desc: 'Rotate all pages by 90°, 180°, or 270°.' },
+    { id: 'watermark-pdf',  href: '/pages/watermark-pdf.html',   title: 'Watermark PDF',  desc: 'Add a custom text watermark to every page.' },
+    { id: 'page-number-pdf',href: '/pages/page-number-pdf.html', title: 'Page Numbers',   desc: 'Add page numbers to the header or footer.' },
+    { id: 'crop-pdf',       href: '/pages/crop-pdf.html',        title: 'Crop PDF',       desc: 'Crop your PDF pages by adjusting margins or defining a specific crop area.' },
+    { id: 'pdf-to-jpg',     href: '/pages/pdf-to-jpg.html',      title: 'PDF to JPG',     desc: 'Extract pages as high-quality images.' },
+    { id: 'jpg-to-pdf',     href: '/pages/jpg-to-pdf.html',      title: 'JPG to PDF',     desc: 'Compile multiple images into one PDF document.' },
 ];
 
 const IMAGE_TOOLS = [
-    { id: 'image-convert',  href: '#image-converter', icon: 'fa-solid fa-images',     title: 'Convert Images',   desc: 'Convert JPG, PNG, WEBP, TIFF, BMP, HEIC instantly.' },
-    { id: 'image-resize',   href: '#image-converter', icon: 'fa-solid fa-crop-simple', title: 'Resize Images',    desc: 'Resize with custom dimensions or target file size.' },
+    { id: 'image-convert',  href: '#image-converter', title: 'Convert Images',   desc: 'Convert JPG, PNG, WEBP, TIFF, BMP, HEIC instantly.' },
+    { id: 'image-resize',   href: '#image-converter', title: 'Resize Images',    desc: 'Resize with custom dimensions or target file size.' },
 ];
 
 function renderGrid(tools, containerId) {
     const grid = document.getElementById(containerId);
     if (!grid) return;
-    grid.innerHTML = tools.map(t => `
-        <a href="${t.href}" class="tool-card" id="tool-${t.id}" aria-label="${t.title}">
-            ${t.badge ? `<div class="tool-card-badge">${t.badge}</div>` : ''}
-            <div class="tool-card-icon"><i class="${t.icon}" aria-hidden="true"></i></div>
-            <div>
-                <div class="tool-card-title">${t.title}</div>
-                <div class="tool-card-desc">${t.desc}</div>
-            </div>
-            <div class="tool-card-link">Open tool <i class="fa-solid fa-arrow-right"></i></div>
-        </a>
-    `).join('');
+    grid.innerHTML = tools.map(t => renderToolCard(t)).join('');
 }
 
 document.addEventListener('DOMContentLoaded', () => {
     initNavbar();
     renderGrid(PDF_TOOLS,   'pdf-tool-grid');
     renderGrid(IMAGE_TOOLS, 'image-tool-grid');
+
+    // Make sure Lucide renders all loaded SVGs
+    if (typeof lucide !== 'undefined') {
+        lucide.createIcons();
+    }
 
     // Image converter scroll shortcut
     document.querySelectorAll('a[href="#image-converter"]').forEach(a => {

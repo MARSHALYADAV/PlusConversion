@@ -122,7 +122,7 @@ class PageSorter {
             if (this.mode === 'extract') {
                 const cb = document.createElement('div');
                 cb.className = 'ps-checkbox';
-                cb.innerHTML = '<i class="fa-solid fa-check"></i>';
+                cb.innerHTML = '<i data-lucide="check"></i>';
                 item.appendChild(cb);
             }
 
@@ -132,7 +132,7 @@ class PageSorter {
                 
                 const rotateBtn = document.createElement('button');
                 rotateBtn.className = 'ps-ctrl-btn ps-rotate-btn';
-                rotateBtn.innerHTML = '<i class="fa-solid fa-rotate-right"></i>';
+                rotateBtn.innerHTML = '<i data-lucide="rotate-cw"></i>';
                 rotateBtn.title = 'Rotate Clockwise';
                 rotateBtn.addEventListener('click', (e) => {
                     e.stopPropagation();
@@ -143,7 +143,7 @@ class PageSorter {
 
                 const deleteBtn = document.createElement('button');
                 deleteBtn.className = 'ps-ctrl-btn ps-delete-btn';
-                deleteBtn.innerHTML = '<i class="fa-solid fa-trash"></i>';
+                deleteBtn.innerHTML = '<i data-lucide="trash-2"></i>';
                 deleteBtn.title = 'Delete Page';
                 deleteBtn.addEventListener('click', (e) => {
                     e.stopPropagation();
@@ -163,6 +163,10 @@ class PageSorter {
 
             // Async render
             this.renderCanvas(pageData.originalIndex, canvas);
+        }
+
+        if (typeof lucide !== 'undefined') {
+            lucide.createIcons();
         }
     }
 

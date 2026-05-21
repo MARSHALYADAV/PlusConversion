@@ -7,6 +7,7 @@
     <meta name="description" content="Crop PDF pages by defining a custom crop region visually. Free online PDF cropping tool. No signup required.">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://unpkg.com/lucide@latest"></script>
     <link rel="stylesheet" href="../styles/style.css">
     <!-- PDF.js library -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
@@ -47,18 +48,18 @@
                         </div>
                         <div class="crop-page-nav">
                             <button class="btn btn-secondary btn-sm" id="prev-page-btn" disabled>
-                                <i class="fa-solid fa-chevron-left"></i> Previous
+                                <i data-lucide="chevron-left"></i> Previous
                             </button>
                             <span id="page-num-display" style="font-weight: 600; font-size: 0.9rem; color: var(--text-primary);">Page 1 of 1</span>
                             <button class="btn btn-secondary btn-sm" id="next-page-btn" disabled>
-                                Next <i class="fa-solid fa-chevron-right"></i>
+                                Next <i data-lucide="chevron-right"></i>
                             </button>
                         </div>
                     </div>
 
                     <!-- Right: Visual Controls Panel -->
                     <aside class="crop-controls-sidebar card">
-                        <h3 class="sidebar-section-title"><i class="fa-solid fa-sliders"></i> Crop Options</h3>
+                        <h3 class="sidebar-section-title"><i data-lucide="sliders"></i> Crop Options</h3>
                         
                         <div class="form-group" style="margin-top: 1rem;">
                             <label for="aspect-ratio-select">Aspect Ratio Preset</label>
@@ -86,7 +87,7 @@
                         </div>
 
                         <button class="btn btn-primary" id="crop-generate-btn" style="width: 100%; margin-top: 1.5rem;">
-                            Crop PDF <i class="fa-solid fa-crop"></i>
+                            Crop PDF <i data-lucide="crop"></i>
                         </button>
                     </aside>
                 </div>

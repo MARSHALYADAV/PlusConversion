@@ -10,22 +10,23 @@
     <link rel="canonical" href="/pages/page-number-pdf.html">
     <link rel="stylesheet" href="../styles/style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous">
+    <script src="https://unpkg.com/lucide@latest"></script>
     <link rel="icon" href="../favicon.ico" type="image/x-icon">
 </head>
 <body>
 <main class="main-content">
 <div class="container">
-    <a href="/" class="back-link"><i class="fa-solid fa-arrow-left"></i> All Tools</a>
+    <a href="/" class="back-link"><i data-lucide="arrow-left"></i> All Tools</a>
     <div class="card">
         <div class="tool-page-header">
-            <div class="tool-page-icon"><i class="fa-solid fa-list-ol" aria-hidden="true"></i></div>
+            <div class="tool-page-icon"><i data-lucide="binary" aria-hidden="true"></i></div>
             <h1 class="tool-page-title">Add Page Numbers</h1>
             <p class="tool-page-subtitle">Stamp every page with a customisable page number. Choose position, size, and format.</p>
         </div>
 
         <div id="upload-section">
             <div class="drop-zone" id="drop-zone" role="button" tabindex="0" aria-label="Drop PDF here">
-                <i class="fa-solid fa-file-pdf dz-icon" aria-hidden="true"></i>
+                <i data-lucide="file-text" class="dz-icon" aria-hidden="true"></i>
                 <div class="dz-title">Drag &amp; Drop your PDF here</div>
                 <div class="dz-sub">or</div>
                 <button class="btn btn-secondary" id="browse-btn" type="button">Browse File</button>
@@ -59,7 +60,7 @@
             </div>
 
             <button class="btn btn-primary btn-full" id="submit-btn" disabled>
-                <i class="fa-solid fa-list-ol" aria-hidden="true"></i> Add Page Numbers &amp; Download
+                <i data-lucide="binary" aria-hidden="true"></i> Add Page Numbers &amp; Download
             </button>
         </div>
 
@@ -79,11 +80,11 @@
         <h2 id="faq-heading">Frequently Asked Questions</h2>
         <div class="faq-list">
             <div class="faq-item">
-                <button class="faq-question" aria-expanded="false">What format options are supported?<i class="fa-solid fa-chevron-down faq-chevron"></i></button>
+                <button class="faq-question" aria-expanded="false">What format options are supported?<i data-lucide="chevron-down" class="faq-chevron"></i></button>
                 <div class="faq-answer"><p>Use <strong>{num}</strong> and <strong>{total}</strong> as placeholders. Examples: "Page {num}", "{num} / {total}", "- {num} -".</p></div>
             </div>
             <div class="faq-item">
-                <button class="faq-question" aria-expanded="false">Can I number only some pages?<i class="fa-solid fa-chevron-down faq-chevron"></i></button>
+                <button class="faq-question" aria-expanded="false">Can I number only some pages?<i data-lucide="chevron-down" class="faq-chevron"></i></button>
                 <div class="faq-answer"><p>Currently, page numbers are applied to every page. Selective numbering is on our roadmap.</p></div>
             </div>
         </div>
@@ -91,7 +92,7 @@
 </div>
 </main>
 <footer class="footer"><div class="container"><div class="footer-inner">
-    <div class="footer-brand"><i class="fa-solid fa-arrows-rotate"></i> PlusConversion</div>
+    <div class="footer-brand"><i data-lucide="refresh-cw"></i> PlusConversion</div>
     <p class="footer-copy">&copy; 2026 PlusConversion · Made with ❤️ by Marshal &amp; Arjun</p>
 </div></div></footer>
 <script type="module" src="../js/pages/page-number-pdf.js"></script>

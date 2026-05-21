@@ -64,22 +64,22 @@ export default class ResultCard {
         // Build meta items
         const metaItems = [];
         if (filename) {
-            metaItems.push(`<span class="result-meta-item"><i class="fa-solid fa-file"></i> ${filename}</span>`);
+            metaItems.push(`<span class="result-meta-item"><i data-lucide="file"></i> ${filename}</span>`);
         }
         if (size) {
-            metaItems.push(`<span class="result-meta-item"><i class="fa-solid fa-weight-hanging"></i> ${formatBytes(size)}</span>`);
+            metaItems.push(`<span class="result-meta-item"><i data-lucide="database"></i> ${formatBytes(size)}</span>`);
         }
         if (originalSize && size && originalSize > size) {
             const saved = Math.round((1 - size / originalSize) * 100);
-            metaItems.push(`<span class="result-meta-item" style="color:var(--success)"><i class="fa-solid fa-arrow-down"></i> ${saved}% smaller</span>`);
+            metaItems.push(`<span class="result-meta-item" style="color:var(--success)"><i data-lucide="arrow-down"></i> ${saved}% smaller</span>`);
         }
         if (compressionMode) {
             const modeLabel = { low: 'Light', recommended: 'Recommended', extreme: 'Extreme' }[compressionMode] || compressionMode;
-            metaItems.push(`<span class="result-meta-item"><i class="fa-solid fa-sliders"></i> ${modeLabel}</span>`);
+            metaItems.push(`<span class="result-meta-item"><i data-lucide="sliders"></i> ${modeLabel}</span>`);
         }
 
         c.innerHTML = `
-            <div class="result-icon"><i class="fa-solid fa-circle-check"></i></div>
+            <div class="result-icon"><i data-lucide="check-circle-2"></i></div>
             <div class="result-title">Ready to Download!</div>
             <div class="result-meta">${metaItems.join('')}</div>
             <div class="result-actions">
@@ -90,13 +90,17 @@ export default class ResultCard {
                     id="result-download-btn"
                     aria-label="Download ${filename || 'file'}"
                 >
-                    <i class="fa-solid fa-download"></i> Download
+                    <i data-lucide="download"></i> Download
                 </a>
                 <button class="btn btn-secondary" id="result-reset-btn">
-                    <i class="fa-solid fa-rotate-left"></i> Convert Another
+                    <i data-lucide="rotate-ccw"></i> Convert Another
                 </button>
             </div>
         `;
+
+        if (typeof lucide !== 'undefined') {
+            lucide.createIcons();
+        }
 
         // Wire reset button
         const resetBtn = c.querySelector('#result-reset-btn');

@@ -14,14 +14,14 @@
  */
 
 const NAV_LINKS = [
-    { id: 'merge-pdf',      href: '/pages/merge-pdf.html',      icon: 'fa-solid fa-file-arrow-down',  label: 'Merge' },
-    { id: 'split-pdf',      href: '/pages/split-pdf.html',      icon: 'fa-solid fa-scissors',          label: 'Split' },
-    { id: 'compress-pdf',   href: '/pages/compress-pdf.html',   icon: 'fa-solid fa-compress',          label: 'Compress' },
-    { id: 'rotate-pdf',     href: '/pages/rotate-pdf.html',     icon: 'fa-solid fa-rotate',            label: 'Rotate' },
-    { id: 'watermark-pdf',  href: '/pages/watermark-pdf.html',  icon: 'fa-solid fa-stamp',             label: 'Watermark' },
-    { id: 'page-number-pdf',href: '/pages/page-number-pdf.html',icon: 'fa-solid fa-list-ol',           label: 'Page Numbers' },
-    { id: 'jpg-to-pdf',     href: '/pages/jpg-to-pdf.html',     icon: 'fa-solid fa-image',             label: 'JPG to PDF' },
-    { id: 'pdf-to-jpg',     href: '/pages/pdf-to-jpg.html',     icon: 'fa-solid fa-file-image',        label: 'PDF to JPG' },
+    { id: 'merge-pdf',      href: '/pages/merge-pdf.html',      icon: 'merge',            label: 'Merge' },
+    { id: 'split-pdf',      href: '/pages/split-pdf.html',      icon: 'scissors',         label: 'Split' },
+    { id: 'compress-pdf',   href: '/pages/compress-pdf.html',   icon: 'minimize-2',       label: 'Compress' },
+    { id: 'rotate-pdf',     href: '/pages/rotate-pdf.html',     icon: 'rotate-cw',        label: 'Rotate' },
+    { id: 'watermark-pdf',  href: '/pages/watermark-pdf.html',  icon: 'stamp',            label: 'Watermark' },
+    { id: 'page-number-pdf',href: '/pages/page-number-pdf.html',icon: 'binary',           label: 'Page Numbers' },
+    { id: 'jpg-to-pdf',     href: '/pages/jpg-to-pdf.html',     icon: 'images',           label: 'JPG to PDF' },
+    { id: 'pdf-to-jpg',     href: '/pages/pdf-to-jpg.html',     icon: 'file-image',        label: 'PDF to JPG' },
 ];
 
 /**
@@ -35,13 +35,13 @@ export function initNavbar(activeId = '') {
         if (nav) nav.classList.toggle('scrolled', window.scrollY > 4);
     }, { passive: true });
 
-    // Build link HTML (only first 5 in main nav — rest in mobile menu)
+    // Build link HTML (only first 6 in main nav — rest in mobile menu)
     const desktopLinks = NAV_LINKS.slice(0, 6).map(link => `
         <li>
             <a href="${link.href}"
                class="${link.id === activeId ? 'active' : ''}"
                ${link.id === activeId ? 'aria-current="page"' : ''}>
-                <i class="${link.icon}"></i>
+                <i data-lucide="${link.icon}"></i>
                 ${link.label}
             </a>
         </li>
@@ -51,7 +51,7 @@ export function initNavbar(activeId = '') {
         <a href="${link.href}"
            class="${link.id === activeId ? 'active' : ''}"
            ${link.id === activeId ? 'aria-current="page"' : ''}>
-            <i class="${link.icon}"></i>
+            <i data-lucide="${link.icon}"></i>
             ${link.label}
         </a>
     `).join('');
@@ -63,7 +63,7 @@ export function initNavbar(activeId = '') {
                     <!-- Brand -->
                     <a href="/" class="navbar-brand" aria-label="PlusConversion home">
                         <div class="navbar-brand-icon" aria-hidden="true">
-                            <i class="fa-solid fa-arrows-rotate"></i>
+                            <i data-lucide="refresh-cw"></i>
                         </div>
                         Plus<span>Conversion</span>
                     </a>
@@ -127,5 +127,10 @@ export function initNavbar(activeId = '') {
                 hamburger.setAttribute('aria-expanded', 'false');
             }
         });
+    }
+
+    // Dynamic Lucide initialization for all data-lucide elements currently in the DOM
+    if (typeof lucide !== 'undefined') {
+        lucide.createIcons();
     }
 }
