@@ -3,59 +3,53 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PDF to JPG — Convert PDF Pages to Images | PlusConversion</title>
-    <meta name="description" content="Convert PDF pages to JPG images online. Extract every page as a high-quality JPEG. Coming soon to PlusConversion.">
-    <meta property="og:title" content="PDF to JPG — Coming Soon | PlusConversion">
-    <link rel="canonical" href="/pages/pdf-to-jpg.html">
+    <title>PDF to JPG - PlusConversion</title>
+    <meta name="description" content="Extract pages from a PDF document into high-quality JPG images directly in your browser.">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="../styles/style.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous">
-    <link rel="icon" href="../favicon.ico" type="image/x-icon">
+    <!-- PDF.js library -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+    <!-- JSZip library -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
 </head>
 <body>
-<main class="main-content">
-<div class="container">
-    <a href="/" class="back-link"><i class="fa-solid fa-arrow-left"></i> All Tools</a>
 
-    <div class="card" style="text-align:center; padding:4rem 2rem;">
-        <div style="font-size:4rem; margin-bottom:1.5rem;">🔜</div>
-        <h1 class="tool-page-title">PDF to JPG</h1>
-        <p class="tool-page-subtitle" style="max-width:460px; margin:1rem auto 2rem;">
-            This tool is currently in development. Converting PDF pages to high-quality JPG images requires
-            a PDF rendering engine — we're building it right now.
-        </p>
+    <div id="navbar-container"></div>
 
-        <div style="display:flex; flex-wrap:wrap; gap:1rem; justify-content:center; margin-bottom:2rem;">
-            <div style="background:var(--primary-light); padding:1rem 1.5rem; border-radius:var(--radius-md); color:var(--primary); font-weight:600; font-size:0.875rem;">
-                <i class="fa-solid fa-check"></i> Up to 50 pages
-            </div>
-            <div style="background:var(--primary-light); padding:1rem 1.5rem; border-radius:var(--radius-md); color:var(--primary); font-weight:600; font-size:0.875rem;">
-                <i class="fa-solid fa-check"></i> High-res output
-            </div>
-            <div style="background:var(--primary-light); padding:1rem 1.5rem; border-radius:var(--radius-md); color:var(--primary); font-weight:600; font-size:0.875rem;">
-                <i class="fa-solid fa-check"></i> ZIP download
-            </div>
+    <main class="tool-main">
+        <div class="tool-header">
+            <h1 class="tool-title">PDF to JPG</h1>
+            <p class="tool-subtitle">Extract pages from your PDF as high-quality JPGs. Conversion happens securely in your browser.</p>
         </div>
 
-        <button class="btn btn-primary" id="notify-btn" style="margin:0 auto;">
-            <i class="fa-solid fa-bell"></i> Notify Me When Live
-        </button>
-
-        <p style="margin-top:2rem; font-size:0.875rem; color:var(--text-muted);">
-            In the meantime, try our other free PDF tools:
-        </p>
-        <div style="display:flex; flex-wrap:wrap; gap:0.75rem; justify-content:center; margin-top:1rem;">
-            <a href="/pages/merge-pdf.html" class="btn btn-secondary btn-sm">Merge PDF</a>
-            <a href="/pages/split-pdf.html" class="btn btn-secondary btn-sm">Split PDF</a>
-            <a href="/pages/compress-pdf.html" class="btn btn-secondary btn-sm">Compress PDF</a>
-            <a href="/pages/jpg-to-pdf.html" class="btn btn-secondary btn-sm">JPG to PDF</a>
+        <div class="tool-workspace">
+            <div id="dropzone-container"></div>
+            <div id="progress-container"></div>
+            <div id="result-container"></div>
         </div>
-    </div>
-</div>
-</main>
-<footer class="footer"><div class="container"><div class="footer-inner">
-    <div class="footer-brand"><i class="fa-solid fa-arrows-rotate"></i> PlusConversion</div>
-    <p class="footer-copy">&copy; 2026 PlusConversion · Made with ❤️ by Marshal &amp; Arjun</p>
-</div></div></footer>
-<script type="module" src="../js/pages/pdf-to-jpg.js"></script>
+
+        <section class="faq-section">
+            <h2>Frequently Asked Questions</h2>
+            <div class="faq-grid">
+                <div class="faq-card">
+                    <h3>Is my file uploaded to a server?</h3>
+                    <p>No, this tool uses browser-side processing. Your PDF never leaves your device, guaranteeing absolute privacy and faster conversion.</p>
+                </div>
+                <div class="faq-card">
+                    <h3>What resolution are the images?</h3>
+                    <p>We render pages at a high scale (2x) to ensure the output JPGs are crisp and suitable for printing or sharing.</p>
+                </div>
+                <div class="faq-card">
+                    <h3>Will I get one file or multiple?</h3>
+                    <p>If your PDF has 1 page, a single JPG is downloaded. If it has multiple pages, they are bundled into a convenient ZIP file.</p>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <div id="toast-container"></div>
+
+    <script type="module" src="../js/pages/pdf-to-jpg.js"></script>
 </body>
 </html>
