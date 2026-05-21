@@ -9,12 +9,12 @@ class PageSorter {
         this.container = document.getElementById(containerId);
         if (!this.container) throw new Error(`Container ${containerId} not found`);
 
-        // 'rearrange', 'remove', 'extract'
+        // 'rearrange', 'remove', 'extract', 'organize'
         this.mode = options.mode || 'rearrange';
         this.onProcess = options.onProcess || (() => {});
         
         this.pdfDocument = null;
-        this.pages = []; // Array of objects: { originalIndex: 1, deleted: false, selected: false }
+        this.pages = []; // Array of objects: { originalIndex: 1, deleted: false, selected: false, rotation: 0 }
         
         this.renderLayout();
     }
@@ -70,14 +70,15 @@ class PageSorter {
             this.pages = Array.from({ length: numPages }, (_, i) => ({
                 originalIndex: i + 1,
                 deleted: false,
-                selected: false // Default unselected for extract
+                selected: false, // Default unselected for extract
+                rotation: 0      // Rotation in degrees (0, 90, 180, 270)
             }));
 
             this.titleEl.textContent = `Processing ${numPages} pages...`;
             
             await this.renderThumbnails();
 
-            if (this.mode === 'rearrange' && window.Sortable) {
+            if ((this.mode === 'rearrange' || this.mode === 'organize') && window.Sortable) {
                 new Sortable(this.grid, {
                     animation: 150,
                     ghostClass: 'sortable-ghost',
@@ -123,6 +124,37 @@ class PageSorter {
                 cb.className = 'ps-checkbox';
                 cb.innerHTML = '<i class="fa-solid fa-check"></i>';
                 item.appendChild(cb);
+            }
+
+            if (this.mode === 'organize') {
+                const controls = document.createElement('div');
+                controls.className = 'ps-item-controls';
+                
+                const rotateBtn = document.createElement('button');
+                rotateBtn.className = 'ps-ctrl-btn ps-rotate-btn';
+                rotateBtn.innerHTML = '<i class="fa-solid fa-rotate-right"></i>';
+                rotateBtn.title = 'Rotate Clockwise';
+                rotateBtn.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    pageData.rotation = (pageData.rotation + 90) % 360;
+                    canvas.style.transform = `rotate(${pageData.rotation}deg)`;
+                    canvas.style.transition = 'transform 0.2s ease';
+                });
+
+                const deleteBtn = document.createElement('button');
+                deleteBtn.className = 'ps-ctrl-btn ps-delete-btn';
+                deleteBtn.innerHTML = '<i class="fa-solid fa-trash"></i>';
+                deleteBtn.title = 'Delete Page';
+                deleteBtn.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    pageData.deleted = !pageData.deleted;
+                    item.classList.toggle('deleted', pageData.deleted);
+                    this.updateTitle();
+                });
+
+                controls.appendChild(rotateBtn);
+                controls.appendChild(deleteBtn);
+                item.appendChild(controls);
             }
 
             this.grid.appendChild(item);
@@ -191,6 +223,10 @@ class PageSorter {
             const selected = this.pages.filter(p => p.selected).length;
             this.titleEl.textContent = `${selected} pages selected`;
             this.actionBtn.disabled = selected === 0;
+        } else if (this.mode === 'organize') {
+            const remaining = this.pages.filter(p => !p.deleted).length;
+            this.titleEl.textContent = `Organize PDF: ${remaining} pages remaining`;
+            this.actionBtn.disabled = remaining === 0;
         } else {
             this.titleEl.textContent = `Drag pages to rearrange`;
         }
@@ -206,6 +242,12 @@ class PageSorter {
             pagesToKeep = this.pages.filter(p => p.selected).map(p => p.originalIndex - 1);
         } else if (this.mode === 'rearrange') {
             pagesToKeep = this.pages.map(p => p.originalIndex - 1);
+        } else if (this.mode === 'organize') {
+            // Keep rotation data
+            pagesToKeep = this.pages.filter(p => !p.deleted).map(p => ({
+                index: p.originalIndex - 1,
+                rotation: p.rotation
+            }));
         }
 
         this.onProcess(pagesToKeep);

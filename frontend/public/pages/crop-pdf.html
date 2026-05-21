@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Crop PDF - PlusConversion</title>
+    <meta name="description" content="Crop PDF pages by defining a custom crop region visually. Free online PDF cropping tool. No signup required.">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="../styles/style.css">
+    <!-- PDF.js library -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+    <!-- pdf-lib library -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf-lib/1.17.1/pdf-lib.min.js"></script>
+</head>
+<body>
+
+    <div id="navbar-container"></div>
+
+    <main class="tool-main">
+        <div class="tool-header">
+            <h1 class="tool-title">Crop PDF</h1>
+            <p class="tool-subtitle">Define an area visually to crop the pages of your PDF document instantly in the browser.</p>
+        </div>
+
+        <div class="tool-workspace">
+            <div id="dropzone-container"></div>
+
+            <div id="crop-workspace-container" class="crop-workspace hidden">
+                <div class="crop-editor-layout">
+                    <!-- Left: Interactive Visual Canvas Area -->
+                    <div class="crop-visual-area">
+                        <div class="crop-canvas-wrapper" id="crop-wrapper">
+                            <canvas id="crop-preview-canvas"></canvas>
+                            <div class="crop-overlay" id="crop-overlay-el">
+                                <div class="crop-selection" id="crop-selection-box">
+                                    <div class="crop-handle handle-tl" data-handle="tl"></div>
+                                    <div class="crop-handle handle-tr" data-handle="tr"></div>
+                                    <div class="crop-handle handle-bl" data-handle="bl"></div>
+                                    <div class="crop-handle handle-br" data-handle="br"></div>
+                                    <div class="crop-grid-line crop-grid-h1"></div>
+                                    <div class="crop-grid-line crop-grid-h2"></div>
+                                    <div class="crop-grid-line crop-grid-v1"></div>
+                                    <div class="crop-grid-line crop-grid-v2"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="crop-page-nav">
+                            <button class="btn btn-secondary btn-sm" id="prev-page-btn" disabled>
+                                <i class="fa-solid fa-chevron-left"></i> Previous
+                            </button>
+                            <span id="page-num-display" style="font-weight: 600; font-size: 0.9rem; color: var(--text-primary);">Page 1 of 1</span>
+                            <button class="btn btn-secondary btn-sm" id="next-page-btn" disabled>
+                                Next <i class="fa-solid fa-chevron-right"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Right: Visual Controls Panel -->
+                    <aside class="crop-controls-sidebar card">
+                        <h3 class="sidebar-section-title"><i class="fa-solid fa-sliders"></i> Crop Options</h3>
+                        
+                        <div class="form-group" style="margin-top: 1rem;">
+                            <label for="aspect-ratio-select">Aspect Ratio Preset</label>
+                            <select class="form-control" id="aspect-ratio-select">
+                                <option value="free">Free Selection</option>
+                                <option value="1:1">1:1 Square</option>
+                                <option value="4:3">4:3 Standard</option>
+                                <option value="16:9">16:9 Widescreen</option>
+                                <option value="a4">A4 Page Ratio (1:1.414)</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group" style="margin-top: 1.25rem;">
+                            <label>Apply Crop To</label>
+                            <div class="radio-group" style="display: flex; flex-direction: column; gap: 0.5rem; margin-top: 0.4rem;">
+                                <label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer; font-size: 0.875rem;">
+                                    <input type="radio" name="crop-apply-range" value="all" checked style="accent-color: var(--primary);">
+                                    All Pages
+                                </label>
+                                <label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer; font-size: 0.875rem;">
+                                    <input type="radio" name="crop-apply-range" value="current" style="accent-color: var(--primary);">
+                                    Current Page Only
+                                </label>
+                            </div>
+                        </div>
+
+                        <button class="btn btn-primary" id="crop-generate-btn" style="width: 100%; margin-top: 1.5rem;">
+                            Crop PDF <i class="fa-solid fa-crop"></i>
+                        </button>
+                    </aside>
+                </div>
+            </div>
+
+            <div id="progress-container"></div>
+            <div id="result-container"></div>
+        </div>
+    </main>
+
+    <div id="toast-container"></div>
+
+    <script type="module" src="../js/pages/crop-pdf.js"></script>
+</body>
+</html>
