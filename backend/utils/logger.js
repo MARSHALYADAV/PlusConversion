@@ -1,25 +1,39 @@
 const config = require('../config');
 
+/**
+ * Structured logger that outputs consistent JSON-like strings
+ * for easy ingestion by logging platforms (CloudWatch, Datadog, etc).
+ */
+const formatLog = (level, message, meta = {}) => {
+    const entry = {
+        timestamp: new Date().toISOString(),
+        level,
+        message,
+        ...meta
+    };
+    return JSON.stringify(entry);
+};
+
 const logger = {
-    info: (message, ...meta) => {
+    info: (message, meta = {}) => {
         if (config.NODE_ENV !== 'test') {
-            console.log(`[INFO] ${new Date().toISOString()}: ${message}`, ...meta);
+            console.log(formatLog('INFO', message, meta));
         }
     },
-    warn: (message, ...meta) => {
-        console.warn(`[WARN] ${new Date().toISOString()}: ${message}`, ...meta);
+    warn: (message, meta = {}) => {
+        console.warn(formatLog('WARN', message, meta));
     },
-    error: (message, error) => {
-        console.error(`[ERROR] ${new Date().toISOString()}: ${message}`);
-        if (error && error.stack) {
-            console.error(error.stack);
-        } else if (error) {
-            console.error(error);
-        }
+    error: (message, error = null, meta = {}) => {
+        const errMeta = error ? {
+            errorName: error.name,
+            errorMessage: error.message,
+            stack: error.stack
+        } : {};
+        console.error(formatLog('ERROR', message, { ...meta, ...errMeta }));
     },
-    debug: (message, ...meta) => {
+    debug: (message, meta = {}) => {
         if (config.NODE_ENV === 'development') {
-            console.log(`[DEBUG] ${new Date().toISOString()}: ${message}`, ...meta);
+            console.log(formatLog('DEBUG', message, meta));
         }
     }
 };

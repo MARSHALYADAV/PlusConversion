@@ -218,9 +218,10 @@ const pdfController = {
                 return response.error(res, 'No PDF file uploaded for compression', STATUS_CODES.BAD_REQUEST);
             }
 
-            logger.info('Controller: Compressing PDF');
+            const mode = req.body.mode || 'recommended';
+            logger.info(`Controller: Compressing PDF in ${mode} mode`);
 
-            const compressedBuffer = await PdfService.compress(req.file.buffer);
+            const compressedBuffer = await PdfService.compress(req.file.buffer, mode);
             const name = `compressed_${req.file.originalname}`;
             const storageResult = await StorageService.uploadTempFile(name, compressedBuffer);
 

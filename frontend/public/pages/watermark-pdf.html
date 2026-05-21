@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Watermark PDF — Add Text Watermark Free | PlusConversion</title>
+    <meta name="description" content="Add a custom text watermark to every page of your PDF. Control opacity, size, and color. Free online tool, no signup needed.">
+    <meta property="og:title" content="Watermark PDF Free — PlusConversion">
+    <meta property="og:description" content="Add custom text watermarks to PDFs. Control opacity, color, and size. Free and instant.">
+    <link rel="canonical" href="/pages/watermark-pdf.html">
+    <link rel="stylesheet" href="../styles/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous">
+    <link rel="icon" href="../favicon.ico" type="image/x-icon">
+    <style>
+        /* Watermark live preview */
+        .watermark-preview-box {
+            position: relative;
+            height: 180px;
+            border: 1px dashed var(--card-border);
+            border-radius: var(--radius-md);
+            display: grid;
+            place-items: center;
+            overflow: hidden;
+            background: rgba(255,255,255,0.03);
+            margin-bottom: 1.5rem;
+        }
+        .watermark-preview-box::before {
+            content: 'Preview';
+            position: absolute;
+            top: 8px; left: 12px;
+            font-size: 0.7rem;
+            font-weight: 700;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+        }
+        #watermark-preview {
+            font-size: 2rem;
+            font-weight: 900;
+            transform: rotate(-45deg);
+            user-select: none;
+            pointer-events: none;
+            white-space: nowrap;
+            transition: all 0.2s;
+        }
+    </style>
+</head>
+<body>
+<main class="main-content">
+<div class="container">
+    <a href="/" class="back-link"><i class="fa-solid fa-arrow-left"></i> All Tools</a>
+    <div class="card">
+        <div class="tool-page-header">
+            <div class="tool-page-icon"><i class="fa-solid fa-stamp" aria-hidden="true"></i></div>
+            <h1 class="tool-page-title">Watermark PDF</h1>
+            <p class="tool-page-subtitle">Add a diagonal text watermark to every page. Customise colour, size, and opacity.</p>
+        </div>
+
+        <div id="upload-section">
+            <div class="drop-zone" id="drop-zone" role="button" tabindex="0" aria-label="Drop PDF here">
+                <i class="fa-solid fa-file-pdf dz-icon" aria-hidden="true"></i>
+                <div class="dz-title">Drag &amp; Drop your PDF here</div>
+                <div class="dz-sub">or</div>
+                <button class="btn btn-secondary" id="browse-btn" type="button">Browse File</button>
+                <input type="file" id="file-input" accept=".pdf" hidden aria-hidden="true">
+                <div class="dz-formats">Supports PDF · Max 200 MB</div>
+            </div>
+
+            <div id="file-list" class="file-list hidden" aria-label="Selected file" aria-live="polite"></div>
+
+            <!-- Live preview -->
+            <div class="watermark-preview-box" aria-hidden="true" style="margin-top:1.5rem;">
+                <span id="watermark-preview" style="color:#cccccc; opacity:0.4;">CONFIDENTIAL</span>
+            </div>
+
+            <!-- Watermark settings -->
+            <div class="settings-grid">
+                <div class="form-group full-width">
+                    <label class="form-label" for="watermark-text">Watermark Text</label>
+                    <input type="text" id="watermark-text" class="form-control"
+                           placeholder="e.g. CONFIDENTIAL, DRAFT, DO NOT COPY"
+                           maxlength="60" value="CONFIDENTIAL">
+                </div>
+                <div class="form-group">
+                    <label class="form-label" for="watermark-color">Colour</label>
+                    <input type="color" id="watermark-color" class="form-control" value="#cccccc" style="height:48px; padding:0.4rem;">
+                </div>
+                <div class="form-group">
+                    <label class="form-label" for="font-size">Font Size: <span id="font-size-value">50</span>px</label>
+                    <input type="range" id="font-size" min="20" max="100" value="50" aria-label="Font size">
+                </div>
+                <div class="form-group full-width">
+                    <label class="form-label" for="opacity-range">Opacity: <span id="opacity-value">40</span>%</label>
+                    <input type="range" id="opacity-range" min="5" max="90" value="40" aria-label="Watermark opacity">
+                </div>
+            </div>
+
+            <button class="btn btn-primary btn-full" id="submit-btn" disabled>
+                <i class="fa-solid fa-stamp" aria-hidden="true"></i> Add Watermark &amp; Download
+            </button>
+        </div>
+
+        <div class="processing-overlay hidden" id="processing-section" aria-live="polite">
+            <div class="spinner" role="status" aria-label="Processing"></div>
+            <div class="processing-text" id="processing-text">Adding watermark…</div>
+            <div class="processing-sub">Stamping every page with your watermark…</div>
+            <div class="progress-container" style="width:100%;max-width:360px;">
+                <div class="progress-bar-track"><div class="progress-bar-fill" id="progress-fill"></div></div>
+            </div>
+        </div>
+
+        <div class="result-card hidden" id="result-section" aria-live="polite"></div>
+    </div>
+
+    <section class="card faq-section" aria-labelledby="faq-heading">
+        <h2 id="faq-heading">Frequently Asked Questions</h2>
+        <div class="faq-list">
+            <div class="faq-item">
+                <button class="faq-question" aria-expanded="false">Is the watermark permanent?<i class="fa-solid fa-chevron-down faq-chevron"></i></button>
+                <div class="faq-answer"><p>Yes. The watermark is embedded directly into the PDF content. It cannot be removed without specialist PDF editing software.</p></div>
+            </div>
+            <div class="faq-item">
+                <button class="faq-question" aria-expanded="false">Can I add an image watermark?<i class="fa-solid fa-chevron-down faq-chevron"></i></button>
+                <div class="faq-answer"><p>Currently, only text watermarks are supported. Image/logo watermarks are on our roadmap for a future update.</p></div>
+            </div>
+            <div class="faq-item">
+                <button class="faq-question" aria-expanded="false">What opacity should I use?<i class="fa-solid fa-chevron-down faq-chevron"></i></button>
+                <div class="faq-answer"><p>30–50% opacity is recommended for most use cases — visible enough to be noticed but not so dark that it obscures the document content.</p></div>
+            </div>
+        </div>
+    </section>
+</div>
+</main>
+<footer class="footer"><div class="container"><div class="footer-inner">
+    <div class="footer-brand"><i class="fa-solid fa-arrows-rotate"></i> PlusConversion</div>
+    <p class="footer-copy">&copy; 2026 PlusConversion · Made with ❤️ by Marshal &amp; Arjun</p>
+</div></div></footer>
+<script type="module">
+import { initNavbar } from '../js/components/navbar.js';
+import '../js/pages/watermark-pdf.js';
+
+// Sync font-size slider label
+const fs = document.getElementById('font-size');
+const fsVal = document.getElementById('font-size-value');
+if (fs && fsVal) fs.addEventListener('input', () => { fsVal.textContent = fs.value; });
+</script>
+</body>
+</html>

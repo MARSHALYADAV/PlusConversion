@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JPG to PDF — Convert Images to PDF Free | PlusConversion</title>
+    <meta name="description" content="Convert JPG, PNG, WEBP images to a PDF document online for free. Upload multiple images, reorder them, and download a single PDF instantly.">
+    <meta property="og:title" content="JPG to PDF Free — PlusConversion">
+    <meta property="og:description" content="Compile multiple images into a single PDF. Supports JPG, PNG, WEBP, BMP. Free and instant.">
+    <link rel="canonical" href="/pages/jpg-to-pdf.html">
+    <link rel="stylesheet" href="../styles/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous">
+    <link rel="icon" href="../favicon.ico" type="image/x-icon">
+</head>
+<body>
+<main class="main-content">
+<div class="container">
+    <a href="/" class="back-link"><i class="fa-solid fa-arrow-left"></i> All Tools</a>
+    <div class="card">
+        <div class="tool-page-header">
+            <div class="tool-page-icon"><i class="fa-solid fa-image" aria-hidden="true"></i></div>
+            <h1 class="tool-page-title">JPG to PDF</h1>
+            <p class="tool-page-subtitle">Upload images, drag to reorder, and compile them into a single PDF document.</p>
+        </div>
+
+        <div id="upload-section">
+            <div class="drop-zone" id="drop-zone" role="button" tabindex="0" aria-label="Drop image files here">
+                <i class="fa-solid fa-images dz-icon" aria-hidden="true"></i>
+                <div class="dz-title">Drag &amp; Drop images here</div>
+                <div class="dz-sub">or</div>
+                <button class="btn btn-secondary" id="browse-btn" type="button">Browse Images</button>
+                <input type="file" id="file-input" accept=".jpg,.jpeg,.png,.webp,.bmp,.tiff" multiple hidden aria-hidden="true">
+                <div class="dz-formats">Supports JPG, PNG, WEBP, BMP, TIFF · Max 50 MB each</div>
+            </div>
+
+            <div id="file-list" class="file-list hidden" aria-label="Selected images" aria-live="polite"></div>
+            <p id="file-count-hint" class="form-hint text-center mt-2" style="color:var(--text-muted);">Add images to convert</p>
+
+            <button class="btn btn-primary btn-full mt-3" id="submit-btn" disabled>
+                <i class="fa-solid fa-file-pdf" aria-hidden="true"></i> Convert to PDF &amp; Download
+            </button>
+        </div>
+
+        <div class="processing-overlay hidden" id="processing-section" aria-live="polite">
+            <div class="spinner" role="status" aria-label="Processing"></div>
+            <div class="processing-text" id="processing-text">Converting images to PDF…</div>
+            <div class="processing-sub">Each image will become one page in the PDF.</div>
+            <div class="progress-container" style="width:100%;max-width:360px;">
+                <div class="progress-bar-track"><div class="progress-bar-fill" id="progress-fill"></div></div>
+            </div>
+        </div>
+
+        <div class="result-card hidden" id="result-section" aria-live="polite"></div>
+    </div>
+
+    <section class="card faq-section" aria-labelledby="faq-heading">
+        <h2 id="faq-heading">Frequently Asked Questions</h2>
+        <div class="faq-list">
+            <div class="faq-item">
+                <button class="faq-question" aria-expanded="false">How are images ordered in the PDF?<i class="fa-solid fa-chevron-down faq-chevron"></i></button>
+                <div class="faq-answer"><p>Images are ordered as shown in the file list. Use the up/down arrow buttons on each image card to reorder them before converting.</p></div>
+            </div>
+            <div class="faq-item">
+                <button class="faq-question" aria-expanded="false">What image formats are supported?<i class="fa-solid fa-chevron-down faq-chevron"></i></button>
+                <div class="faq-answer"><p>JPG, JPEG, PNG, WEBP, BMP, and TIFF are all supported. Each image becomes exactly one page in the output PDF.</p></div>
+            </div>
+            <div class="faq-item">
+                <button class="faq-question" aria-expanded="false">How many images can I convert at once?<i class="fa-solid fa-chevron-down faq-chevron"></i></button>
+                <div class="faq-answer"><p>You can upload up to 20 images per conversion. Each image should be under 50 MB in size.</p></div>
+            </div>
+        </div>
+    </section>
+</div>
+</main>
+<footer class="footer"><div class="container"><div class="footer-inner">
+    <div class="footer-brand"><i class="fa-solid fa-arrows-rotate"></i> PlusConversion</div>
+    <p class="footer-copy">&copy; 2026 PlusConversion · Made with ❤️ by Marshal &amp; Arjun</p>
+</div></div></footer>
+<script type="module" src="../js/pages/jpg-to-pdf.js"></script>
+</body>
+</html>

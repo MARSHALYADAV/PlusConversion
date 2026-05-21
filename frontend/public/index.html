@@ -1,243 +1,173 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PlusConversion - Free Image Converter</title>
-    <meta name="description"
-        content="Simple, fast, and free online image converter. Convert JPG, PNG, WEBP, and more instantly. No login required.">
+    <title>PlusConversion — Free Online PDF Tools & Image Converter</title>
+    <meta name="description" content="Free online PDF tools: merge, split, compress, rotate, watermark, and add page numbers. Plus fast image conversion. No signup, no ads, instant downloads.">
+    <meta property="og:title" content="PlusConversion — Free PDF Tools & Image Converter">
+    <meta property="og:description" content="Merge, split, compress, rotate PDFs and convert images. 100% free, no signup required.">
+    <meta property="og:type" content="website">
+    <link rel="canonical" href="/">
     <link rel="stylesheet" href="styles/style.css">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous">
     <link rel="icon" href="favicon.ico" type="image/x-icon">
-    <!-- FontAwesome for Icons -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
-
 <body>
 
-    <header class="header">
-        <div class="container">
-            <h1 class="logo"><i class="fa-solid fa-arrows-rotate"></i> PlusConversion</h1>
-            <p class="tagline">Simple. Fast. Free File Conversion.</p>
-        </div>
-    </header>
+<!-- Navbar is injected by navbar.js -->
 
-    <main class="main-content">
-        <div class="container">
+<main class="main-content">
+    <div class="container">
 
-            <!-- Hero Section -->
-            <section class="hero-card card">
-                <div class="hero-copy">
-                    <h2 class="section-title">Fast PDF tools & image conversion</h2>
-                    <p class="section-subtitle">
-                        Manage your files like a pro: merge, split, compress, and convert images with a modern, responsive interface.
+        <!-- Hero -->
+        <section class="card hero-section" aria-label="Hero">
+            <div class="hero-badge"><i class="fa-solid fa-bolt"></i> Fast, Free & Secure</div>
+            <h1 class="hero-title">Your All-in-One<br>PDF & File Toolkit</h1>
+            <p class="hero-subtitle">
+                Merge, split, compress, rotate, watermark PDFs and convert images.
+                No signup. No ads. Files deleted immediately after processing.
+            </p>
+            <div class="hero-pills">
+                <span class="hero-pill"><i class="fa-solid fa-check"></i> No signup required</span>
+                <span class="hero-pill"><i class="fa-solid fa-check"></i> Files auto-deleted</span>
+                <span class="hero-pill"><i class="fa-solid fa-check"></i> Works on mobile</span>
+                <span class="hero-pill"><i class="fa-solid fa-check"></i> 100% free</span>
+            </div>
+        </section>
+
+        <!-- PDF Tools Grid -->
+        <section aria-labelledby="pdf-tools-heading">
+            <div class="section-header">
+                <h2 id="pdf-tools-heading">PDF Tools</h2>
+                <p>Everything you need to work with PDF files — fast and free.</p>
+            </div>
+            <div class="tool-grid" id="pdf-tool-grid">
+                <!-- Injected by script.js -->
+            </div>
+        </section>
+
+        <!-- Image Tools Grid -->
+        <section aria-labelledby="image-tools-heading" style="margin-top:3rem;">
+            <div class="section-header">
+                <h2 id="image-tools-heading">Image Tools</h2>
+                <p>Convert, resize, and optimise images in seconds.</p>
+            </div>
+            <div class="tool-grid" id="image-tool-grid">
+                <!-- Injected by script.js -->
+            </div>
+        </section>
+
+        <!-- Why PlusConversion -->
+        <section class="card" style="margin-top:3rem; text-align:center;" aria-label="Features">
+            <h2 style="font-size:1.6rem; font-weight:800; margin-bottom:0.5rem;">Why PlusConversion?</h2>
+            <p style="color:var(--text-secondary); margin-bottom:2.5rem;">Built for speed, privacy, and simplicity.</p>
+            <div style="display:grid; grid-template-columns:repeat(auto-fit,minmax(200px,1fr)); gap:1.5rem;">
+                <div>
+                    <div style="font-size:2rem; margin-bottom:0.6rem;">⚡</div>
+                    <strong>Lightning Fast</strong>
+                    <p style="font-size:0.875rem; color:var(--text-secondary); margin-top:0.3rem;">
+                        Most operations complete in under 5 seconds.
                     </p>
                 </div>
-            </section>
-
-            <!-- PDF Tools Grid -->
-            <section class="card tool-section" id="tools-grid-section">
-                <div class="section-heading">
-                    <h3>Popular PDF Tools</h3>
-                    <p>Quick access to the most common PDF actions—modeled after premium converters.</p>
+                <div>
+                    <div style="font-size:2rem; margin-bottom:0.6rem;">🔒</div>
+                    <strong>Private by Design</strong>
+                    <p style="font-size:0.875rem; color:var(--text-secondary); margin-top:0.3rem;">
+                        Your files are auto-deleted within 15 minutes.
+                    </p>
                 </div>
-                <div class="tool-grid" id="tool-grid">
-                    <!-- Tools will be injected here -->
+                <div>
+                    <div style="font-size:2rem; margin-bottom:0.6rem;">📱</div>
+                    <strong>Works Everywhere</strong>
+                    <p style="font-size:0.875rem; color:var(--text-secondary); margin-top:0.3rem;">
+                        Fully responsive — phone, tablet, desktop.
+                    </p>
                 </div>
-            </section>
-
-            <!-- Merge PDF Tool -->
-            <section class="card pdf-tool-section hidden" id="merge-pdf-section">
-                <div class="tool-header">
-                    <button class="btn-back" id="back-merge">&larr; Back</button>
-                    <h3>Merge PDF</h3>
+                <div>
+                    <div style="font-size:2rem; margin-bottom:0.6rem;">💸</div>
+                    <strong>Always Free</strong>
+                    <p style="font-size:0.875rem; color:var(--text-secondary); margin-top:0.3rem;">
+                        No subscription. No sign-up. No catch.
+                    </p>
                 </div>
-                <p class="tool-description">Combine multiple PDF files into one document.</p>
-                <div class="drop-zone" id="merge-drop-zone">
-                    <div class="dz-content">
-                        <i class="fa-solid fa-file-pdf dz-icon"></i>
-                        <h2>Drag & Drop PDFs here</h2>
-                        <p>or</p>
-                        <button class="btn btn-secondary" id="merge-browse-btn">Browse Files</button>
-                        <input type="file" id="merge-file-input" accept=".pdf" multiple hidden>
-                        <p class="formats-hint">Supports PDF files</p>
-                    </div>
-                </div>
-                <div id="merge-file-list" class="file-list hidden"></div>
-                <button class="btn btn-primary btn-lg" id="merge-btn">Merge & Download</button>
-            </section>
+            </div>
+        </section>
 
-            <!-- Split PDF Tool -->
-            <section class="card pdf-tool-section hidden" id="split-pdf-section">
-                <div class="tool-header">
-                    <button class="btn-back" id="back-split">&larr; Back</button>
-                    <h3>Split PDF</h3>
-                </div>
-                <p class="tool-description">Split a PDF into individual pages or extract specific pages.</p>
-                <div class="drop-zone" id="split-drop-zone">
-                    <div class="dz-content">
-                        <i class="fa-solid fa-file-pdf dz-icon"></i>
-                        <h2>Drag & Drop PDF here</h2>
-                        <p>or</p>
-                        <button class="btn btn-secondary" id="split-browse-btn">Browse Files</button>
-                        <input type="file" id="split-file-input" accept=".pdf" single hidden>
-                        <p class="formats-hint">Supports PDF files</p>
-                    </div>
-                </div>
-                <div id="split-file-item" class="file-list hidden"></div>
-                <div class="setting-group hidden" id="split-options">
-                    <label for="page-range">Page Range (Optional):</label>
-                    <input type="text" id="page-range" placeholder="e.g., 1,3,5 or leave empty for all pages">
-                    <p class="formats-hint">Enter page numbers separated by commas</p>
-                </div>
-                <button class="btn btn-primary btn-lg" id="split-btn">Split & Download</button>
-            </section>
+    </div>
+</main>
 
-            <!-- Compress PDF Tool -->
-            <section class="card pdf-tool-section hidden" id="compress-pdf-section">
-                <div class="tool-header">
-                    <button class="btn-back" id="back-compress">&larr; Back</button>
-                    <h3>Compress PDF</h3>
-                </div>
-                <p class="tool-description">Reduce PDF file size.</p>
-                <div class="drop-zone" id="compress-drop-zone">
-                    <div class="dz-content">
-                        <i class="fa-solid fa-file-pdf dz-icon"></i>
-                        <h2>Drag & Drop PDF here</h2>
-                        <p>or</p>
-                        <button class="btn btn-secondary" id="compress-browse-btn">Browse Files</button>
-                        <input type="file" id="compress-file-input" accept=".pdf" single hidden>
-                        <p class="formats-hint">Supports PDF files</p>
-                    </div>
-                </div>
-                <div id="compress-file-item" class="file-list hidden"></div>
-                <button class="btn btn-primary btn-lg" id="compress-btn">Compress & Download</button>
-            </section>
-
-            <!-- Image Converter Section -->
-            <section class="card converter-section" id="converter-section">
-                <div class="section-heading">
-                    <h3>Image Conversion</h3>
-                    <p>Upload images, choose your options, and download converted files instantly.</p>
-                </div>
-
-                <section id="upload-section" class="upload-card">
-                    <div class="drop-zone" id="drop-zone">
-                        <div class="dz-content">
-                            <i class="fa-solid fa-cloud-arrow-up dz-icon"></i>
-                            <h2>Drag & Drop your image here</h2>
-                            <p>or</p>
-                            <button class="btn btn-secondary" id="browse-btn">Browse Files</button>
-                            <input type="file" id="file-input"
-                                accept="image/png, image/jpeg, image/jpg, image/webp, image/tiff, image/bmp, image/heic"
-                                multiple hidden>
-                            <p class="formats-hint">Supports JPG, PNG, WEBP, BMP, TIFF, HEIC</p>
-                        </div>
-                    </div>
-                </section>
-
-                <section id="options-section" class="hidden">
-                    <div id="file-list" class="file-list">
-                        <!-- File items will be injected here -->
-                    </div>
-
-                    <div class="settings-grid">
-                        <div class="setting-group">
-                            <label for="format-select">Convert to:</label>
-                            <select id="format-select">
-                                <option value="png">PNG</option>
-                                <option value="jpg">JPG</option>
-                                <option value="webp">WEBP</option>
-                                <option value="tiff">TIFF</option>
-                            </select>
-                        </div>
-
-                        <div class="setting-group">
-                            <label>Resize:</label>
-                            <div class="resize-options">
-                                <div class="input-wrapper">
-                                    <label for="width-input">Width:</label>
-                                    <input type="number" id="width-input" placeholder="Original">
-                                </div>
-                                <div class="input-wrapper">
-                                    <label for="height-input">Height:</label>
-                                    <input type="number" id="height-input" placeholder="Original">
-                                </div>
-                            </div>
-                            <div class="checkbox-wrapper">
-                                <input type="checkbox" id="maintain-aspect" checked>
-                                <label for="maintain-aspect">Maintain Aspect Ratio</label>
-                            </div>
-                        </div>
-
-                        <div class="setting-group">
-                            <label>Max File Size (Optional):</label>
-                            <div class="resize-options">
-                                <div class="input-wrapper">
-                                    <input type="number" id="target-size-input" placeholder="e.g. 50">
-                                </div>
-                                <div class="input-wrapper" style="flex: 0 0 80px;">
-                                    <select id="size-unit">
-                                        <option value="KB">KB</option>
-                                        <option value="MB">MB</option>
-                                    </select>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="setting-group quality-group">
-                            <label for="quality-range">Quality: <span id="quality-value">80</span>%</label>
-                            <input type="range" id="quality-range" min="10" max="100" value="80">
-                        </div>
-
-                        <!-- Advanced Options Toggle -->
-                        <div class="setting-group quality-group">
-                            <details class="advanced-details">
-                                <summary>Advanced Options</summary>
-                                <div class="advanced-options-grid">
-                                    <div class="checkbox-wrapper">
-                                        <input type="checkbox" id="keep-metadata">
-                                        <label for="keep-metadata">Preserve Metadata (EXIF)</label>
-                                    </div>
-                                    <div class="checkbox-wrapper">
-                                        <input type="checkbox" id="use-transparency">
-                                        <label for="use-transparency">Fill Transparent Background</label>
-                                    </div>
-                                    <div class="input-wrapper" id="bg-color-wrapper"
-                                        style="display:none; margin-top: 0.5rem;">
-                                        <label for="bg-color" style="font-size: 0.9rem;">Color:</label>
-                                        <input type="color" id="bg-color" value="#ffffff">
-                                    </div>
-                                </div>
-                            </details>
-                        </div>
-                    </div>
-
-                    <div class="action-area">
-                        <button class="btn btn-primary btn-lg" id="convert-btn">Convert & Download</button>
-                        <div class="progress-bar hidden" id="progress-bar">
-                            <div class="progress-fill"></div>
-                        </div>
-                        <p class="status-msg hidden" id="status-msg"></p>
-                    </div>
-                </section>
-            </section>
-
+<footer class="footer">
+    <div class="container">
+        <div class="footer-inner">
+            <div class="footer-brand">
+                <i class="fa-solid fa-arrows-rotate"></i> PlusConversion
+            </div>
+            <ul class="footer-links">
+                <li><a href="/pages/merge-pdf.html">Merge PDF</a></li>
+                <li><a href="/pages/split-pdf.html">Split PDF</a></li>
+                <li><a href="/pages/compress-pdf.html">Compress PDF</a></li>
+                <li><a href="/pages/rotate-pdf.html">Rotate PDF</a></li>
+                <li><a href="/pages/watermark-pdf.html">Watermark</a></li>
+                <li><a href="/pages/jpg-to-pdf.html">JPG to PDF</a></li>
+            </ul>
+            <p class="footer-copy">
+                &copy; 2026 PlusConversion. Files are processed securely and deleted immediately.<br>
+                Made with ❤️ by Marshal &amp; Arjun.
+            </p>
         </div>
-    </main>
+    </div>
+</footer>
 
-    <footer class="footer">
-        <div class="container">
-            <p>&copy; 2026 PlusConversion. All rights reserved.</p>
-            <p class="footer-note">Files are processed securely and deleted immediately.</p>
-            <p class="footer-note">MADE WITH ❤️ BY MARSHAL AND ARJUN.</p>
-        </div>
-    </footer>
+<script type="module">
+import { initNavbar } from './js/components/navbar.js';
 
-    <script type="module" src="js/script.js"></script>
+// Tool definitions for homepage grid
+const PDF_TOOLS = [
+    { id: 'merge-pdf',      href: '/pages/merge-pdf.html',       icon: 'fa-solid fa-file-arrow-down', title: 'Merge PDF',      desc: 'Combine multiple PDF files into a single document.' },
+    { id: 'split-pdf',      href: '/pages/split-pdf.html',       icon: 'fa-solid fa-scissors',        title: 'Split PDF',      desc: 'Extract pages or split a PDF into separate files.' },
+    { id: 'compress-pdf',   href: '/pages/compress-pdf.html',    icon: 'fa-solid fa-compress',        title: 'Compress PDF',   desc: 'Reduce PDF size while preserving readability.' },
+    { id: 'rotate-pdf',     href: '/pages/rotate-pdf.html',      icon: 'fa-solid fa-rotate',          title: 'Rotate PDF',     desc: 'Rotate all pages by 90°, 180°, or 270°.' },
+    { id: 'watermark-pdf',  href: '/pages/watermark-pdf.html',   icon: 'fa-solid fa-stamp',           title: 'Watermark PDF',  desc: 'Add a custom text watermark to every page.' },
+    { id: 'page-number-pdf',href: '/pages/page-number-pdf.html', icon: 'fa-solid fa-list-ol',         title: 'Page Numbers',   desc: 'Add page numbers to the header or footer.' },
+    { id: 'jpg-to-pdf',     href: '/pages/jpg-to-pdf.html',      icon: 'fa-solid fa-image',           title: 'JPG to PDF',     desc: 'Compile multiple images into one PDF document.' },
+    { id: 'pdf-to-jpg',     href: '/pages/pdf-to-jpg.html',      icon: 'fa-solid fa-file-image',      title: 'PDF to JPG',     desc: 'Extract pages as high-quality images.', badge: 'Coming Soon' },
+];
+
+const IMAGE_TOOLS = [
+    { id: 'image-convert',  href: '#image-converter', icon: 'fa-solid fa-images',     title: 'Convert Images',   desc: 'Convert JPG, PNG, WEBP, TIFF, BMP, HEIC instantly.' },
+    { id: 'image-resize',   href: '#image-converter', icon: 'fa-solid fa-crop-simple', title: 'Resize Images',    desc: 'Resize with custom dimensions or target file size.' },
+];
+
+function renderGrid(tools, containerId) {
+    const grid = document.getElementById(containerId);
+    if (!grid) return;
+    grid.innerHTML = tools.map(t => `
+        <a href="${t.href}" class="tool-card" id="tool-${t.id}" aria-label="${t.title}">
+            ${t.badge ? `<div class="tool-card-badge">${t.badge}</div>` : ''}
+            <div class="tool-card-icon"><i class="${t.icon}" aria-hidden="true"></i></div>
+            <div>
+                <div class="tool-card-title">${t.title}</div>
+                <div class="tool-card-desc">${t.desc}</div>
+            </div>
+            <div class="tool-card-link">Open tool <i class="fa-solid fa-arrow-right"></i></div>
+        </a>
+    `).join('');
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+    initNavbar();
+    renderGrid(PDF_TOOLS,   'pdf-tool-grid');
+    renderGrid(IMAGE_TOOLS, 'image-tool-grid');
+
+    // Image converter scroll shortcut
+    document.querySelectorAll('a[href="#image-converter"]').forEach(a => {
+        a.addEventListener('click', e => {
+            e.preventDefault();
+            window.location.href = '/#image-converter';
+        });
+    });
+});
+</script>
 </body>
-
 </html>

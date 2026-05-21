@@ -45,8 +45,8 @@ class PdfService {
     /**
      * Dispatch PDF compression operation to the Compress Worker
      */
-    static async compress(pdfBuffer) {
-        return await compressPdf(pdfBuffer);
+    static async compress(pdfBuffer, mode = 'recommended') {
+        return await compressPdf(pdfBuffer, mode);
     }
 
     /**
