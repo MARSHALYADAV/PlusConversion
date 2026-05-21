@@ -6,7 +6,11 @@ import { iconMap } from '../utils/iconMap.js';
  * @returns {string} - Clean, semantic HTML string
  */
 export function renderToolCard(t) {
-    const iconName = iconMap[t.id] || 'file';
+    let iconName = iconMap[t.id];
+    if (!iconName) {
+        console.warn(`[IconMapper] Warning: No mapping found for tool ID "${t.id}". Falling back to default 'file' icon.`);
+        iconName = 'file';
+    }
     return `
         <a href="${t.href}" class="tool-card" id="tool-${t.id}" aria-label="${t.title}">
             ${t.badge ? `<div class="tool-card-badge">${t.badge}</div>` : ''}
